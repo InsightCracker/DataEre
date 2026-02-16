@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { QuizContext } from "../Helpers/Contexts";
 import { 
@@ -19,6 +19,7 @@ import QuizShareCard from "../util/QuizShareCard";
 
 const ResultPage = () => {
   const navigate = useNavigate();
+  const [show, setShow] = useState(false)
 
   const { 
     score, 
@@ -30,6 +31,13 @@ const ResultPage = () => {
     wrongAnswer,
     setWrongAnswer
   } = useContext(QuizContext);
+
+  const total = questions.length;
+
+  const percentage =
+    total > 0
+      ? Math.round((score / total) * 100)
+      : 0;
 
   const retryQuiz = () => {
     setScore(0);
@@ -93,7 +101,7 @@ const ResultPage = () => {
             <p>Retry Quiz</p>
           </Box>
 
-          <Box className="quiz-btn" onClick={console.log('share')}>
+          <Box className="quiz-btn">
             <div>
               <p><FaTrophy /></p>
             </div>
@@ -111,7 +119,7 @@ const ResultPage = () => {
             </div>
           </Box>
 
-          <Box className="quiz-btn" onClick={() => navigate('/share')}>
+          <Box className="quiz-btn" onClick={() => setShow(true)}>
             <div>
               <p><FaShareNodes /></p>
             </div>
@@ -120,6 +128,33 @@ const ResultPage = () => {
             </div>
           </Box>
         </div>
+
+        <Box position="relative">
+          {show && (
+            <Box
+              position="fixed"
+              top="0"
+              left="0"
+              w="100vw"
+              h="100vh"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              bg="rgba(255,255,255,0.2)" // semi transparent required
+              backdropFilter="blur(10px)"
+              sx={{
+                WebkitBackdropFilter: "blur(10px)",
+              }}
+              zIndex="1000"
+            >
+              <QuizShareCard 
+                score={score}
+                total={total}
+                percentage={percentage}
+              />
+            </Box>
+          )}
+          </Box>
       </Box>
     </Box>
   )

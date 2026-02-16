@@ -1,6 +1,5 @@
 import { 
-  useEffect, 
-  useState, 
+  useEffect,
   useContext 
 } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -23,42 +22,43 @@ const getBadgeEmoji = (percentage) => {
 
 // Quiz Share Card Component
 const QuizShareCard = ({ 
-  score, 
-  setScore,
-  categories 
+  score = 0,
+  categories  = ""
 }) => {
+  
   const { 
-    questions,
-    setWrongAnswer
+    questions = [],
+    setWrongAnswer,
+    setRefresh,
+    setScore,
+    setBotScore
   } = useContext(QuizContext);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const [percentage, setpercentage] = useState(Math.round((score / questions?.length || 0) * 100));
-    
+
+  // ✅ Safe calculation
+  const totalQuestions = questions.length;
+  
+   const percentage =
+    totalQuestions > 0
+      ? Math.round((Number(score) / totalQuestions) * 100)
+      : 0;
 
   const result = {
-    percentage: Math.round((score / questions.length) * 100),
+    percentage,
     title: "My Dataxo Quiz Result!",
-    message: `I scored ${Math.round((score / questions.length) * 100)}% on the Dataxo ${categories} Quiz! Can you beat me? 😎`,
+    message: `I scored ${percentage}% on the Dataxo ${categories} Quiz! Can you beat me? 😎`,
     url: "https://dataxo.cfd/home"
   };
 
-  // 🎉 Confetti on high score
+  // 🎉 Confetti
   useEffect(() => {
-    if (percentage >= 70) {
-      confetti({
-        particleCount: 120,
-        spread: 70,
-        origin: { y: 0.6 }
+    confetti({
+      particleCount: percentage >= 70 ? 120 : 80,
+      spread: percentage >= 70 ? 70 : 50,
+      origin: { y: 0.6 }
     });
-    } else {
-      confetti({
-        particleCount: 80,
-        spread: 50,
-        origin: { y: 0.6 }
-    })
-    }
   }, [percentage]);
 
   // Smart share function
@@ -79,14 +79,14 @@ const QuizShareCard = ({
 
     if (navigator.share) {
     try {
-        await navigator.share({
-        title: result.title,
-        text: result.message,
-        url: result.url
-        });
-        return;
+      await navigator.share({
+      title: result.title,
+      text: result.message,
+      url: result.url
+      });
+      return;
     } catch (err) {
-        console.error(err);
+      console.error(err);
     }
     }
 
@@ -98,30 +98,39 @@ const QuizShareCard = ({
     }
   };
 
+  // ✅ Reset function (cleaner)
+  const resetQuizState = () => {
+    setScore(0);
+    setBotScore(0);
+    setWrongAnswer(0);
+  };
+  
   const retry = () => {
+    resetQuizState();
+
     if (location.pathname === "/result") {
-      navigate("/home");
+      setRefresh(prev => !prev);
+      navigate("/dashboard");
     } else if (location.pathname === "/multiend") {
+      setRefresh(prev => !prev);
       navigate("/vsbot");
     }
-    setpercentage(0),
-    setScore(0),
-    setWrongAnswer(0)
   };
 
-  const goToDashboard = () => {
-    navigate('/home'),
-    setpercentage(0),
-    setScore(0),
-    setWrongAnswer(0)
+
+
+  const goToDashboard = () => {  
+    resetQuizState();
+    navigate("/home");
   };
+
 
   return (
     <div className="container-quiz-share">
       <div className="quiz-share-card">
         <div className="badge">
           <h1>{getBadgeEmoji(percentage)}</h1>
-          <h2>{result.percentage}<span>%</span></h2>
+          <h2>{percentage}<span>%</span></h2>
           <p>Great Job!</p>
         </div>
 

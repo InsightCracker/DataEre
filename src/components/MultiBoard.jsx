@@ -20,7 +20,7 @@ const MultiBoard = () => {
                 <span><FaUserAstronaut color="rgba(10, 14, 39, 0.95)" /></span>
             </div>
             <div className="point-box user-point">
-                <p><span>{botScore}</span> Points</p>
+                <p><span>{score}</span> Points</p>
             </div>
         </div>
 
@@ -31,7 +31,7 @@ const MultiBoard = () => {
                 <span><FaRobot color="rgb(0, 92, 0)" /></span>
             </div>
             <div className="point-box ai-point">
-                <p><span>{score}</span> Points</p>
+                <p><span>{botScore}</span> Points</p>
             </div>
         </div>
     </Box>

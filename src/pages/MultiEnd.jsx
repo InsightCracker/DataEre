@@ -30,8 +30,17 @@ const MultiEnd = () => {
     refresh,
     setRefresh,
     setWrongAnswer,
+    questions,
     setCurrQuestion
 } = useContext(QuizContext);
+
+const total = questions.length;
+
+const percentage =
+  total > 0
+    ? Math.round((score / total) * 100)
+    : 0;
+
 
   const retryQuiz = () => {
     setScore(0);
@@ -52,27 +61,12 @@ const MultiEnd = () => {
   }
   
   return (
-    <Box className="result-screen" sx={{
-          backgroundColor: show
-            ? "rgba(255,255,255,0.2)"
-            : "transparent",
-
-          backdropFilter: show ? "blur(10px)" : "blur(0px)",
-          WebkitBackdropFilter: show ? "blur(10px)" : "blur(0px)",
-        }}>
+    <Box className="result-screen">
       <Box sx={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          flexDir: 'column',
-          position: 'relative',
-
-          backgroundColor: show
-            ? "rgba(255,255,255,0.2)"
-            : "transparent",
-
-          backdropFilter: show ? "blur(10px)" : "blur(0px)",
-          WebkitBackdropFilter: show ? "blur(10px)" : "blur(0px)",
+          flexDir: 'column'
         }}>
           {/* Navbar */}
           <div className="resultpage-navbar">
@@ -151,13 +145,33 @@ const MultiEnd = () => {
             </div>
           </Box>
 
-          <Box 
-            style={{ display: show ? "block" : "none" }} 
-            className="quiz-share-dialogue-box"
-          >
-            <QuizShareCard />
-          </Box>
-      </Box>
+          <Box position="relative">
+            {show && (
+              <Box
+                position="fixed"
+                top="0"
+                left="0"
+                w="100vw"
+                h="100vh"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                bg="rgba(255,255,255,0.2)" // semi transparent required
+                backdropFilter="blur(10px)"
+                sx={{
+                  WebkitBackdropFilter: "blur(10px)",
+                }}
+                zIndex="1000"
+              >
+                <QuizShareCard 
+                  score={score}
+                  total={total}
+                  percentage={percentage}
+                />
+              </Box>
+            )}
+            </Box>
+        </Box>
     </Box>
   )
 }

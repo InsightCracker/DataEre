@@ -1,73 +1,1037 @@
 [
   {
     "id": 1,
-    "question": "How to delete a directory in Linux?",
-    "description": "delete folder",
+    "question": "Which function is used to add numbers in Excel?",
+    "description": "sum function",
     "answers": {
-      "answer_a": "ls",
-      "answer_b": "delete",
-      "answer_c": "remove",
-      "answer_d": "rmdir"
+      "answer_a": "ADD()",
+      "answer_b": "SUM()",
+      "answer_c": "TOTAL()",
+      "answer_d": "PLUS()"
     },
     "multiple_correct_answers": "false",
     "correct_answers": {
       "answer_a_correct": "false",
-      "answer_b_correct": "false",
+      "answer_b_correct": "true",
       "answer_c_correct": "false",
-      "answer_d_correct": "true"
+      "answer_d_correct": "false"
     },
-    "explanation": "rmdir deletes an empty directory",
+    "explanation": "SUM() adds a range of numbers in Excel.",
     "tip": null,
-    "tags": [],
-    "category": "linux",
+    "tags": ["excel", "formulas"],
+    "category": "excel",
     "difficulty": "Easy"
   },
-
   {
     "id": 2,
-    "question": "How to delete a directory in Linux?",
-    "description": "delete folder",
+    "question": "Which shortcut key is used to copy data in Excel?",
+    "description": "copy shortcut",
     "answers": {
-      "answer_a": "ls",
-      "answer_b": "delete",
-      "answer_c": "remove",
-      "answer_d": "rmdir"
+      "answer_a": "Ctrl + C",
+      "answer_b": "Ctrl + V",
+      "answer_c": "Ctrl + X",
+      "answer_d": "Ctrl + Z"
     },
     "multiple_correct_answers": "false",
     "correct_answers": {
-      "answer_a_correct": "false",
+      "answer_a_correct": "true",
       "answer_b_correct": "false",
       "answer_c_correct": "false",
-      "answer_d_correct": "true"
+      "answer_d_correct": "false"
     },
-    "explanation": "rmdir deletes an empty directory",
+    "explanation": "Ctrl + C is the standard shortcut to copy selected cells.",
     "tip": null,
-    "tags": [],
-    "category": "linux",
+    "tags": ["excel", "shortcuts"],
+    "category": "excel",
     "difficulty": "Easy"
   },
-
   {
     "id": 3,
-    "question": "How to delete a directory in Linux?",
-    "description": "delete folder",
+    "question": "Which function returns the largest value in a range?",
+    "description": "max function",
     "answers": {
-      "answer_a": "ls",
-      "answer_b": "delete",
-      "answer_c": "remove",
-      "answer_d": "rmdir"
+      "answer_a": "MAX()",
+      "answer_b": "MIN()",
+      "answer_c": "LARGE()",
+      "answer_d": "BIG()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "MAX() returns the largest value in a range.",
+    "tip": null,
+    "tags": ["excel", "functions"],
+    "category": "excel",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 4,
+    "question": "Which function calculates the average of a range?",
+    "description": "average function",
+    "answers": {
+      "answer_a": "AVERAGE()",
+      "answer_b": "MEAN()",
+      "answer_c": "SUM()",
+      "answer_d": "MEDIAN()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "AVERAGE() calculates the arithmetic mean of a range.",
+    "tip": null,
+    "tags": ["excel", "functions"],
+    "category": "excel",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 5,
+    "question": "What does the VLOOKUP function do in Excel?",
+    "description": "lookup function",
+    "answers": {
+      "answer_a": "Looks up values vertically",
+      "answer_b": "Looks up values horizontally",
+      "answer_c": "Calculates averages",
+      "answer_d": "Formats cells"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "VLOOKUP searches for a value in the first column of a range and returns a value in the same row.",
+    "tip": null,
+    "tags": ["excel", "functions"],
+    "category": "excel",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 6,
+    "question": "Which symbol is used to start a formula in Excel?",
+    "description": "formula symbol",
+    "answers": {
+      "answer_a": "#",
+      "answer_b": "=",
+      "answer_c": "@",
+      "answer_d": "$"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "All formulas in Excel begin with the = symbol.",
+    "tip": null,
+    "tags": ["excel", "basics"],
+    "category": "excel",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 7,
+    "question": "Which function counts the number of numeric values in a range?",
+    "description": "count function",
+    "answers": {
+      "answer_a": "COUNT()",
+      "answer_b": "COUNTA()",
+      "answer_c": "COUNTBLANK()",
+      "answer_d": "COUNTIF()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "COUNT() counts only numeric values in the selected range.",
+    "tip": null,
+    "tags": ["excel", "functions"],
+    "category": "excel",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 8,
+    "question": "Which Excel feature allows you to automatically fill a series of numbers?",
+    "description": "auto fill",
+    "answers": {
+      "answer_a": "AutoSum",
+      "answer_b": "AutoFill",
+      "answer_c": "Flash Fill",
+      "answer_d": "Pivot Table"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "AutoFill allows you to fill a series of numbers, dates, or patterns automatically.",
+    "tip": null,
+    "tags": ["excel", "features"],
+    "category": "excel",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 9,
+    "question": "Which function combines text from multiple cells into one?",
+    "description": "concatenate text",
+    "answers": {
+      "answer_a": "TEXTJOIN()",
+      "answer_b": "CONCATENATE()",
+      "answer_c": "MERGE()",
+      "answer_d": "COMBINE()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "CONCATENATE() joins text from multiple cells into a single cell.",
+    "tip": "In newer Excel versions, TEXTJOIN() can be used too.",
+    "tags": ["excel", "functions", "text"],
+    "category": "excel",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 10,
+    "question": "Which function rounds a number to the nearest integer?",
+    "description": "rounding function",
+    "answers": {
+      "answer_a": "ROUND()",
+      "answer_b": "INT()",
+      "answer_c": "TRUNC()",
+      "answer_d": "CEILING()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ROUND() rounds a number to the nearest integer or specified number of decimal places.",
+    "tip": null,
+    "tags": ["excel", "functions", "math"],
+    "category": "excel",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 11,
+    "question": "Which shortcut key opens the Format Cells dialog in Excel?",
+    "description": "format cells shortcut",
+    "answers": {
+      "answer_a": "Ctrl + F",
+      "answer_b": "Ctrl + 1",
+      "answer_c": "Ctrl + Shift + F",
+      "answer_d": "Alt + F"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Ctrl + 1 opens the Format Cells dialog box.",
+    "tip": null,
+    "tags": ["excel", "shortcuts"],
+    "category": "excel",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 12,
+    "question": "Which function returns the current date in Excel?",
+    "description": "current date function",
+    "answers": {
+      "answer_a": "NOW()",
+      "answer_b": "DATE()",
+      "answer_c": "TODAY()",
+      "answer_d": "CURRENT()"
     },
     "multiple_correct_answers": "false",
     "correct_answers": {
       "answer_a_correct": "false",
       "answer_b_correct": "false",
-      "answer_c_correct": "false",
-      "answer_d_correct": "true"
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
     },
-    "explanation": "rmdir deletes an empty directory",
+    "explanation": "TODAY() returns the current date without the time.",
     "tip": null,
-    "tags": [],
-    "category": "linux",
+    "tags": ["excel", "functions", "date"],
+    "category": "excel",
     "difficulty": "Easy"
+  },
+  {
+    "id": 13,
+    "question": "Which feature allows summarizing large datasets in Excel?",
+    "description": "data summary",
+    "answers": {
+      "answer_a": "Pivot Table",
+      "answer_b": "VLOOKUP",
+      "answer_c": "Conditional Formatting",
+      "answer_d": "Data Validation"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Pivot Tables allow you to summarize, analyze, explore, and present data.",
+    "tip": null,
+    "tags": ["excel", "features", "data"],
+    "category": "excel",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 14,
+    "question": "Which function checks if a condition is TRUE or FALSE?",
+    "description": "logical function",
+    "answers": {
+      "answer_a": "IF()",
+      "answer_b": "AND()",
+      "answer_c": "OR()",
+      "answer_d": "CHECK()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "IF() returns one value if a condition is TRUE and another if FALSE.",
+    "tip": null,
+    "tags": ["excel", "functions", "logical"],
+    "category": "excel",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 15,
+    "question": "Which function returns the smallest value in a range?",
+    "description": "min function",
+    "answers": {
+      "answer_a": "SMALL()",
+      "answer_b": "MIN()",
+      "answer_c": "LEAST()",
+      "answer_d": "BOTTOM()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "MIN() returns the smallest number in a range of cells.",
+    "tip": null,
+    "tags": ["excel", "functions", "math"],
+    "category": "excel",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 1,
+    "question": "Which function is commonly combined with MATCH to perform flexible lookups?",
+    "description": "advanced lookup",
+    "answers": {
+      "answer_a": "INDEX()",
+      "answer_b": "SUM()",
+      "answer_c": "ROUND()",
+      "answer_d": "COUNT()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "INDEX() combined with MATCH() creates a more flexible alternative to VLOOKUP.",
+    "tip": "INDEX + MATCH works left and right unlike VLOOKUP.",
+    "tags": ["excel", "advanced", "lookup"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 2,
+    "question": "What does the XLOOKUP function improve compared to VLOOKUP?",
+    "description": "modern lookup",
+    "answers": {
+      "answer_a": "Can lookup both left and right",
+      "answer_b": "Only works vertically",
+      "answer_c": "Deletes duplicates",
+      "answer_d": "Creates pivot tables"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "XLOOKUP can search in any direction and replaces VLOOKUP and HLOOKUP.",
+    "tip": null,
+    "tags": ["excel", "advanced", "lookup"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 3,
+    "question": "Which function allows dynamic array filtering based on criteria?",
+    "description": "dynamic arrays",
+    "answers": {
+      "answer_a": "FILTER()",
+      "answer_b": "SORT()",
+      "answer_c": "UNIQUE()",
+      "answer_d": "INDEX()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "FILTER() returns an array of values that meet specified criteria.",
+    "tip": null,
+    "tags": ["excel", "dynamic arrays"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 4,
+    "question": "Which function returns unique values from a dataset?",
+    "description": "remove duplicates formula",
+    "answers": {
+      "answer_a": "DISTINCT()",
+      "answer_b": "UNIQUE()",
+      "answer_c": "FILTER()",
+      "answer_d": "CLEAN()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "UNIQUE() extracts distinct values from a range dynamically.",
+    "tip": null,
+    "tags": ["excel", "dynamic arrays"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 5,
+    "question": "Which function allows calculation based on multiple conditions?",
+    "description": "multiple criteria",
+    "answers": {
+      "answer_a": "SUM()",
+      "answer_b": "SUMIF()",
+      "answer_c": "SUMIFS()",
+      "answer_d": "COUNT()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "SUMIFS() evaluates multiple conditions before summing values.",
+    "tip": null,
+    "tags": ["excel", "advanced", "logic"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 6,
+    "question": "Which function can return a value from a specified row and column intersection?",
+    "description": "array lookup",
+    "answers": {
+      "answer_a": "MATCH()",
+      "answer_b": "INDEX()",
+      "answer_c": "LOOKUP()",
+      "answer_d": "ROW()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "INDEX() returns a value at a specific position in a table.",
+    "tip": null,
+    "tags": ["excel", "advanced"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 7,
+    "question": "Which feature enables automation using VBA?",
+    "description": "excel automation",
+    "answers": {
+      "answer_a": "Macros",
+      "answer_b": "Pivot Tables",
+      "answer_c": "Conditional Formatting",
+      "answer_d": "Data Validation"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Macros allow automation of tasks using VBA in Excel.",
+    "tip": null,
+    "tags": ["excel", "legendary", "automation"],
+    "category": "excel",
+    "difficulty": "Legendary"
+  },
+  {
+    "id": 8,
+    "question": "Which function can dynamically sort data in Excel 365?",
+    "description": "dynamic sorting",
+    "answers": {
+      "answer_a": "ORDER()",
+      "answer_b": "SORT()",
+      "answer_c": "RANK()",
+      "answer_d": "ARRANGE()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "SORT() dynamically sorts arrays without altering original data.",
+    "tip": null,
+    "tags": ["excel", "dynamic arrays"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 9,
+    "question": "Which function allows error handling in formulas?",
+    "description": "error handling",
+    "answers": {
+      "answer_a": "IFERROR()",
+      "answer_b": "ERROR()",
+      "answer_c": "ISERROR()",
+      "answer_d": "CHECK()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "IFERROR() returns a custom result when a formula generates an error.",
+    "tip": null,
+    "tags": ["excel", "advanced"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 10,
+    "question": "Which function creates reusable custom logic in Excel 365?",
+    "description": "custom functions",
+    "answers": {
+      "answer_a": "LET()",
+      "answer_b": "LAMBDA()",
+      "answer_c": "DEFINE()",
+      "answer_d": "CUSTOM()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "LAMBDA() allows users to create custom reusable functions without VBA.",
+    "tip": null,
+    "tags": ["excel", "legendary"],
+    "category": "excel",
+    "difficulty": "Legendary"
+  },
+  {
+    "id": 11,
+    "question": "Which feature is used to load and transform data before analysis?",
+    "description": "data transformation",
+    "answers": {
+      "answer_a": "Power Pivot",
+      "answer_b": "Power Query",
+      "answer_c": "Solver",
+      "answer_d": "Goal Seek"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Power Query is used for data extraction, transformation, and loading (ETL).",
+    "tip": null,
+    "tags": ["excel", "legendary", "data"],
+    "category": "excel",
+    "difficulty": "Legendary"
+  },
+  {
+    "id": 12,
+    "question": "Which tool performs optimization analysis in Excel?",
+    "description": "optimization tool",
+    "answers": {
+      "answer_a": "Solver",
+      "answer_b": "Scenario Manager",
+      "answer_c": "Power Query",
+      "answer_d": "Flash Fill"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Solver finds optimal values based on constraints.",
+    "tip": null,
+    "tags": ["excel", "legendary", "analysis"],
+    "category": "excel",
+    "difficulty": "Legendary"
+  },
+  {
+    "id": 13,
+    "question": "Which function allows naming variables inside a formula?",
+    "description": "formula optimization",
+    "answers": {
+      "answer_a": "LET()",
+      "answer_b": "NAME()",
+      "answer_c": "VAR()",
+      "answer_d": "SET()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "LET() assigns names to calculation results inside a formula.",
+    "tip": null,
+    "tags": ["excel", "legendary"],
+    "category": "excel",
+    "difficulty": "Legendary"
+  },
+  {
+    "id": 14,
+    "question": "Which function returns the position of a value in a range?",
+    "description": "lookup position",
+    "answers": {
+      "answer_a": "INDEX()",
+      "answer_b": "MATCH()",
+      "answer_c": "FIND()",
+      "answer_d": "SEARCH()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "MATCH() returns the relative position of a value in a range.",
+    "tip": null,
+    "tags": ["excel", "advanced"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 15,
+    "question": "Which feature allows building relational data models in Excel?",
+    "description": "data modeling",
+    "answers": {
+      "answer_a": "Power Pivot",
+      "answer_b": "Pivot Table",
+      "answer_c": "Data Validation",
+      "answer_d": "Conditional Formatting"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Power Pivot enables advanced data modeling and relationships between tables.",
+    "tip": null,
+    "tags": ["excel", "legendary", "data modeling"],
+    "category": "excel",
+    "difficulty": "Legendary"
+  },
+  {
+    "id": 1,
+    "question": "What does ER in ER Diagram stand for?",
+    "description": "entity-relationship diagram",
+    "answers": {
+      "answer_a": "Entity-Relationship",
+      "answer_b": "External-Reference",
+      "answer_c": "Entity-Report",
+      "answer_d": "Extended-Relation"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ER stands for Entity-Relationship, used to model data.",
+    "tip": null,
+    "tags": ["data modeling", "er diagram"],
+    "category": "data_modelling",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2,
+    "question": "Which key uniquely identifies a record in a table?",
+    "description": "primary key",
+    "answers": {
+      "answer_a": "Primary Key",
+      "answer_b": "Foreign Key",
+      "answer_c": "Candidate Key",
+      "answer_d": "Composite Key"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Primary Key uniquely identifies each record in a table.",
+    "tip": null,
+    "tags": ["data modeling", "keys"],
+    "category": "data_modelling",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3,
+    "question": "What type of relationship exists when one record in a table relates to multiple records in another table?",
+    "description": "one-to-many relationship",
+    "answers": {
+      "answer_a": "One-to-One",
+      "answer_b": "One-to-Many",
+      "answer_c": "Many-to-Many",
+      "answer_d": "Self-Referencing"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "A one-to-many relationship links a single record in one table to multiple records in another.",
+    "tip": null,
+    "tags": ["data modeling", "relationships"],
+    "category": "data_modelling",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 4,
+    "question": "Which key is used to link two tables together?",
+    "description": "foreign key",
+    "answers": {
+      "answer_a": "Primary Key",
+      "answer_b": "Foreign Key",
+      "answer_c": "Unique Key",
+      "answer_d": "Composite Key"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "A foreign key in one table points to a primary key in another table.",
+    "tip": null,
+    "tags": ["data modeling", "keys"],
+    "category": "data_modelling",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 5,
+    "question": "Which normalization form eliminates repeating groups?",
+    "description": "first normal form",
+    "answers": {
+      "answer_a": "1NF",
+      "answer_b": "2NF",
+      "answer_c": "3NF",
+      "answer_d": "BCNF"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "First Normal Form (1NF) removes repeating groups and ensures atomic values.",
+    "tip": null,
+    "tags": ["data modeling", "normalization"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 6,
+    "question": "Which normalization form removes partial dependency?",
+    "description": "second normal form",
+    "answers": {
+      "answer_a": "1NF",
+      "answer_b": "2NF",
+      "answer_c": "3NF",
+      "answer_d": "4NF"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Second Normal Form (2NF) eliminates partial dependency on a composite key.",
+    "tip": null,
+    "tags": ["data modeling", "normalization"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 7,
+    "question": "Which normalization form removes transitive dependency?",
+    "description": "third normal form",
+    "answers": {
+      "answer_a": "2NF",
+      "answer_b": "3NF",
+      "answer_c": "BCNF",
+      "answer_d": "1NF"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Third Normal Form (3NF) removes transitive dependencies between non-key columns.",
+    "tip": null,
+    "tags": ["data modeling", "normalization"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 8,
+    "question": "Which type of relationship requires a junction table?",
+    "description": "many-to-many relationship",
+    "answers": {
+      "answer_a": "One-to-One",
+      "answer_b": "One-to-Many",
+      "answer_c": "Many-to-Many",
+      "answer_d": "Hierarchical"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Many-to-Many relationships require a junction table to connect the entities.",
+    "tip": null,
+    "tags": ["data modeling", "relationships"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 9,
+    "question": "Which diagram shows entities, attributes, and relationships?",
+    "description": "er diagram",
+    "answers": {
+      "answer_a": "Flowchart",
+      "answer_b": "ER Diagram",
+      "answer_c": "UML Class Diagram",
+      "answer_d": "Data Dictionary"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ER diagrams are used to visually represent data entities, their attributes, and relationships.",
+    "tip": null,
+    "tags": ["data modeling", "diagram"],
+    "category": "data_modelling",
+    "difficulty": "Easy"
+  },
+  {
+    "id": 10,
+    "question": "Which type of attribute can be divided into smaller subparts?",
+    "description": "composite attribute",
+    "answers": {
+      "answer_a": "Simple Attribute",
+      "answer_b": "Composite Attribute",
+      "answer_c": "Derived Attribute",
+      "answer_d": "Multivalued Attribute"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Composite attributes are made of multiple sub-attributes, e.g., Full Name = First + Last Name.",
+    "tip": null,
+    "tags": ["data modeling", "attributes"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 11,
+    "question": "Which attribute stores multiple values for a single entity?",
+    "description": "multivalued attribute",
+    "answers": {
+      "answer_a": "Simple Attribute",
+      "answer_b": "Multivalued Attribute",
+      "answer_c": "Derived Attribute",
+      "answer_d": "Composite Attribute"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Multivalued attributes can have multiple values for one entity, e.g., phone numbers.",
+    "tip": null,
+    "tags": ["data modeling", "attributes"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 12,
+    "question": "Which diagram is used for both conceptual and logical data modeling?",
+    "description": "er diagram",
+    "answers": {
+      "answer_a": "ER Diagram",
+      "answer_b": "Flowchart",
+      "answer_c": "Gantt Chart",
+      "answer_d": "Use Case Diagram"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ER diagrams are used in conceptual and logical data modeling.",
+    "tip": null,
+    "tags": ["data modeling", "diagram"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 13,
+    "question": "What is a surrogate key?",
+    "description": "unique identifier",
+    "answers": {
+      "answer_a": "A natural key from data",
+      "answer_b": "A system-generated unique key",
+      "answer_c": "A foreign key",
+      "answer_d": "A composite key"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "A surrogate key is a system-generated unique identifier for a table record.",
+    "tip": null,
+    "tags": ["data modeling", "keys"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 14,
+    "question": "Which technique removes data redundancy in tables?",
+    "description": "normalization",
+    "answers": {
+      "answer_a": "Denormalization",
+      "answer_b": "Normalization",
+      "answer_c": "Indexing",
+      "answer_d": "Partitioning"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Normalization organizes data to reduce redundancy and improve integrity.",
+    "tip": null,
+    "tags": ["data modeling", "normalization"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
+  },
+  {
+    "id": 15,
+    "question": "Which diagram uses diamonds to represent relationships?",
+    "description": "er diagram symbols",
+    "answers": {
+      "answer_a": "ER Diagram",
+      "answer_b": "UML Diagram",
+      "answer_c": "Flowchart",
+      "answer_d": "Data Flow Diagram"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "In ER diagrams, diamonds represent relationships between entities.",
+    "tip": null,
+    "tags": ["data modeling", "er diagram", "symbols"],
+    "category": "data_modelling",
+    "difficulty": "Medium"
   }
 ]

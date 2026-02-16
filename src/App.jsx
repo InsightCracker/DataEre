@@ -27,37 +27,52 @@ function App() {
   const [difficulty, setDifficulty] = useState('');
   const [refresh, setRefresh] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [quizQuestions, setQuizQuestions] = useState([]);
 
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
-  const getRandomQuestion = (allQuestions) => {
-    const randomIndex = Math.floor(Math.random() * allQuestions.length);
-    setCurrentQuestion(allQuestions[randomIndex]);
+  const getRandomQuestions = (allQuestions, num = 20, category, difficulty) => {
+    // Filter questions based on category & difficulty
+    const filtered = allQuestions.filter(
+      (q) =>
+        (!category || q.category === category) &&
+        (!difficulty || q.difficulty === difficulty)
+    );
+
+    // Shuffle the filtered array
+    const shuffled = filtered.sort(() => 0.5 - Math.random());
+
+    // Return the first `num` questions (or less if not enough)
+    return shuffled.slice(0, num);
   };
 
   const fetchQuestion = async () => {
-  try {
-    const result = await axios("/questions.json");
-    setQuestions(result.data);
-    getRandomQuestion(result.data);   // pick random question
-    setIsLoading(false);
-  } catch (error) {
-    console.error("Error loading questions:", error);
-  }
-};
+    try {
+      const result = await axios("/questions.json");
 
+      // Filter and shuffle based on category & difficulty
+      const filtered = result.data.filter(
+        (q) =>
+          (!categories || q.category === categories) &&
+          (!difficulty || q.difficulty === difficulty)
+      );
 
+      const shuffled = filtered.sort(() => 0.5 - Math.random());
 
-  // const fetchQuestion = async () => {
-  //   try {
-  //     const result = await axios("/questions.json");
-  //     setQuestions(result.data);
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     console.error("Error loading questions:", error);
-  //   }
-  // };
+      // Take first 20 questions
+      const random20 = shuffled.slice(0, 20);
 
+      // Set questions state to these 20
+      setQuestions(random20);
+
+      // Optionally set first question to display
+      setCurrentQuestion(random20[0]);
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error loading questions:", error);
+    }
+  };
 
   useEffect(() => {
     fetchQuestion(); // eslint-disable-next-line
