@@ -31,7 +31,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const login = () => {
-    name !== '' && navigate('/dash');
+    name !== '' && navigate('/dashboard');
   }
 
   const emptyToast = () => {

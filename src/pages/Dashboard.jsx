@@ -1,60 +1,116 @@
-import { Box, Text } from "@chakra-ui/react";
-import { useContext } from "react";
-import { Link } from "react-router-dom";
-import { QuizContext } from "../Helpers/Contexts";
-import { FaHome } from "react-icons/fa";
-import Navbar from "../util/Navbar";
-import Quiz from "../components/Quiz"; 
+import { 
+    Box
+} from "@chakra-ui/react";
+
+import dataQuiz from "../assets/dataquiz.png";
+import conceptMastery from "../assets/conceptMastery.png"
+import one from "../assets/1.PNG"
 
 const Dashboard = () => {
-  const { 
-    isLoading,
-  } = useContext(QuizContext);
+  return (
+    <Box className="dashboard container">
+        <div className="head">
+            <h2>Dashboard</h2>
+        </div>
+        
+        <div className="">
+            <div className="features-grid">
+                <div className="card visible">
+                    <div className="img-box">
+                        <img
+                        src={dataQuiz}
+                            alt="Data Quizzes"
+                            style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
+                    />
+                    </div>
+                    <div className="content">
+                        <h3>Data Quizzes</h3>
+                        <p>Challenge yourself with 500+ questions and discover the power of different data tools.</p>
+                        <a href="/home" className="btn card-btn">Start</a>
+                    </div>
+                </div>
 
-  const textStyle = {
-    fontSize: '1.2rem'
-  }
+                <div className="card visible">
+                    <div className="img-box">
+                        <img
+                        src={one}
+                            alt="Data Quizzes"
+                            style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
+                    />
+                    </div>
+                    <div className="content">
+                        <h3>PDF COnverter</h3>
+                        <p>Turn your PDFs into actionable data in seconds! Convert to Excel (XLSX) or CSV instantly and get your information ready for analysis, reporting, and smarter decisions - no manual work required.</p>
+                        <a href="/#" className="btn card-btn">Start</a>
+                    </div>
+                </div>
 
-  return isLoading ? (<Box className="question-page" sx={{
-    minH: '100vh',
-    bgColor: '#fff',
-    color: '#000',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDir: 'column'
-  }}>
-    <Box>
-      <Text 
-        sx={textStyle}>Please wait 
-        <span className="loadingOne">.</span> 
-        <span className="loadingTwo">.</span>
-        <span className="loadingThree">.</span>
-      </Text>
-    </Box>
-    
-    <Box sx={{
-          mt: '20px'
-        }}>
-        <Link to='/home'>
-          <Text sx={{
-            fontSize: '1.5rem'
-          }}><FaHome /></Text>
-      </Link>
-    </Box>
-  </Box>) : (
-    <Box sx={{
-      minH: '100vh',
-      bgColor: '#fff',
-      color: '#000'
-    }}>
-      <Box sx={{
-          maxW: '600px',
-          m: '0 auto'
-        }}>
-          <Navbar />
-          <Quiz />
-      </Box>
+                <div className="card visible">
+                    <div className="img-box">
+                        <img
+                        src={conceptMastery}
+                            alt="Data Quizzes"
+                            style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
+                    />
+                    </div>
+                    <div className="content">
+                        <h3>Concepts Mastery</h3>
+                        <p>Learn data concepts deeply and clearly, even if you’re just starting out. Explore practical examples to master each topic.</p>
+                        <a href="/multiplayer" className="btn card-btn">Start</a>
+                    </div>
+                </div>
+
+                <div className="card visible">
+                    <div className="img-box">
+                        <img
+                        src={one}
+                            alt="Data Quizzes"
+                            style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
+                    />
+                    </div>
+                    <div className="content">
+                        <h3>Data Quizzes</h3>
+                        <p>Put your theoretical knowledge to the test with over 500 carefully crafted questions, and explore a wide range of data tools to strengthen your skills and boost your understanding.</p>
+                        <a href="/#" className="btn card-btn">Start</a>
+                    </div>
+                </div>
+
+                <div className="card visible">
+                    <div className="img-box">
+                        <img
+                        src={one}
+                            alt="Data Quizzes"
+                            style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
+                    />
+                    </div>
+                    <div className="content">
+                        <h3>Data Quizzes</h3>
+                        <p>Put your theoretical knowledge to the test with over 500 carefully crafted questions, and explore a wide range of data tools to strengthen your skills and boost your understanding.</p>
+                        <a href="/#" className="btn card-btn">Start</a>
+                    </div>
+                </div>
+            </div>        
+        </div>
     </Box>
   )
 }

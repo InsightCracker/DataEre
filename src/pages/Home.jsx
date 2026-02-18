@@ -74,7 +74,7 @@ const Home = () => {
 
                 <div className="btns-box">
                   <Link
-                    to="/dashboard"
+                    to="/solo"
                     onClick={() => setCategories(cat.name)}
                     className="btn card-btn"
                   >

@@ -21,10 +21,10 @@ const SideBar = () => {
 
       <div className="icons">
         <div>
-          <a href="/dash"><FaHome /></a>
+          <a href="/dashboard"><FaHome /></a>
         </div>
         <div>
-          <a href="/dash"><LuSearch /></a>
+          <a href="/search"><LuSearch /></a>
         </div>
         <div>
           <a href="/settings"><LuSettings /></a>

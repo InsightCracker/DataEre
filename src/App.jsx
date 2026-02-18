@@ -2,19 +2,21 @@ import '../src/css/style.css';
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ChakraProvider, Box } from '@chakra-ui/react'; 
+
 import axios from "axios";
 import Home from "./pages/Home"
-import Dashboard from "./pages/Dashboard";
+import QuickPlay from "./pages/QuickPlay";
 import Login from "./pages/Login";
 import ResultPage from "./pages/ResultPage";
 import VsBot from "./pages/VsBot";
 import MultiEnd from "./pages/MultiEnd";
 import Help from "./pages/Help";
+import FirstPage from "./pages/FirstPage";
+import Dashboard from './pages/Dashboard';
+import QuizShareCard from './util/QuizShareCard';
+
 import { QuizContext } from "./Helpers/Contexts";
 import { TimerProvider } from './util/TimerProvider';
-import FirstPage from "./pages/FirstPage";
-import Dash from './pages/Dash';
-import QuizShareCard from './util/QuizShareCard';
 
 function App() {
   const [questions, setQuestions] = useState([]);
@@ -27,7 +29,6 @@ function App() {
   const [difficulty, setDifficulty] = useState('');
   const [refresh, setRefresh] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [quizQuestions, setQuizQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
   const shuffleArray = (array) => {
@@ -117,9 +118,9 @@ function App() {
           <Routes>
             <Route path="/" element={<FirstPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/dash" element={<Dash />} />
-            <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/solo" element={<QuickPlay />} />
             <Route path="/result" element={<ResultPage />} />
             <Route path="/multiend" element={<MultiEnd />} />
             <Route path="/vsbot" element={<VsBot />} />

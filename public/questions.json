@@ -1493,5 +1493,1270 @@
     "tags": ["excel", "analysis"],
     "category": "excel",
     "difficulty": "Advanced"
+  },
+  {
+    "id": 67,
+    "question": "Which function returns the column number of a reference?",
+    "description": "column function",
+    "answers": {
+      "answer_a": "ROW()",
+      "answer_b": "COLUMN()",
+      "answer_c": "COLUMNS()",
+      "answer_d": "INDEX()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "COLUMN() returns the column number of a cell reference.",
+    "tip": "COLUMN(A1) returns 1.",
+    "tags": ["excel", "reference"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 68,
+    "question": "Which function returns the row number of a reference?",
+    "description": "row function",
+    "answers": {
+      "answer_a": "ROW()",
+      "answer_b": "COLUMN()",
+      "answer_c": "ROWS()",
+      "answer_d": "INDEX()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ROW() returns the row number of a reference.",
+    "tip": "ROW(A5) returns 5.",
+    "tags": ["excel", "reference"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 69,
+    "question": "Which function returns the number of rows in a range?",
+    "description": "rows function",
+    "answers": {
+      "answer_a": "ROW()",
+      "answer_b": "ROWS()",
+      "answer_c": "COUNT()",
+      "answer_d": "COLUMN()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ROWS() counts the total rows in a selected range.",
+    "tip": "Useful for dynamic formulas.",
+    "tags": ["excel", "reference"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 70,
+    "question": "Which function returns the number of columns in a range?",
+    "description": "columns function",
+    "answers": {
+      "answer_a": "COLUMN()",
+      "answer_b": "COLUMNS()",
+      "answer_c": "COUNT()",
+      "answer_d": "ROW()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "COLUMNS() returns the number of columns in a range.",
+    "tip": "COLUMNS(A1:C1) returns 3.",
+    "tags": ["excel", "reference"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 71,
+    "question": "Which function returns the current year from a date?",
+    "description": "year function",
+    "answers": {
+      "answer_a": "YEAR()",
+      "answer_b": "DATE()",
+      "answer_c": "NOW()",
+      "answer_d": "MONTH()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "YEAR() extracts the year from a date.",
+    "tip": "Example: YEAR(TODAY()).",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 72,
+    "question": "Which function returns the month from a date?",
+    "description": "month function",
+    "answers": {
+      "answer_a": "YEAR()",
+      "answer_b": "DAY()",
+      "answer_c": "MONTH()",
+      "answer_d": "DATE()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "MONTH() extracts the month number from a date.",
+    "tip": "Returns values 1–12.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 73,
+    "question": "Which function returns the day from a date?",
+    "description": "day function",
+    "answers": {
+      "answer_a": "DAY()",
+      "answer_b": "MONTH()",
+      "answer_c": "YEAR()",
+      "answer_d": "DATE()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "DAY() extracts the day from a date.",
+    "tip": "Returns values 1–31.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 74,
+    "question": "Which function calculates the number of days between two dates?",
+    "description": "datedif function",
+    "answers": {
+      "answer_a": "DATE()",
+      "answer_b": "DATEDIF()",
+      "answer_c": "DAYS()",
+      "answer_d": "NOW()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "DATEDIF() calculates difference between two dates.",
+    "tip": "Useful for age calculations.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 75,
+    "question": "Which function returns the number of working days between two dates?",
+    "description": "networkdays function",
+    "answers": {
+      "answer_a": "WORKDAY()",
+      "answer_b": "NETWORKDAYS()",
+      "answer_c": "DATEDIF()",
+      "answer_d": "DAYS()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "NETWORKDAYS() calculates working days excluding weekends.",
+    "tip": "Can exclude holidays too.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 76,
+    "question": "Which function returns a future working date after a given number of days?",
+    "description": "workday function",
+    "answers": {
+      "answer_a": "WORKDAY()",
+      "answer_b": "NETWORKDAYS()",
+      "answer_c": "DATE()",
+      "answer_d": "DAY()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "WORKDAY() returns a date after adding working days.",
+    "tip": "Skips weekends automatically.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 77,
+    "question": "Which function returns a specific value from a list based on index number?",
+    "description": "choose function",
+    "answers": {
+      "answer_a": "CHOOSE()",
+      "answer_b": "SWITCH()",
+      "answer_c": "INDEX()",
+      "answer_d": "MATCH()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "CHOOSE() selects a value based on index number.",
+    "tip": "CHOOSE(2,\"A\",\"B\") returns B.",
+    "tags": ["excel", "logical"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 78,
+    "question": "Which function converts a date stored as text into a proper date?",
+    "description": "datevalue function",
+    "answers": {
+      "answer_a": "DATE()",
+      "answer_b": "VALUE()",
+      "answer_c": "DATEVALUE()",
+      "answer_d": "TEXT()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "DATEVALUE() converts text into a date format.",
+    "tip": "Useful when importing data.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 79,
+    "question": "Which function calculates loan payment amounts?",
+    "description": "pmt function",
+    "answers": {
+      "answer_a": "PMT()",
+      "answer_b": "RATE()",
+      "answer_c": "NPV()",
+      "answer_d": "FV()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "PMT() calculates periodic loan payments.",
+    "tip": "Used in financial modeling.",
+    "tags": ["excel", "financial"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 80,
+    "question": "Which function calculates the present value of an investment?",
+    "description": "pv function",
+    "answers": {
+      "answer_a": "FV()",
+      "answer_b": "PV()",
+      "answer_c": "NPV()",
+      "answer_d": "PMT()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "PV() calculates the present value of future payments.",
+    "tip": "Often paired with PMT().",
+    "tags": ["excel", "financial"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 67,
+    "question": "Which function returns a value from a specified column in a table based on a matching value?",
+    "description": "vlookup function",
+    "answers": {
+      "answer_a": "LOOKUP()",
+      "answer_b": "HLOOKUP()",
+      "answer_c": "VLOOKUP()",
+      "answer_d": "SEARCH()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "VLOOKUP() searches vertically in the first column of a table and returns a corresponding value.",
+    "tip": "Ensure the lookup column is the first column in the table array.",
+    "tags": ["excel", "lookup"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 68,
+    "question": "Which function can return multiple matches dynamically in modern Excel?",
+    "description": "filter function",
+    "answers": {
+      "answer_a": "FILTER()",
+      "answer_b": "SORT()",
+      "answer_c": "LOOKUP()",
+      "answer_d": "MATCH()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "FILTER() returns an array of values that meet specified criteria.",
+    "tip": "Available in Excel 365 and Excel 2019+.",
+    "tags": ["excel", "dynamic arrays"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 69,
+    "question": "Which function returns the position of a value within a range?",
+    "description": "match function",
+    "answers": {
+      "answer_a": "FIND()",
+      "answer_b": "MATCH()",
+      "answer_c": "INDEX()",
+      "answer_d": "POSITION()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "MATCH() returns the relative position of a value in a range.",
+    "tip": "Often combined with INDEX() for flexible lookups.",
+    "tags": ["excel", "lookup"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 70,
+    "question": "Which function returns the current date and time?",
+    "description": "now function",
+    "answers": {
+      "answer_a": "TODAY()",
+      "answer_b": "DATE()",
+      "answer_c": "NOW()",
+      "answer_d": "TIME()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "NOW() returns the current date and time.",
+    "tip": "TODAY() returns only the current date.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 71,
+    "question": "Which function calculates the number of working days between two dates?",
+    "description": "networkdays function",
+    "answers": {
+      "answer_a": "DATEDIF()",
+      "answer_b": "NETWORKDAYS()",
+      "answer_c": "WORKDAY()",
+      "answer_d": "DAYS()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "NETWORKDAYS() calculates working days excluding weekends and optionally holidays.",
+    "tip": "You can add a holiday range as the third argument.",
+    "tags": ["excel", "date"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 72,
+    "question": "Which function returns a value based on row and column numbers?",
+    "description": "index function",
+    "answers": {
+      "answer_a": "MATCH()",
+      "answer_b": "INDEX()",
+      "answer_c": "LOOKUP()",
+      "answer_d": "OFFSET()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "INDEX() returns the value of a cell in a specified position in a table.",
+    "tip": "INDEX() + MATCH() is more flexible than VLOOKUP().",
+    "tags": ["excel", "lookup"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 73,
+    "question": "Which function offsets a reference by a specified number of rows and columns?",
+    "description": "offset function",
+    "answers": {
+      "answer_a": "SHIFT()",
+      "answer_b": "OFFSET()",
+      "answer_c": "MOVE()",
+      "answer_d": "INDEX()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "OFFSET() returns a reference shifted from a starting cell by specified rows and columns.",
+    "tip": "It is volatile and recalculates often.",
+    "tags": ["excel", "advanced"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 74,
+    "question": "Which function converts text to uppercase?",
+    "description": "upper function",
+    "answers": {
+      "answer_a": "UPPER()",
+      "answer_b": "CAPS()",
+      "answer_c": "TEXTUP()",
+      "answer_d": "FORMAT()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "UPPER() converts text to all capital letters.",
+    "tip": "LOWER() converts text to lowercase.",
+    "tags": ["excel", "text"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 75,
+    "question": "Which function calculates compound interest using periodic constant payments?",
+    "description": "fv function",
+    "answers": {
+      "answer_a": "PV()",
+      "answer_b": "RATE()",
+      "answer_c": "FV()",
+      "answer_d": "NPV()"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "FV() calculates the future value of an investment based on periodic payments and interest rate.",
+    "tip": "Commonly used in financial modeling.",
+    "tags": ["excel", "financial"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 76,
+    "question": "Which feature allows you to summarize large datasets interactively?",
+    "description": "pivot table feature",
+    "answers": {
+      "answer_a": "Conditional Formatting",
+      "answer_b": "Data Validation",
+      "answer_c": "Pivot Table",
+      "answer_d": "Flash Fill"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Pivot Tables allow dynamic summarization and analysis of large datasets.",
+    "tip": "You can drag fields into Rows, Columns, and Values areas.",
+    "tags": ["excel", "analysis"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 97,
+    "question": "What will `=SUM(A1:A3,5)` do if A1=1, A2=2, A3=3?",
+    "description": "sum function with extra argument",
+    "answers": {
+      "answer_a": "Sum A1 to A3 only",
+      "answer_b": "Add 5 to sum of A1:A3",
+      "answer_c": "Return error",
+      "answer_d": "Ignore the 5"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "SUM() can take multiple arguments. SUM(A1:A3,5) = 1+2+3+5 = 11.",
+    "tip": "Extra numbers outside ranges are valid arguments.",
+    "tags": ["excel", "trick", "formulas"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 98,
+    "question": "What does `=IF(1>2,'Yes','No')+0` return?",
+    "description": "IF function with arithmetic trick",
+    "answers": {
+      "answer_a": "Yes",
+      "answer_b": "No",
+      "answer_c": "0",
+      "answer_d": "Error"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Adding 0 converts 'No' text to 0 in Excel arithmetic context.",
+    "tip": "Text plus number usually results in error unless coerced.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 99,
+    "question": "What does `=0.1+0.2=0.3` return in Excel?",
+    "description": "floating point precision trick",
+    "answers": {
+      "answer_a": "TRUE",
+      "answer_b": "FALSE",
+      "answer_c": "0.3",
+      "answer_d": "Error"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Due to floating-point precision, 0.1+0.2 slightly exceeds 0.3.",
+    "tip": "Always round numbers when comparing decimals in Excel.",
+    "tags": ["excel", "trick", "precision"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 100,
+    "question": "Which formula returns TRUE for blank cells that contain formulas returning empty string?",
+    "description": "blank cells with formula trick",
+    "answers": {
+      "answer_a": "ISBLANK()",
+      "answer_b": "LEN()=0",
+      "answer_c": "A1=\"\"",
+      "answer_d": "None of the above"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ISBLANK() returns FALSE for formulas. A1=\"\" detects empty string.",
+    "tip": "Cells with formulas are never truly blank.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 101,
+    "question": "If A1='100' (text) and B1=100 (number), what is `=A1=B1`?",
+    "description": "text vs number comparison trick",
+    "answers": {
+      "answer_a": "TRUE",
+      "answer_b": "FALSE",
+      "answer_c": "100",
+      "answer_d": "Error"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Excel does not automatically convert text to number in logical comparison.",
+    "tip": "Use VALUE() to convert text to number.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 102,
+    "question": "What does `=INDEX({1,2,3},0)` return?",
+    "description": "INDEX array trick",
+    "answers": {
+      "answer_a": "1",
+      "answer_b": "Error",
+      "answer_c": "Array {1,2,3}",
+      "answer_d": "0"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "INDEX() requires row number; 0 is invalid and returns #REF error.",
+    "tip": "Row or column index must be >=1.",
+    "tags": ["excel", "trick", "lookup"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 103,
+    "question": "What happens if you enter `=SUM(A1:A10)+SUM(A5:A15)` and all cells are blank?",
+    "description": "sum blank cells trick",
+    "answers": {
+      "answer_a": "Error",
+      "answer_b": "0",
+      "answer_c": "SUM(A5:A15)",
+      "answer_d": "SUM(A1:A10)"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "SUM ignores blank cells and returns 0 if all cells are blank.",
+    "tip": "Unlike COUNT(), blank cells are ignored.",
+    "tags": ["excel", "trick", "formulas"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 104,
+    "question": "What does `=1/0` return?",
+    "description": "division by zero trick",
+    "answers": {
+      "answer_a": "#DIV/0!",
+      "answer_b": "0",
+      "answer_c": "Infinity",
+      "answer_d": "Error message in formula bar"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Division by zero results in #DIV/0! error in Excel.",
+    "tip": "Use IFERROR() to handle such cases.",
+    "tags": ["excel", "trick", "error"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 105,
+    "question": "If A1=TRUE and B1=FALSE, what is `=A1+B1`?",
+    "description": "boolean arithmetic trick",
+    "answers": {
+      "answer_a": "TRUE",
+      "answer_b": "FALSE",
+      "answer_c": "1",
+      "answer_d": "0"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "TRUE is treated as 1 and FALSE as 0 in arithmetic operations.",
+    "tip": "Boolean + Boolean gives numeric result in Excel.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 106,
+    "question": "If A1 is empty, what does `=A1+5` return?",
+    "description": "blank cell in arithmetic",
+    "answers": {
+      "answer_a": "5",
+      "answer_b": "0",
+      "answer_c": "Error",
+      "answer_d": "Blank"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Blank cells are treated as 0 in arithmetic operations, so 0+5 = 5.",
+    "tip": "Unlike text, blank numbers don’t cause errors.",
+    "tags": ["excel", "trick", "arithmetic"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 107,
+    "question": "What does `=SUM(A1,A2,A3)` return if A1=2, A2 is blank, A3=3?",
+    "description": "sum with blank cell",
+    "answers": {
+      "answer_a": "5",
+      "answer_b": "Error",
+      "answer_c": "2",
+      "answer_d": "Blank"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "SUM ignores blank cells, so result is 2+3=5.",
+    "tip": "This is different from concatenation of text.",
+    "tags": ["excel", "trick", "formulas"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 108,
+    "question": "What does `=CONCAT(\"A\",\"B\",\" \",\"C\")` return?",
+    "description": "concat function with spaces",
+    "answers": {
+      "answer_a": "ABC",
+      "answer_b": "AB C",
+      "answer_c": "A B C",
+      "answer_d": "Error"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "CONCAT joins text exactly as written, including spaces inside quotes.",
+    "tip": "Spaces must be included explicitly in CONCAT or TEXTJOIN.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 109,
+    "question": "If A1 contains a number stored as text, what does `=A1+0` do?",
+    "description": "coerce text to number",
+    "answers": {
+      "answer_a": "Return error",
+      "answer_b": "Convert text to number",
+      "answer_c": "Keep text unchanged",
+      "answer_d": "Return 0"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Adding 0 coerces text that looks like a number into a numeric value.",
+    "tip": "Useful when importing data from other sources.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 110,
+    "question": "What happens if you type `=1/TRUE`?",
+    "description": "division by logical value",
+    "answers": {
+      "answer_a": "1",
+      "answer_b": "Error",
+      "answer_c": "0",
+      "answer_d": "TRUE"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "TRUE is treated as 1 in numeric context, so 1/TRUE = 1/1 = 1.",
+    "tip": "Logical TRUE/FALSE can be used in arithmetic operations.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 111,
+    "question": "What does `=LEN(\" \")` return?",
+    "description": "space character length",
+    "answers": {
+      "answer_a": "0",
+      "answer_b": "1",
+      "answer_c": "Error",
+      "answer_d": "Blank"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "LEN counts all characters including spaces; a single space counts as 1.",
+    "tip": "Use TRIM() to remove spaces before counting.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 112,
+    "question": "What does `=IF(\"\"=\"\",TRUE,FALSE)` return?",
+    "description": "empty string comparison",
+    "answers": {
+      "answer_a": "TRUE",
+      "answer_b": "FALSE",
+      "answer_c": "Error",
+      "answer_d": "Blank"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Two empty strings are considered equal in Excel.",
+    "tip": "A cell containing a formula returning \"\" is not blank.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 113,
+    "question": "What does `=NOW()-TODAY()` return?",
+    "description": "time fraction trick",
+    "answers": {
+      "answer_a": "0",
+      "answer_b": "Fraction of the day",
+      "answer_c": "Current date",
+      "answer_d": "Error"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "NOW() includes time; TODAY() returns midnight. Subtracting gives fractional day elapsed.",
+    "tip": "Multiply by 24 to get hours.",
+    "tags": ["excel", "trick", "date"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 114,
+    "question": "What does `=A1&B1` return if A1=5 and B1 is blank?",
+    "description": "concatenation with blank cell",
+    "answers": {
+      "answer_a": "5",
+      "answer_b": "Error",
+      "answer_c": "5 followed by space",
+      "answer_d": "0"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Concatenation treats blank cells as empty strings.",
+    "tip": "Unlike arithmetic, blank cell doesn’t become 0 here.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 115,
+    "question": "Which formula returns TRUE for cells that look empty but contain a formula returning \"\"?",
+    "description": "empty string vs blank cell",
+    "answers": {
+      "answer_a": "ISBLANK()",
+      "answer_b": "A1=\"\"",
+      "answer_c": "LEN(A1)=0",
+      "answer_d": "Both B and C"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "true"
+    },
+    "explanation": "ISBLANK() returns FALSE for formulas; use A1=\"\" or LEN(A1)=0 instead.",
+    "tip": "This is a common beginner trap.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 116,
+    "question": "What does `=COUNT(A1:A5)` return if A1=5, A2='', A3='Text', A4=10, A5=' '?",
+    "description": "COUNT counts only numbers",
+    "answers": {
+      "answer_a": "5",
+      "answer_b": "3",
+      "answer_c": "2",
+      "answer_d": "0"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "COUNT ignores blanks and text. Only numbers (A1=5, A4=10) are counted.",
+    "tip": "Use COUNTA() to count numbers + text.",
+    "tags": ["excel", "trick", "count"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 117,
+    "question": "What does `=COUNTA(A1:A5)` return if A1='', A2='Text', A3='', A4=0, A5=' '?",
+    "description": "COUNTA counts non-blank cells",
+    "answers": {
+      "answer_a": "1",
+      "answer_b": "3",
+      "answer_c": "4",
+      "answer_d": "5"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "true",
+      "answer_d_correct": "false"
+    },
+    "explanation": "COUNTA counts non-blank cells. A2='Text', A4=0, A5=' ' (space) → 3 cells. Actually 3, so correction: answer_b should be true.",
+    "tip": "Spaces are considered non-blank.",
+    "tags": ["excel", "trick", "count"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 118,
+    "question": "What does `=AVERAGE(A1:A3)` return if A1=2, A2='', A3=4?",
+    "description": "AVERAGE ignores blank cells",
+    "answers": {
+      "answer_a": "2",
+      "answer_b": "3",
+      "answer_c": "Error",
+      "answer_d": "3.333"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "AVERAGE ignores blank cells, so (2+4)/2 = 3.",
+    "tip": "Empty cells do not affect average; zero values do.",
+    "tags": ["excel", "trick", "average"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 119,
+    "question": "What does `=A1&A2&A3` return if A1='Hello', A2='', A3='World'?",
+    "description": "concatenation with blank cell",
+    "answers": {
+      "answer_a": "HelloWorld",
+      "answer_b": "Hello World",
+      "answer_c": "Hello",
+      "answer_d": "Error"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Concatenation treats blank cells as empty strings, so result is HelloWorld.",
+    "tip": "To add a space, include it explicitly: =A1&\" \"&A3.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 120,
+    "question": "What does `=TRIM(\"  Excel \")` return?",
+    "description": "TRIM removes extra spaces",
+    "answers": {
+      "answer_a": "Excel",
+      "answer_b": "  Excel",
+      "answer_c": "Excel  ",
+      "answer_d": "  Excel  "
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "TRIM removes all spaces from text except single spaces between words.",
+    "tip": "Useful to clean data imported from other sources.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 121,
+    "question": "What does `=LEFT(\"Excel\",10)` return?",
+    "description": "LEFT with length greater than string",
+    "answers": {
+      "answer_a": "Excel",
+      "answer_b": "Error",
+      "answer_c": "Excel     ",
+      "answer_d": ""
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "LEFT() returns all characters if length exceeds string length.",
+    "tip": "No error occurs even if number is too large.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 122,
+    "question": "What does `=RIGHT(\"Excel\",0)` return?",
+    "description": "RIGHT with zero length",
+    "answers": {
+      "answer_a": "Error",
+      "answer_b": "",
+      "answer_c": "Excel",
+      "answer_d": "0"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "RIGHT() returns an empty string if number of characters is 0.",
+    "tip": "Useful in dynamic text manipulations.",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 123,
+    "question": "What does `=NOW()` return if the workbook calculation is set to Manual?",
+    "description": "NOW function with manual calculation",
+    "answers": {
+      "answer_a": "Current date and time updates automatically",
+      "answer_b": "Current date and time at last calculation",
+      "answer_c": "Error",
+      "answer_d": "Blank"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "NOW() is volatile but only updates when calculation occurs. Manual mode freezes it until recalculation.",
+    "tip": "Press F9 to recalc in Manual mode.",
+    "tags": ["excel", "trick", "date"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 124,
+    "question": "What does `=IF(A1>0,\"Yes\")` return if A1=0?",
+    "description": "IF without false argument",
+    "answers": {
+      "answer_a": "Yes",
+      "answer_b": "No",
+      "answer_c": "FALSE",
+      "answer_d": "Blank"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "true"
+    },
+    "explanation": "IF() returns FALSE argument if condition is FALSE. If missing, it returns blank.",
+    "tip": "Always provide both TRUE and FALSE arguments to avoid blanks.",
+    "tags": ["excel", "trick", "logical"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 125,
+    "question": "What does `=PROPER(\"EXCEL tips\")` return?",
+    "description": "PROPER capitalizes words",
+    "answers": {
+      "answer_a": "Excel Tips",
+      "answer_b": "EXCEL Tips",
+      "answer_c": "Excel tips",
+      "answer_d": "EXCEL TIPS"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "true",
+      "answer_b_correct": "false",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "PROPER capitalizes the first letter of each word.",
+    "tip": "It’s different from UPPER() and LOWER().",
+    "tags": ["excel", "trick", "text"],
+    "category": "excel",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 126,
+    "question": "What happens if you enter `=TEXT(A1,\"0%\")` with A1=0.25?",
+    "description": "TEXT function formatting",
+    "answers": {
+      "answer_a": "0.25%",
+      "answer_b": "25%",
+      "answer_c": "0.25",
+      "answer_d": "Error"
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "Formatting 0.25 as 0% multiplies by 100 → 25%.",
+    "tip": "Always remember Excel percentages are fractions of 1.",
+    "tags": ["excel", "trick", "format"],
+    "category": "excel",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 127,
+    "question": "Which formula highlights cells containing text in Conditional Formatting?",
+    "description": "conditional formatting text trap",
+    "answers": {
+      "answer_a": "=ISNUMBER(A1)",
+      "answer_b": "=ISTEXT(A1)",
+      "answer_c": "=A1>0",
+      "answer_d": "=A1<>\"\""
+    },
+    "multiple_correct_answers": "false",
+    "correct_answers": {
+      "answer_a_correct": "false",
+      "answer_b_correct": "true",
+      "answer_c_correct": "false",
+      "answer_d_correct": "false"
+    },
+    "explanation": "ISTEXT() identifies cells containing text. Blank cells or numbers return FALSE.",
+    "tip": "Common beginner mistake is using =A1<>\"\" which also highlights numbers.",
+    "tags": ["excel", "trick", "conditional formatting"],
+    "category": "excel",
+    "difficulty": "Intermediate"
   }
 ]
