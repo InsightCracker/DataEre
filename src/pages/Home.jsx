@@ -63,13 +63,6 @@ const Home = () => {
             >
               Advanced
             </button>
-
-            <button 
-              onClick={() => setDifficulty("Legendary")}
-              className="level-btn"
-            >
-              Legendary
-            </button>
         </div>
 
         <Box className="about-grid home-card-con">
