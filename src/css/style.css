@@ -434,6 +434,10 @@ ul {
   padding: 2rem;
 }
 
+.card h3 {
+  text-transform: capitalize;
+}
+
 .card p {
   color: #3d3d3d;
   font-size: .8rem;

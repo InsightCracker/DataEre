@@ -1,5 +1,7 @@
 import { useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { QuizContext } from "../Helpers/Contexts";
+import { categoriesList } from "../util/categories";
 
 import { 
   Box,
@@ -19,6 +21,9 @@ const Home = () => {
     setCategories,
     setDifficulty
   } = useContext(QuizContext);
+
+  const location = useLocation();
+
 
 
     return (
@@ -68,204 +73,32 @@ const Home = () => {
         </div>
 
         <Box className="about-grid home-card-con">
-          <div className="card visible">
-            <div className="content">
-              <h3>Excel</h3>
-              <p>Excel is a spreadsheet tool for organizing, analyzing, and visualizing data.</p>
-              <div className="btns-box" onClick={() => setCategories("Excel")}>
-                <a  
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
+          {categoriesList.map((cat) => (
+            <div className="card visible" key={cat.name}>
+              <div className="content">
+                <h3>{cat.name}</h3>
+                <p>{cat.description}</p>
 
-                <a 
-                  onClick={() => setCategories("Excel")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
+                <div className="btns-box">
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setCategories(cat.name)}
+                    className="btn card-btn"
+                  >
+                    Quick Play
+                  </Link>
+
+                  <Link
+                    to="/vsbot"
+                    onClick={() => setCategories(cat.name)}
+                    className="btn card-btn"
+                  >
+                    Bot Mode
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>Data Modelling</h3>
-              <p>Data modelling is the process of structuring and organizing data so it can be stored, understood, and used effectively.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("Data Modelling")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("Data Modelling")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>Data Cleaning</h3>
-              <p>Data cleaning is the process of finding and fixing errors, inconsistencies, and missing values in data to make it accurate and usable.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("Data Cleaning")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("Data Cleaning")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>SQL</h3>
-              <p>SQL (Structured Query Language) is a programming language used to manage and query relational databases.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("SQL")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("SQL")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>Machine Learning</h3>
-              <p>Machine Learning is a branch of AI that enables computers to learn patterns from data and make predictions or decisions without explicit programming.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("Machine Learning")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("Machine Learning")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>Exploratory Data Analysis</h3>
-              <p>Exploratory Data Analysis (EDA) is the process of analyzing and summarizing data to uncover patterns, spot anomalies, test hypotheses, and gain insights before formal modeling.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("Exploratory Data Analysis")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("Exploratory Data Analysis")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>Power BI</h3>
-              <p>Power BI is a business analytics tool that transforms data into interactive visual reports and dashboards.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("Power BI")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("Power BI")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>Tableau</h3>
-              <p>Tableau is a data visualization platform that turns raw data into interactive, shareable dashboards.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("Tableau")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("Tableau")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>DAX</h3>
-              <p>DAX (Data Analysis Expressions) is a formula language used in Power BI, Excel, and other Microsoft tools to create custom calculations and analyze data.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("DAX")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("DAX")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="card visible">
-            <div className="content">
-              <h3>Report Writing</h3>
-              <p>Report writing is the process of creating a structured document that presents information, analysis, and recommendations clearly and formally.</p>
-              <div className="btns-box">
-                <a 
-                  onClick={() => setCategories("Report Writing")} 
-                  href="/dashboard" 
-                  className="btn card-btn"
-                >Quick Play</a>
-
-                <a 
-                  onClick={() => setCategories("Report Writing")} 
-                  href="/vsbot" 
-                  className="btn card-btn"
-                >Bot Mode</a>
-              </div>
-            </div>
-          </div>
+          ))}
         </Box>
       </div>
     </Box>
