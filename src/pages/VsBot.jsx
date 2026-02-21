@@ -18,7 +18,7 @@ const VsBot = () => {
 
   return isLoading ? (<Box sx={{
     h: '100vh',
-    bgColor: 'red',
+    bgColor: 'rgba(10, 14, 39, 0.95);',
     color: '#fff',
     display: 'flex',
     alignItems: 'center',

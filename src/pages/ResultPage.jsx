@@ -52,7 +52,7 @@ const ResultPage = () => {
     setWrongAnswer(0);
     setCurrQuestion(0);
     setRefresh(!refresh);
-    navigate('/home')
+    navigate('/quiz')
   }
 
   

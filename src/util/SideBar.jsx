@@ -14,7 +14,7 @@ const SideBar = () => {
   return (
     <Box className="sidebar-box">
       <div className="logo">
-        <a href="/">Dataox</a>
+        <a href="/">Data<span className="dataxo">XO</span></a>
       </div>
 
       <div className="icons">

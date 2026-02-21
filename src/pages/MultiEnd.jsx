@@ -57,7 +57,7 @@ const percentage =
     setWrongAnswer(0);
     setCurrQuestion(0);
     setRefresh(!refresh);
-    navigate('/home')
+    navigate('/quiz')
   }
   
   return (

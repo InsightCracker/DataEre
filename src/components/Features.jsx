@@ -5,7 +5,7 @@ import {
 const Features = () => {
     return (
     <Box className="features" id="features">
-        <h2>Why Choose Dataxo?</h2>
+        <h2>Why Choose DataXO?</h2>
 
         <p>Building a smarter way to learn data</p>
 

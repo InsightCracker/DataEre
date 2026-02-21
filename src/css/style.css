@@ -55,6 +55,11 @@ ul {
   color: rgba(255, 255, 255, 0.85);
 }
 
+.dataxo {
+  text-transform: uppercase;
+  color: #3b82f6;
+}
+
 /* NAVBAR */
 .navbar .code {
   text-transform: uppercase;

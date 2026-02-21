@@ -10,7 +10,7 @@ const About = () => {
         <p>Building a Smarter Way to Master Data</p>
 
         <div className="about-text">
-            <p>Dataox combines interactive quizzes, PDF-to-Excel conversion, and real-world scenarios to help analysts and data enthusiasts go beyond just using tools. Our platform empowers you to think critically, reason with data, and make smarter analytical decisions.</p>
+            <p>DataXO combines interactive quizzes, PDF-to-Excel conversion, and real-world scenarios to help analysts and data enthusiasts go beyond just using tools. Our platform empowers you to think critically, reason with data, and make smarter analytical decisions.</p>
 
             <p>We bridge the gap between tool proficiency and deep conceptual understanding, so you can truly master your data skills and workflow.</p>
 
@@ -32,7 +32,7 @@ const About = () => {
 
                 <div className="about-feature visible">
                     <h3>📝 Instant Report Generator</h3>
-                    <p>Upload a screenshot of your dashboard and get a professional report instantly — available in PDF, Word, or README format. Turn your visuals into clear, actionable insights with just a few clicks.</p>
+                    <p>Upload a screenshot of your dashboard and get a professional report instantly - available in PDF, Word, or README format. Turn your visuals into clear, actionable insights with just a few clicks.</p>
                 </div>
             </Box>
         </div>

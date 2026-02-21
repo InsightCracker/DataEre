@@ -31,7 +31,7 @@ const Dashboard = () => {
                     <div className="content">
                         <h3>Data Quizzes</h3>
                         <p>Challenge yourself with 500+ questions and discover the power of different data tools.</p>
-                        <a href="/home" className="btn card-btn">Explore</a>
+                        <a href="/quiz" className="btn card-btn">Explore</a>
                     </div>
                 </div>
 

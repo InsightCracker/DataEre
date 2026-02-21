@@ -19,7 +19,7 @@ const Navbar = () => {
       padding: '1rem 5%',
       borderBottom: '1px solid rgba(19, 44, 207, 0.2)'
     }} className='navbar'>
-        <Text className="logo">Dataxo</Text>
+        <Text className="logo">Data<span className="dataxo">xo</span></Text>
 
         <Box  className="large_nav">
         <ul sx={{

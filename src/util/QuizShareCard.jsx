@@ -22,8 +22,7 @@ const getBadgeEmoji = (percentage) => {
 
 // Quiz Share Card Component
 const QuizShareCard = ({ 
-  score = 0,
-  categories  = ""
+  score = 0
 }) => {
   
   const { 
@@ -31,11 +30,15 @@ const QuizShareCard = ({
     setWrongAnswer,
     setRefresh,
     setScore,
-    setBotScore
+    setBotScore,
+    categories
   } = useContext(QuizContext);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Convert categories to sentence case
+  const sentenceCaseCategory = categories.charAt(0).toUpperCase() + categories.slice(1).toLowerCase();
 
   // ✅ Safe calculation
   const totalQuestions = questions.length;
@@ -45,10 +48,17 @@ const QuizShareCard = ({
       ? Math.round((Number(score) / totalQuestions) * 100)
       : 0;
 
+    const shareMessages = [
+      `I just scored ${percentage}% on the DataXO ${sentenceCaseCategory} Quiz! 😎 Think you can beat me?`,
+      `${percentage}% on the DataXO ${sentenceCaseCategory} Quiz! 💪 Bet you can't beat my score 😏`,
+      `I scored ${percentage}% on the DataXO ${sentenceCaseCategory} Quiz! 🎉 Can you do better?`,
+      `I scored ${percentage}% on the DataXO ${sentenceCaseCategory} Quiz! Ready to challenge yourself?😏`
+    ];
+
   const result = {
     percentage,
     title: "My Dataxo Quiz Result!",
-    message: `I scored ${percentage}% on the Dataxo ${categories} Quiz! Can you beat me? 😎`,
+    message: shareMessages[Math.floor(Math.random() * shareMessages.length)],
     url: "https://dataxo.cfd"
   };
 
@@ -63,7 +73,7 @@ const QuizShareCard = ({
 
   // Smart share function
   const share = async (platform = null) => {
-    const fullText = `${result.message} ${result.url}`;
+    const fullText = `${result.message} \nTest your skills here: ${result.url}`;
 
     const shareLinks = {
     whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(fullText)}`,
@@ -121,7 +131,7 @@ const QuizShareCard = ({
 
   const goToDashboard = () => {  
     resetQuizState();
-    navigate("/home");
+    navigate("/quiz");
   };
 
 

@@ -7,7 +7,7 @@ const Footer = () => {
     <Box className="footer">
         <div className="footer-content">
             <div className="footer-section">
-                <h2>Dataxo</h2>
+                <h2>Data<span className="dataxo">XO</span></h2>
                 <p>Your Complete Data Learning Hub</p>
             </div>
 
@@ -31,7 +31,7 @@ const Footer = () => {
         </div>
 
       <div className="footer-bottom">
-        <p>© <span id="year">2026</span> Dataxo. All rights reserved.</p>
+        <p>© <span id="year">2026</span> Data<span className="dataxo">XO</span>. All rights reserved.</p>
       </div>
     </Box>
     )

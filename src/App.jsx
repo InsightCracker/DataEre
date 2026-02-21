@@ -122,7 +122,7 @@ function App() {
             <Route path="/" element={<FirstPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/quiz" element={<Home />} />
             <Route path="/solo" element={<QuickPlay />} />
             <Route path="/result" element={<ResultPage />} />
             <Route path="/multiend" element={<MultiEnd />} />
