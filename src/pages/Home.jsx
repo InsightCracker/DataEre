@@ -30,7 +30,7 @@ const Home = () => {
     cat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const quickPlay = () => {
+  const quickPlay = (cat) => {
     if (window.gtag) {
       window.gtag('event', 'quick_play', {
         event_category: 'engagement',
@@ -43,13 +43,13 @@ const Home = () => {
   }; 
 
   const botMode = () => {
-    if (window.gtag) {
-      window.gtag('event', 'bot_mode', {
-        event_category: 'engagement',
-        event_label: 'Bot Mode Button',
-        value: 1
-      });
-    }
+    // if (window.gtag) {
+    //   window.gtag('event', 'bot_mode', {
+    //     event_category: 'engagement',
+    //     event_label: 'Bot Mode Button',
+    //     value: 1
+    //   });
+    // }
 
     setCategories(cat.name)
   }; 
@@ -100,7 +100,7 @@ const Home = () => {
               <div className="btns-box">
                 <Link
                   to="/solo"
-                  onClick={quickPlay}
+                  onClick={() => quickPlay(cat)}
                   className="btn card-btn"
                 >
                   Quick Play
@@ -108,7 +108,7 @@ const Home = () => {
 
                 <Link
                   to="/vsbot"
-                  onClick={botMode}
+                  onClick={() =>  botMode(cat)}
                   className="btn card-btn"
                 >
                   Bot Mode
