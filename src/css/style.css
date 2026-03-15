@@ -874,7 +874,6 @@ ul {
 .quiz-share-card {
   max-width: 400px;
   width: 90%;
-  margin: 20px 0;
   padding: 20px;
   background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   color: white;
