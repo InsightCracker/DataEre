@@ -22,7 +22,7 @@ const SideBar = () => {
           <a href="/dashboard"><FaUser /></a>
         </div>
         <div>
-          <a href="/tune"><FaRetweet /></a>
+          <a href="/converter"><FaRetweet /></a>
         </div>
         <div>
           <a href="/tune"><FaBookOpenReader /></a>
