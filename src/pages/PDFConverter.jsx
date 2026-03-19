@@ -1,8 +1,7 @@
 import FileUploader from "../components/FileUploader";
 
 import { 
-  Box,
-  Input
+  Box
 } from "@chakra-ui/react";
 
 import {
@@ -22,7 +21,7 @@ const PDFConverter = () => (
 
       <div>
         <ul>
-          <li>Datahub</li>
+          <a href="/datahub"><li>Datahub</li></a>
         </ul>
       </div>
 
@@ -38,6 +37,10 @@ const PDFConverter = () => (
 
     <div className="uploader">
       <FileUploader />
+    </div>
+
+    <div className="upload-card convert-history">
+      <h2>Recent Conversion</h2>
     </div>
   </Box>
 )

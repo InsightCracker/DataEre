@@ -50,7 +50,7 @@ const Datahub = () => {
                     <div className="content">
                         <h3>PDF Converter</h3>
                         <p>Turn your PDFs into actionable data in seconds! Convert to Excel (XLSX) or CSV instantly and get your information ready for analysis, reporting, and smarter decisions - no manual work required.</p>
-                        <a href="/tune" className="btn card-btn">Explore</a>
+                        <a href="/converter" className="btn card-btn">Explore</a>
                     </div>
                 </div>
 

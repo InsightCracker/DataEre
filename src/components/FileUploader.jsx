@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function FileUploader() {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
+  const [selectedFormat, setSelectedFormat] =useState("");
 
   const handleFile = (selectedFile) => {
     if (!selectedFile) return;
@@ -49,6 +50,34 @@ export default function FileUploader() {
       btn.classList.add('active');
     });
   });
+
+  // File Selection Function
+  const handleConvert = async () => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const format = selectedFormat; // csv, xlsx, json
+
+    try {
+      const response = await fetch(`http://localhost:5173/api/convert?format=${format}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${file.name}.${format === "xlsx" ? "xls" : format}`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error(err);
+      alert("Conversion failed");
+    }
+  };
 
   return (
     <div className="uploader-container">
@@ -104,33 +133,33 @@ export default function FileUploader() {
           </div>
         )}
 
-        <div class="options">
+        <div className="options">
           <h4 style={{
             marginBottom: '.5rem'
           }}>Options:</h4>
-          <div class="option-item">
+          <div className="option-item">
             <input type="checkbox" checked />
             <label>Extract tables only</label>
           </div>
-          <div class="option-item">
+          <div className="option-item">
             <input type="checkbox" checked />
             <label>Include headers</label>
           </div>
-          <div class="option-item">
+          <div className="option-item">
             <input type="checkbox" />
             <label>Clean Format</label>
           </div>
         </div>
 
-        <div class="convert-types">
-          <button class="type-btn">CSV</button>
-          <button class="type-btn">Excel</button>
-          <button class="type-btn">JSON</button>
+        <div className="convert-types">
+          <button onClick={() => setSelectedFormat("csv")} className="type-btn">CSV</button>
+          <button onClick={() => setSelectedFormat("xlsx")} className="type-btn">XLSX</button>
+          <button onClick={() => setSelectedFormat("json")} className="type-btn">JSON</button>
         </div>
 
         {/* Convert Button */}
         {file && (
-          <button className="convert-btn">
+          <button onClick={handleConvert} className="convert-btn">
             Convert File
           </button>
         )}
