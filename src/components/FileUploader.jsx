@@ -60,7 +60,7 @@ export default function FileUploader() {
     const format = selectedFormat; // csv, xlsx, json
 
     try {
-      const response = await fetch(`http://localhost:5173/api/convert?format=${format}`, {
+      const response = await fetch(`/api/convert?format=${format}`, {
         method: "POST",
         body: formData,
       });

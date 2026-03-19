@@ -1206,14 +1206,14 @@ ul {
 /* Card */
 .upload-card {
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px 20px 30px 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); 
 }
 
 /* Title */
 .upload-title {
-  font-size: 26px;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 20px;
