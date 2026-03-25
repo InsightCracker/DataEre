@@ -1,18 +1,20 @@
+import '../styles/landing.css'
+
 import { 
     Box
 } from "@chakra-ui/react";
 
-import LandingPageNavBar from '../util/LandingPageNavBar';
+import Navbar from '../components/Navbar';
 import Hero from "../components/Hero";
 import About from "../components/About";
 import HowItWorks from "../components/HowItWorks";
 import Features from "../components/Features";
 import Footer from "../components/Footer";
 
-const FirstPage = () => {
+const LandingPage = () => {
     return (
     <Box>
-      <LandingPageNavBar />
+      <Navbar />
       <Hero />
       <About />
       <HowItWorks />
@@ -22,4 +24,4 @@ const FirstPage = () => {
     )
 }
 
-export default FirstPage
+export default LandingPage

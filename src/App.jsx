@@ -2,7 +2,7 @@ import '../src/css/style.css';
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ChakraProvider, Box } from '@chakra-ui/react'; 
-
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from "axios";
 
 // Quiz Pages
@@ -12,7 +12,7 @@ import Home from './pages/Home';
 import ResultPage from "./pages/ResultPage";
 import VsBot from "./pages/VsBot";
 import MultiEnd from "./pages/MultiEnd";
-import FirstPage from "./pages/FirstPage";
+import LandingPage from "./features/landing/pages/LandingPage";
 import Datahub from './pages/Datahub';
 import Dashboard from './pages/Dashboard';
 import Leaderboard from './util/LeaderBoard';
@@ -39,6 +39,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
+  // Shuffle utility
   const shuffleArray = (array) => {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -48,51 +49,32 @@ function App() {
     return arr;
   };
 
-
-  const getRandomQuestions = (
-    allQuestions,
-    num = 20,
-    category,
-    difficulty
-  ) => {
-    const filtered = allQuestions.filter(
-      (q) =>
-        (!category || q.category === category) &&
-        (!difficulty || q.difficulty === difficulty)
-    );
-
-    const shuffled = shuffleArray(filtered);
-
-    return shuffled.slice(0, num);
-  };
-
-
-  const fetchQuestion = async () => {
+// Fetch AI-generated questions from backend
+  const fetchAIQuestions = async () => {
     try {
       setIsLoading(true);
 
-      const result = await axios("/questions.json");
+      // Call your Express backend API
+      const response = await axios.post("http://localhost:5000/api/generate", {
+        topic: categories || "General Knowledge",
+        difficulty: difficulty
+      });
 
-      const randomQuestions = getRandomQuestions(
-        result.data,
-        20,
-        categories,
-        difficulty
-      );
+      // Shuffle and pick first 20 questions
+      const shuffledQuestions = shuffleArray(response.data).slice(0, 20);
 
-      setQuestions(randomQuestions);
-      setCurrentQuestion(randomQuestions[0] || null);
+      setQuestions(shuffledQuestions);
+      setCurrentQuestion(shuffledQuestions[0] || null);
       setIsLoading(false);
-
     } catch (error) {
-      console.error("Error loading questions:", error);
+      console.error("Error fetching AI questions:", error);
       setIsLoading(false);
     }
   };
 
-
+  // Re-fetch questions when difficulty, category, or refresh changes
   useEffect(() => {
-    fetchQuestion(); // eslint-disable-next-line
+    fetchAIQuestions(); // eslint-disable-next-line
   }, [categories, difficulty, refresh]);
 
   return (
@@ -124,7 +106,7 @@ function App() {
           setWrongAnswer
         }}>
           <Routes>
-            <Route path="/" element={<FirstPage />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/datahub" element={<Datahub />} />
             <Route path="/dashboard" element={<Dashboard />} />
