@@ -1,9 +1,10 @@
 .dashboard_container {
+    background-color: #f8f8f8;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 20px 2rem 20px;
+  padding: 0 4rem;
 }
 
 .profile {
@@ -146,4 +147,16 @@
 
 .list-text p{
   color: #3b3b3b;
+}
+
+@media (max-width: 768px) {
+    .dashboard_container {
+        padding: 0 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard_container {
+        padding: 0 1rem;
+    }
 }
