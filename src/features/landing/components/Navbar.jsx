@@ -1,6 +1,6 @@
 import { 
-    Box, 
-    Text 
+  Box, 
+  Text 
 } from "@chakra-ui/react";
 
 const Navbar = () => {

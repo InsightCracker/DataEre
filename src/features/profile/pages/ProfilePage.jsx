@@ -1,36 +1,35 @@
-import '../styles/profile.css'
+import '../styles/profile.css';
+import { useNavigate } from 'react-router-dom';
 
-import { useContext } from "react";
-import { QuizContext } from "../../../util/Contexts";
+import Navbar from '../components/Navbar';
 
 import { 
     Box
 } from "@chakra-ui/react";
 
 import { 
+    SiThunderstore 
+} from "react-icons/si";
+
+import { 
   FaAward,
   FaBullseye,
   FaGraduationCap,
   FaLaptopFile,
-  FaChartColumn,
-  FaCheckDouble,
-  FaTrophy,
-  FaFaceSmile
+  FaChartColumn
 } from "react-icons/fa6";
 
 const ProfilePage = () => {
-    const { 
-        name,
-      } = useContext(QuizContext);
-
+    const navigate = useNavigate();
     return (
-    <Box sx={{
-          w: '100%',
-          m: '0 auto'
-        }} className="dashboard_container">
+    <Box className="profile_page">
+        <Box>
+            <Navbar />
+        </Box>
 
-        <div className="profile">
-            <h1 >Welcome back <span>{name}</span> <FaFaceSmile /></h1>
+        <Box className='dashboard_container'>
+            <div className="profile">
+            <h1 >Welcome back 👋</h1>
 
             <div className="dash-list">
                 <div style={{
@@ -56,12 +55,12 @@ const ProfilePage = () => {
                     <Box className="icon" 
                         sx={{color: '#304ecf' }} 
                     >
-                        <FaGraduationCap />
+                        <SiThunderstore />
                     </Box>
 
                     <div className="list-text">
-                        <p>Total Points</p>
-                        <h3>100</h3>
+                        <p>Daily Streak</p>
+                        <h3>0 days</h3>
                     </div>
                 </div>
 
@@ -69,12 +68,12 @@ const ProfilePage = () => {
                     <Box className="icon" 
                         sx={{color: '#304ecf' }} 
                     >
-                        <FaCheckDouble />
+                        <FaGraduationCap />
                     </Box>
 
                     <div className="list-text">
-                        <p>Quizzes Completed</p>
-                        <h3>18</h3>
+                        <p>Total Points</p>
+                        <h3>0</h3>
                     </div>
                 </div>
             </div>
@@ -104,7 +103,12 @@ const ProfilePage = () => {
 
                     <p>Test your skill level.</p>
 
-                    <div className="max-box-btn">
+                    <div 
+                        onClick={() => {
+                            navigate('/quiz')
+                        }}
+                        className="max-box-btn"
+                    >
                         Resume Quiz
                     </div>
                 </div>
@@ -139,11 +143,9 @@ const ProfilePage = () => {
                     gap: '.5rem',
                     fontWeight: '600'
                 }}>
-                    <h1 style={{
-                        color: 'rgb(146, 124, 0)'
-                    }}><FaTrophy /> </h1>
+                    <h1>🏆 </h1>
 
-                    <div>Top DataXO Analysts</div>
+                    <div>Top DataEre Analysts</div>
                 </div>
                 
                 <div>
@@ -157,11 +159,13 @@ const ProfilePage = () => {
                         textAlign: 'center',
                         fontSize: '.7rem',
                         fontWeight: '500',
-                        borderTop: '.7px solid #304dcf52'
+                        borderTop: '.7px solid #304dcf52',
+                        cursor: 'pointer'
                     }}>View Full Leaderboard
                 </p>
             </div>
         </div>
+        </Box>
     </Box>
     )
 }

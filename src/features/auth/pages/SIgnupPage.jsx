@@ -53,7 +53,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
 
   const login = () => {
-    email !== '' && navigate('/datahub');
+    email !== '' && navigate('/users/profile');
   }
 
   const emptyToast = () => {

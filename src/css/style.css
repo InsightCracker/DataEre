@@ -24,7 +24,7 @@ html::-webkit-scrollbar-track {
 }
 
 html::-webkit-scrollbar-thumb {
-  background: #0d1234;
+  background: #d6d6d6;
   border-radius: 5rem;
 }
 
@@ -944,25 +944,6 @@ h1 {
 @media (max-width: 425px) {
   .question-board {
     padding: 0 1rem;
-  }
-
-  .profile {
-    font-size: .9rem;
-  }
-
-  .profile-btn {
-    font-size: .7rem;
-    padding: .3rem .5rem;
-    border-radius: .3rem .7rem;
-  }
-
-  .low-box {
-    flex-direction: column;
-  }
-
-  .left-side-box,
-  .right-side-box {
-    width: 100%;
   }
 }
 
