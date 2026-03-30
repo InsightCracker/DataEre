@@ -7,7 +7,7 @@ const Footer = () => {
     <Box className="footer">
         <div className="footer-content">
             <div className="footer-section">
-                <h2>Data<span className="dataxo">XO</span></h2>
+                <h2>Data<span className="dataxo">Ere</span></h2>
                 <p>Your Complete Data Learning Hub</p>
             </div>
 

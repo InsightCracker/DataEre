@@ -76,7 +76,7 @@ const Home = () => {
         </div>
 
         <Box className="level-box first_box special_box">
-          <p>Choose Difficulty:</p>
+          <h2>Choose Difficulty:</h2>
           <div className="level-btns">
             {["Beginner", "Intermediate", "Advanced"].map((level) => (
               <button 
@@ -88,6 +88,8 @@ const Home = () => {
               </button>
             ))}
           </div>
+
+          <p>Default level is set to Beginner. Please select your preferred level to continue.</p>
         </Box>
       </div>
 

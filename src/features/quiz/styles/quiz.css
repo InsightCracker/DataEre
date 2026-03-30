@@ -1,12 +1,12 @@
 .quiz-home-page {
-    background: #ebeffa;
-    min-height: 100vh;
-    padding: 2rem 0;
+  background: #ebeffa;
+  min-height: 100vh;
+  padding: 2rem 0;
 }
 
 .card p{
-    color: #666666;
-    font-size: .9rem;
+  color: #666666;
+  font-size: .9rem;
 }
 
 .home-container {
@@ -32,27 +32,45 @@
 }
 
 .special_cards {
-    background-color: #fff;
-    display: flex;
-    gap: 1rem;
-    border: 1px #bebebe solid;
-    border-radius: 10px;
-    padding: 1rem;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px #bebebe solid;
+  border-radius: 10px;
+  padding: 1rem;
 }
 
 .challenge_box {
-    min-width: 300px;
+  min-width: 300px;
 }
 
 .challenge_box h2 {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 
 .challenge_box p {
-    color: #000;
-    font-size: .9rem;
+  color: #000;
+  font-size: .9rem;
+}
+
+.level-box h2 {
+  color: #000;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.level-box p {
+  color: #666666;
+  font-size: .9rem;
+  margin-top: 1rem;
+  line-height: 1.3rem;
+}
+
+.level-btns {
+  margin: .5rem 0;
 }
 
 .level-btn {
@@ -61,19 +79,18 @@
   padding: .5rem 1rem ;
   font-size: .9rem;
   cursor: pointer;
-  background: #f0f2f5;
-  margin-top: 1rem;
-  margin-right: 1rem;
+  color: #fff;
+  margin-right: .5rem;
+  background-color: #304ecf;
 }
 
 .level-btn:hover {
-  background: rgba(10, 14, 39, 0.616);
-  color: #fff;
+  background: #5771e2;
   transition: transform 0.2s, background 0.2s;
 }
 
 .level-btn.active {
-  background: rgba(10, 14, 39, 0.95);
+  background: rgba(0, 19, 146, 0.95);
   color: #fff;
   transition: transform 0.2s, background 0.2s;
 }
@@ -87,11 +104,18 @@
 }
 
 @media (max-width: 425px) {
-    .special_cards {
-        flex-direction: column;
-    }
+  .special_cards {
+    flex-direction: column;
+  }
 
-    .challenge_box {
-        min-width: 250px;
-    }
+  .challenge_box {
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .level-btn {
+    width: 100%;
+    margin-bottom: .5rem;
+  }
 }
