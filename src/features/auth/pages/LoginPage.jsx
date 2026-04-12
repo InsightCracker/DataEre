@@ -71,10 +71,10 @@ const LoginPage = () => {
         <Box className="login-badge">✦ Welcome back</Box>
 
         <h2>Log in to DataEre</h2>
-        <p className="login-subtitle">
+        {/* <p className="login-subtitle">
           Don't have an account?{" "}
           <a href="/users/signup" className="login-link">Sign up free</a>
-        </p>
+        </p> */}
 
         <div className="form">
 
