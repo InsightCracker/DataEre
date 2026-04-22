@@ -10,10 +10,6 @@ import Sidebar from "../../profile/components/Sidebar";
 import Searchbar from "../components/Searchbar";
 import Cards from "../components/Cards";
 
-<<<<<<< HEAD:src/features/quiz/pages/Home.jsx
-const Home = () => {
-  const { difficulty, setCategories, setDifficulty } = useContext(QuizContext);
-=======
 
 const QuizDashboard = () => {
 
@@ -22,7 +18,6 @@ const QuizDashboard = () => {
     setCategories,
     setDifficulty
   } = useContext(QuizContext);
->>>>>>> 50ef73882e234108ebbf3aca059cb186b09c34f3:src/features/quiz/pages/QuizDashboard.jsx
 
   const quickPlay = (cat) => {
     if (window.gtag) {
@@ -100,16 +95,4 @@ const QuizDashboard = () => {
   );
 };
 
-<<<<<<< HEAD:src/features/quiz/pages/Home.jsx
-export default Home;
-=======
-      <Box>
-        <Cards />
-      </Box>
-    </div>
-  </Box>
-  )
-}
-
 export default QuizDashboard
->>>>>>> 50ef73882e234108ebbf3aca059cb186b09c34f3:src/features/quiz/pages/QuizDashboard.jsx

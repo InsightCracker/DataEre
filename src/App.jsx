@@ -13,9 +13,7 @@ import ProfilePage from './features/profile/pages/ProfilePage';
 import QuizDashboard from './features/quiz/pages/QuizDashboard';
 import Results from './features/quiz/pages/Result';
 import VsBot from "./features/quiz/pages/VsBot";
-// import MultiEnd from "./pages/MultiEnd";
 import QuickPlay from "./features/quiz/pages/QuickPlay";
-import Datahub from './pages/Datahub';
 
 import Leaderboard from './util/LeaderBoard';
 
@@ -117,7 +115,6 @@ useEffect(() => {
             <Route path="/users/login" element={<LoginPage />} />
             <Route path="/users/signup" element={<SignupPage />} />
             <Route path="/users/profile" element={<ProfilePage />} />
-            <Route path="/datahub" element={<Datahub />} />
             <Route path="/quiz/topics" element={<QuizDashboard />} />
             <Route path="/quiz/solo" element={<QuickPlay />} />
             <Route path="/results" element={<Results />} />

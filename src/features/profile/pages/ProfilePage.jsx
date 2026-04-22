@@ -77,45 +77,6 @@ const ProfilePage = () => {
                 <div className="max-box-btn">
                   Start Challenge
                 </div>
-
-                <div className="second_box">
-                    <h2>
-                        <FaLaptopFile className="box_icon" />
-                        Continue Learning
-                    </h2>
-
-                    <p>Test your skill level.</p>
-
-                    <div 
-                        onClick={() => {
-                            navigate('/quiz/topics')
-                        }}
-                        className="max-box-btn"
-                    >
-                        Start Quiz
-                    </div>
-                </div>
-
-                <div className="third_box">
-                    <h2>
-                        <FaChartColumn className="box_icon" />
-                        Your Data Journey
-                    </h2>
-                    
-                    <div className="third-inner">
-                        <div>
-                            <p>Quizzes Taken: <span>18</span></p>
-                            <p>Best Skill: <span>Excel</span></p>
-                        </div>
-
-
-                        <div>
-                            <p>Average Score <span>82%</span></p>
-                            <p>Weak Skill: <span>SQL</span></p>
-                        </div>
-                    </div>
-
-                </div>
             </div>
 
             <div className="second_box">
@@ -128,7 +89,7 @@ const ProfilePage = () => {
 
               <div
                 onClick={() => {
-                  navigate("/quiz");
+                  navigate("/quiz/topics");
                 }}
                 className="max-box-btn"
               >

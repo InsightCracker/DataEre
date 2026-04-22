@@ -17,12 +17,12 @@ const Sidebar = () => {
 const location = useLocation();
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/users/login");
   };
 
   const navLinks = [
     { label: "Dashboard", icon: FaHome, path: "/users/profile" },
-    { label: "Quizzes", icon: FaQuestionCircle, path: "/quiz" },
+    { label: "Quizzes", icon: FaQuestionCircle, path: "/quiz/topics" },
     { label: "Leaderboard", icon: FaTrophy, path: "/board" },
     { label: "PDF Converter", icon: FaFilePdf, path: "/converter" },
     { label: "Reports", icon: FaChartBar, path: "/reports" },
