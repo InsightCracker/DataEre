@@ -10,12 +10,12 @@ const BottomNav = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/users/login");
   };
 
   const navLinks = [
     { label: "Home", icon: FaHome, path: "/users/profile" },
-    { label: "Quizzes", icon: FaQuestionCircle, path: "/quiz" },
+    { label: "Quizzes", icon: FaQuestionCircle, path: "/quiz/topics" },
     { label: "Board", icon: FaTrophy, path: "/board" },
     { label: "PDF", icon: FaFilePdf, path: "/converter" },
     { label: "Reports", icon: FaChartBar, path: "/reports" },
