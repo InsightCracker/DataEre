@@ -1,3 +1,7 @@
+// ─── Groq AI config — DataEre Learning Platform ───────────────────────────────
+// Free tier: 14,400 requests/day | No credit card required
+// Sign up at: https://console.groq.com
+
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const GROQ_API_URL = "/groq/openai/v1/chat/completions"; // proxied via vite.config.js to avoid CORS
 const QUESTIONS_PER_QUIZ = 5; // 5 questions ~2500 tokens — safe within 100k TPD free limit
@@ -8,7 +12,7 @@ const DIFFICULTY_LABELS = {
   Advanced: "Advanced",
 };
 
-
+// ─── In-memory cache ──────────────────────────────────────────────────────────
 // Cache key includes all adaptive inputs so different user contexts get unique sets
 const cache = new Map();
 let inflightRequest = null;
@@ -25,7 +29,6 @@ let inflightRequest = null;
  * @param {string} params.performance     - "low" | "average" | "high"
  * @param {string} params.learningObjective - Target learning goal
  */
-
 function buildPrompt({
   category,
   difficulty,
@@ -120,16 +123,15 @@ Return ONLY the JSON array. No markdown. No code fences. No commentary.`;
  * Generates adaptive quiz questions via Groq for the DataEre platform.
  *
  * @param {object} params
- * @param {string}   params.category         
- * @param {string}   params.subtopic           
- * @param {string}   params.difficulty      
- * @param {string}   params.userWeakness     
- * @param {string[]} params.previousQuestions 
- * @param {string}   params.performance     
- * @param {string}   params.learningObjective  
+ * @param {string}   params.category           - Main topic
+ * @param {string}   params.subtopic           - Subtopic focus
+ * @param {string}   params.difficulty         - "Beginner" | "Intermediate" | "Advanced"
+ * @param {string}   params.userWeakness       - Concept the user struggles with
+ * @param {string[]} params.previousQuestions  - Already-seen question texts
+ * @param {string}   params.performance        - "low" | "average" | "high"
+ * @param {string}   params.learningObjective  - Target learning goal
  * @returns {Promise<Array>}
  */
-
 export async function fetchQuestionsFromGroq({
   category = "",
   difficulty = "Beginner",
@@ -138,7 +140,6 @@ export async function fetchQuestionsFromGroq({
   performance = "average",
   learningObjective = "",
 } = {}) {
-
   // Cache key includes all adaptive params so unique contexts get unique question sets
   const cacheKey = `${category}__${difficulty}__${performance}__${userWeakness}`;
 
@@ -168,9 +169,9 @@ export async function fetchQuestionsFromGroq({
           Authorization: `Bearer ${GROQ_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "llama-3.1-8b-instant", 
+          model: "llama-3.1-8b-instant", // lighter model — 8B vs 70B, saves ~8x tokens per request
           temperature: 0.7,
-          max_tokens: 4000, 
+          max_tokens: 4000, // prevents truncated JSON (unterminated string error)
           messages: [
             {
               role: "system",
@@ -192,22 +193,23 @@ export async function fetchQuestionsFromGroq({
       const data = await response.json();
       const raw = data.choices?.[0]?.message?.content ?? "[]";
 
+      // Strip accidental markdown fences
       let cleaned = raw.replace(/^```(?:json)?|```$/gm, "").trim();
 
+      // ── Safe JSON recovery ───────────────────────────────────────────────
+      // If the response was truncated (unterminated string), find the last
+      // complete object and close the array cleanly.
       let questions;
       try {
         questions = JSON.parse(cleaned);
       } catch {
-
         // Find the last complete question object (ends with "}")
         const lastBrace = cleaned.lastIndexOf("}");
         if (lastBrace !== -1) {
           cleaned = cleaned.slice(0, lastBrace + 1) + "]";
-
           // Remove any trailing comma before the closing bracket
           cleaned = cleaned.replace(/,\s*\]$/, "]");
           questions = JSON.parse(cleaned);
-
           console.warn("[Groq] Response was truncated — recovered", questions.length, "questions.");
         } else {
           throw new Error("Groq response was too truncated to recover.");
@@ -231,6 +233,10 @@ export async function fetchQuestionsFromGroq({
   return promise;
 }
 
+/**
+ * Clears the cache for a specific context so the next call fetches fresh questions.
+ * Call this when the user starts a new quiz session.
+ */
 export function clearQuestionCache({
   category = "",
   difficulty = "Beginner",
