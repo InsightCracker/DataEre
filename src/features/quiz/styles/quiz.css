@@ -1,0 +1,131 @@
+.quiz-home-page {
+  background: #ebeffa;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.card p{
+  color: #666666;
+  font-size: .9rem;
+}
+
+.home-container {
+  padding: 2rem 1rem 0 240px;
+}
+
+
+.top-bar {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1rem 2rem 1rem 5rem;
+  background-color: #ffffff;
+  z-index: 100;
+  border: 1px #bebebe solid;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.search-bar {
+  background: rgba(218, 218, 218, 0.1);
+  border-radius: 10px;
+}
+
+.special_cards {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px #bebebe solid;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.challenge_box {
+  min-width: 300px;
+}
+
+.challenge_box h2 {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.challenge_box p {
+  color: #000;
+  font-size: .9rem;
+}
+
+.level-box h2 {
+  color: #000;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.level-box p {
+  color: #666666;
+  font-size: .9rem;
+  margin-top: 1rem;
+  line-height: 1.3rem;
+}
+
+.level-btns {
+  margin: .5rem 0;
+}
+
+.level-btn {
+  border-radius: 5px;      
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding: .5rem 1rem ;
+  font-size: .9rem;
+  cursor: pointer;
+  color: #fff;
+  margin-right: .5rem;
+  background-color: #304ecf;
+}
+
+.level-btn:hover {
+  background: #5771e2;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.level-btn.active {
+  background: rgba(0, 19, 146, 0.95);
+  color: #fff;
+  transition: transform 0.2s, background 0.2s;
+}
+
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 425px) {
+  .special_cards {
+    flex-direction: column;
+  }
+
+  .challenge_box {
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .level-btn {
+    width: 100%;
+    margin-bottom: .5rem;
+  }
+
+  .home-container {
+    padding: 2rem 1rem 0 230px;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-container {
+    padding: 2rem 1rem 0 190px;
+  }
+}

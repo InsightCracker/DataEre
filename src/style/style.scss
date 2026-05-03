@@ -1,0 +1,40 @@
+button :hover {
+    background-color: red
+}
+
+.navbar {
+    @extend %pad;
+
+    .code {
+        text-transform: uppercase;
+    }
+
+    .large_nav ul {
+        display: block;
+
+        a {
+            padding: 20px 10px 10px 10px;
+            margin: 0 3px;
+            font-size: .9rem;
+    
+            &:hover {
+                background-color: #3b82f6;
+            }
+    
+    
+            &:link {
+                background-color: rgb(3, 3, 3);
+            }
+        }
+    }
+
+    .navbox a {
+        padding: 20px 5px 5px 5px;
+        li {
+            padding: 20px 5px 5px 5px;
+            margin: 0 3px;
+            font-size: .9rem;
+            border-bottom: 1px solid #fff;
+        }
+    }
+}
