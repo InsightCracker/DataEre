@@ -199,6 +199,7 @@
     padding: 15px 20px;
     line-height: 2rem;
 }
+
 .second_box {
     background: #ebf1fd;
 }
@@ -249,6 +250,17 @@
 
 .list-text p{
     color: #3b3b3b;
+}
+
+.first_box .instruction p{
+    color: #5f5f5f;
+    margin-bottom: .2rem;
+}
+
+.first_box .footer_note {
+    font-size: 12px;
+    margin-top: .5rem;
+    color: #5f5f5f;
 }
 
 @media (max-width: 768px) {

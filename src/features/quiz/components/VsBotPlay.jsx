@@ -28,38 +28,38 @@ const VsBotPlay = () => {
     difficulty
   } = useContext(QuizContext);
 
-  const currentQuestion = questions[currQuestion];
+    const currentQuestion = questions[currQuestion];
 
-  // Convert answers object to array
-  const answerKeys = Object.keys(currentQuestion?.answers || {});
+    // Convert answers object to array
+    const answerKeys = Object.keys(currentQuestion?.answers || {});
 
-  const answerValues = answerKeys.map(
-    (key) => currentQuestion.answers[key]
-  );
+    const answerValues = answerKeys.map(
+      (key) => currentQuestion.answers[key]
+    );
 
-  // Find correct answer key safely
-  const correctKey = Object.keys(currentQuestion?.correct_answers || {})
-    .find(
-      (key) => currentQuestion.correct_answers[key] === "true"
-    )
-    ?.replace("_correct", "");
+    // Find correct answer key safely
+    const correctKey = Object.keys(currentQuestion?.correct_answers || {})
+      .find(
+        (key) => currentQuestion.correct_answers[key] === "true"
+      )
+      ?.replace("_correct", "");
 
-  // Function to generate smart bot answer
-  const getSmartBotAnswer = () => {
-    const chance = Math.random(); // 0–1
-    let difficultyChance = 0.7; // default 
-    if (difficulty === "Beginner") difficultyChance = 0.5;
-    if (difficulty === "Intermediate") difficultyChance = 0.7;
-    if (difficulty === "Advanced") difficultyChance = 0.85;
+    // Function to generate smart bot answer
+    const getSmartBotAnswer = () => {
+      const chance = Math.random(); // 0–1
+      let difficultyChance = 0.7; // default 
+      if (difficulty === "Beginner") difficultyChance = 0.5;
+      if (difficulty === "Intermediate") difficultyChance = 0.7;
+      if (difficulty === "Advanced") difficultyChance = 0.85;
 
-    const correctOptionKey = correctKey.replace("_correct", "");
+      const correctOptionKey = correctKey.replace("_correct", "");
 
-    if (chance < difficultyChance) return correctKey;
+      if (chance < difficultyChance) return correctKey;
 
-    // Otherwise pick a random wrong answer
-    const wrongKeys = answerKeys.filter((k) => k !== correctOptionKey);
-    return wrongKeys[Math.floor(Math.random() * wrongKeys.length)];
-  };
+      // Otherwise pick a random wrong answer
+      const wrongKeys = answerKeys.filter((k) => k !== correctOptionKey);
+      return wrongKeys[Math.floor(Math.random() * wrongKeys.length)];
+    };
 
 
 
@@ -97,7 +97,7 @@ const VsBotPlay = () => {
     }
 
     setCurrQuestion(0);
-    navigate(`/results?mode=vsbot`);
+    navigate(`/quiz/results?mode=vsbot`);
   }
   
   const letters = ["A", "B", "C", "D"];

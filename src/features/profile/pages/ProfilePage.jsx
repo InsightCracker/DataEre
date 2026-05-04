@@ -1,9 +1,15 @@
 import "../styles/profile.css";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Sidebar from "../components/Sidebar";
 
-import { Box } from "@chakra-ui/react";
+import { 
+  Box, 
+  Text, 
+  HStack,
+  useToast 
+} from "@chakra-ui/react";
 
 import { SiThunderstore } from "react-icons/si";
 import { useAuth } from "../../../util/AuthContext";
@@ -16,9 +22,67 @@ import {
 } from "react-icons/fa6";
 import { FaTrophy } from "react-icons/fa";
 import BottomNav from "../components/BottomNav";
+
+//Fake API (replace with real endpoints)
+const fetchDailyChallenge = async () => {
+  return new Promise((res) =>
+    setTimeout(() =>
+      res({
+        title: "Sales Dashboard Insight",
+        description: "Analyze the dataset and identify the key revenue driver.",
+        duration: 5,
+        questions: 5,
+        pts: 25,
+        difficulty: "Medium",
+        practices: ["Excel", "Data Cleaning", "Visualization"],
+      }),
+    500)
+  );
+};
+
 const ProfilePage = () => {
+
+  const [challenge, setChallenge] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(86400);
+  const [progress] = useState(4);
+  const toast = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  // Timer logic
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+      return () => clearInterval(interval);
+    }, []);
+  
+    const formatTime = (seconds) => {
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = seconds % 60;
+      return `${h.toString().padStart(2, "0")}:${m
+        .toString()
+        .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+    };
+  
+    // Load data
+    useEffect(() => {
+      fetchDailyChallenge().then(setChallenge);
+    }, []);
+  
+    const handleStart = () => {
+      toast({
+        title: "Challenge Started 🚀",
+        description: "Good luck!",
+        status: "success",
+        duration: 2000,
+      });
+      navigate("/quiz/daily");
+    };
+  
+    if (!challenge) return <Text p={6}>Loading...</Text>;
+
   return (
     <Box className="profile_page">
       <Sidebar />
@@ -65,18 +129,28 @@ const ProfilePage = () => {
             <div className="first_box">
               <h2>
                 <FaBullseye className="box_icon" />
-                Daily Challenge
+                Daily Data Challenge
               </h2>
 
-              <p>Answer today's question!</p>
+              <p>Sharpen your data skills in 5 minutes.</p>
 
-              <p>
-                <span>Reward:</span> +20 pts
-              </p>
+              <HStack className="instruction" spacing={3} fontSize="sm">
+                <p>⏱️ {challenge.duration} mins</p>
+                <p>🧩 {challenge.questions} questions</p>
+                <p>🏆 {challenge.pts} pts</p>
+              </HStack>
 
-                <div className="max-box-btn">
+                <div 
+                  onClick={() => {
+                    navigate("/challenge");
+                  }}
+                  className="max-box-btn">
                   Start Challenge
                 </div>
+
+                <p className="footer_note" fontSize="xs" mt={2} color="purple.200">
+                  Only 23% of users completed yesterday’s challenge.
+                </p>
             </div>
 
             <div className="second_box">

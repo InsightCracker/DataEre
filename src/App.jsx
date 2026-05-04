@@ -14,6 +14,9 @@ import Results from './features/quiz/pages/Result';
 import VsBot from "./features/quiz/pages/VsBot";
 import QuickPlay from "./features/quiz/pages/QuickPlay";
 
+// Daily Challenge
+import DailyChallenge from './features/quiz/pages/DailyChallenge';
+
 import Leaderboard from './util/LeaderBoard';
 
 // PDF Converter
@@ -180,9 +183,13 @@ function App() {
             <Route path="/users/profile" element={<ProfilePage />} />
             <Route path="/quiz/topics" element={<QuizDashboard />} />
             <Route path="/quiz/solo" element={<QuickPlay />} />
-            <Route path="/quiz/result" element={<Results />} />
+            <Route path="/quiz/results" element={<Results />} />
             <Route path="/quiz/vsbot" element={<VsBot />} />
             <Route path="/board" element={<Leaderboard />} />
+
+            {/* Daily Challenge */}
+            <Route path='/challenge' element={<DailyChallenge />} />
+
             {/* Converter */}
             <Route path="/converter" element={<PDFConverter />} />
 
