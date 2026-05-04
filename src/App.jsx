@@ -1,5 +1,5 @@
 import '../src/css/style.css';
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ChakraProvider, Box } from '@chakra-ui/react'; 
 
@@ -48,6 +48,10 @@ function App() {
   // Adaptive quiz parameters
   const [category, setCategory] = useState("");          // main topic
   const [difficulty, setDifficulty] = useState("Beginner");  // Beginner | Intermediate | Advanced
+  const categoryRef = useRef("");
+
+  // Keep ref in sync with state so fetchQuestions always reads the latest value
+  useEffect(() => { categoryRef.current = category; }, [category]);
   const [userWeakness, setUserWeakness] = useState("");      // concept the user struggles with
   const [previousQuestions, setPreviousQuestions] = useState([]); // already-seen question texts
   const [performance, setPerformance] = useState("average"); // low | average | high
@@ -64,7 +68,7 @@ function App() {
 
 
   const fetchQuestions = useCallback(async (categoryOverride) => {
-    const activeCategory = categoryOverride ?? categories;
+    const activeCategory = categoryOverride ?? categoryRef.current ?? categories;
     
     // Clear cache so a manual refresh always fetches new questions
     clearQuestionCache({
@@ -79,7 +83,7 @@ function App() {
  
     try {
       const generated = await fetchQuestionsFromGroq({
-        category,
+        category: activeCategory,
         difficulty,
         userWeakness,
         previousQuestions,
@@ -101,13 +105,22 @@ function App() {
 
     } catch (error) {
       console.error("Error generating questions:", error);
+
       setFetchError(error.message ?? "Failed to generate questions from Groq.");
+
       setQuestions([]);
       setCurrentQuestion(null);
+
+      return false
     } finally {
       setIsLoading(false);
     }
-  }, [category, difficulty, userWeakness, performance, learningObjective, refresh]);
+  }, [category, 
+    difficulty, 
+    userWeakness, 
+    performance, 
+    learningObjective, 
+    refresh]);
 
   return (
     <Router>
@@ -167,7 +180,7 @@ function App() {
             <Route path="/users/profile" element={<ProfilePage />} />
             <Route path="/quiz/topics" element={<QuizDashboard />} />
             <Route path="/quiz/solo" element={<QuickPlay />} />
-            <Route path="/quiz/results" element={<Results />} />
+            <Route path="/quiz/result" element={<Results />} />
             <Route path="/quiz/vsbot" element={<VsBot />} />
             <Route path="/board" element={<Leaderboard />} />
             {/* Converter */}

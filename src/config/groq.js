@@ -1,13 +1,8 @@
-// ─── Groq AI config — DataEre Learning Platform ───────────────────────────────
-// The API key is NEVER used on the frontend.
-// In dev  → Vite proxy forwards to api.groq.com with the key from .env
-// In prod → /api/groq serverless function adds the key from Vercel env vars
-
 const GROQ_API_URL = import.meta.env.DEV
   ? "/groq/openai/v1/chat/completions"  // dev: Vite proxy (vite.config.js)
-  : "/api/groq";                         // prod: Vercel serverless function
+  : "/api/groq";                        // prod: Vercel serverless function
 
-const QUESTIONS_PER_QUIZ = 5;
+const QUESTIONS_PER_QUIZ = 10;
 
 const DIFFICULTY_LABELS = {
   Beginner: "Beginner",
@@ -15,12 +10,19 @@ const DIFFICULTY_LABELS = {
   Advanced: "Advanced",
 };
 
-// ─── In-memory cache ──────────────────────────────────────────────────────────
+
 const cache = new Map();
 let inflightRequest = null;
 
-// ─── Prompt builder ───────────────────────────────────────────────────────────
-function buildPrompt({ category, difficulty, userWeakness, previousQuestions, performance, learningObjective }) {
+// Prompt
+function buildPrompt({ 
+    category, 
+    difficulty, 
+    userWeakness, 
+    previousQuestions, 
+    performance, 
+    learningObjective 
+  }) {
   const difficultyLabel = DIFFICULTY_LABELS[difficulty] ?? "Beginner";
 
   // Limit previous questions to last 5 to save tokens
@@ -28,7 +30,6 @@ function buildPrompt({ category, difficulty, userWeakness, previousQuestions, pe
     ? previousQuestions.slice(-5).join("; ")
     : "none";
 
-  // Explicit category name used throughout — never falls back silently
   const topic = category?.trim() || "Data Analytics";
 
   return `You are a quiz generator for DataEre, a data analytics learning platform.
@@ -65,7 +66,7 @@ RULES:
 Return ONLY the JSON array. No markdown. No fences. No commentary.`;
 }
 
-// ─── Main export ──────────────────────────────────────────────────────────────
+
 export async function fetchQuestionsFromGroq({
   category = "",
   difficulty = "Beginner",
@@ -78,21 +79,15 @@ export async function fetchQuestionsFromGroq({
   const cacheKey = `${topic}__${difficulty}__${performance}__${userWeakness}`;
 
   if (cache.has(cacheKey)) {
-    console.log("[Groq] Cache hit for:", topic);
     return cache.get(cacheKey);
   }
 
   if (inflightRequest?.key === cacheKey) {
-    console.log("[Groq] Request in flight for:", topic);
     return inflightRequest.promise;
   }
 
-  console.log("[Groq] Fetching questions for category:", topic, "| difficulty:", difficulty);
-
   const prompt = buildPrompt({ category: topic, difficulty, userWeakness, previousQuestions, performance, learningObjective });
 
-  // In dev, send Authorization header with VITE key via Vite proxy
-  // In prod, the serverless function /api/groq adds the key — don't send it from frontend
   const headers = { "Content-Type": "application/json" };
   if (import.meta.env.DEV && import.meta.env.VITE_GROQ_API_KEY) {
     headers["Authorization"] = `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`;
@@ -136,15 +131,12 @@ export async function fetchQuestionsFromGroq({
           cleaned = cleaned.slice(0, lastBrace + 1) + "]";
           cleaned = cleaned.replace(/,\s*]$/, "]");
           questions = JSON.parse(cleaned);
-          console.warn("[Groq] Truncated response — recovered", questions.length, "questions.");
         } else {
           throw new Error("Groq response too truncated to recover.");
         }
       }
 
       if (!Array.isArray(questions)) throw new Error("Groq did not return a JSON array.");
-
-      console.log(`[Groq] ✅ ${questions.length} questions generated for "${topic}":`, questions);
 
       cache.set(cacheKey, questions);
       return questions;
@@ -157,10 +149,8 @@ export async function fetchQuestionsFromGroq({
   return promise;
 }
 
-// ─── Cache utilities ──────────────────────────────────────────────────────────
 export function clearQuestionCache({ category = "", difficulty = "Beginner", performance = "average", userWeakness = "" } = {}) {
   const topic = category?.trim() || "Data Analytics";
   const cacheKey = `${topic}__${difficulty}__${performance}__${userWeakness}`;
   cache.delete(cacheKey);
-  console.log("[Groq] Cache cleared for:", topic);
 }
