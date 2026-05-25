@@ -124,6 +124,21 @@
     gap: 1rem;
 }
 
+.instruction{
+    padding: .7rem 0;
+}
+
+.instruction-item {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding: .1rem .5rem;
+    background-color: #eaeeff;
+    border-radius: 10px;
+    font-size: .85rem;
+    font-family: 'Poppins', sans-serif;
+}
+
 .left-side-box {
     width: 60%;
     display: flex;
@@ -369,6 +384,16 @@
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
 }
+
+@media (max-width: 420px) {
+
+    .instruction-item {
+        gap: .4rem;
+        font-size: .7rem;
+        font-weight: 900;
+    }
+}
+
 @media (max-width: 768px) {
   .sidebar {
     display: none;

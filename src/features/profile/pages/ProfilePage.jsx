@@ -19,6 +19,8 @@ import {
   FaGraduationCap,
   FaLaptopFile,
   FaChartColumn,
+  FaClock,
+  FaListCheck
 } from "react-icons/fa6";
 import { FaTrophy } from "react-icons/fa";
 import BottomNav from "../components/BottomNav";
@@ -86,6 +88,7 @@ const ProfilePage = () => {
   return (
     <Box className="profile_page">
       <Sidebar />
+      
       <Box className="dashboard_container">
         <div className="profile">
           <h1 className="welcome-heading">Welcome back, {user?.firstName}</h1>
@@ -135,9 +138,20 @@ const ProfilePage = () => {
               <p>Sharpen your data skills in 5 minutes.</p>
 
               <HStack className="instruction" spacing={3} fontSize="sm">
-                <p>⏱️ {challenge.duration} mins</p>
-                <p>🧩 {challenge.questions} questions</p>
-                <p>🏆 {challenge.pts} pts</p>
+                <div className="instruction-item">
+                  <span><FaClock className="box_icon" /></span>
+                  <span>{challenge.duration} mins</span>
+                </div>
+                
+                <div className="instruction-item">
+                  <span><FaListCheck className="box_icon" /></span>
+                  <span>{challenge.questions} questions</span>
+                </div>
+                
+                <div className="instruction-item"> 
+                  <span><FaTrophy className="box_icon" /></span>
+                  <span>{challenge.pts} pts</span>
+                </div>
               </HStack>
 
                 <div 

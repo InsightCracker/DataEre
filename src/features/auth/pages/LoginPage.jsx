@@ -174,7 +174,8 @@ const LoginPage = () => {
           <Box
             as="button"
             className="login-btn"
-            onClick={login_handler}
+            // onClick={login_handler}
+            onClick={navigate("/users/profile")}
             disabled={loading}
             sx={{
               width: "100%",
