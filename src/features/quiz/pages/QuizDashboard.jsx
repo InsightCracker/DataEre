@@ -13,7 +13,6 @@ import Cards from "../components/Cards";
 
 
 const QuizDashboard = () => {
-
   const {
     difficulty,
     setCategories,
@@ -48,45 +47,36 @@ const QuizDashboard = () => {
     <Box className="quiz-home-page">
       <Sidebar />
 
-      <div className="about-text home-container">
-        <Searchbar />
-
-        <div className="special_cards">
-          <div className="first_box special_box challenge_box">
-            <h2>
-              <FaBullseye className="box_icon" />
-              Daily Challenge
-            </h2>
-
-            <p>Answer today's question!</p>
-
-            <p>
-              <span>Reward:</span> +20 points
-            </p>
-
-            <div className="max-box-btn">Start Challenge</div>
-          </div>
-
-          <Box className="level-box first_box special_box">
-            <h2>Choose Difficulty:</h2>
-            <div className="level-btns">
-              {["Beginner", "Intermediate", "Advanced"].map((level) => (
-                <button
-                  key={level}
-                  className={`level-btn ${difficulty === level ? "active" : ""}`}
-                  onClick={() => setDifficulty(level)}
-                >
-                  {level}
-                </button>
-              ))}
+      <div className="dashboard_container">
+        {/* Daily Challenge Banner */}
+          <div className="banner">
+            <div className="banner-left">
+              <div className="banner-title">
+                <span className="icon">🎯</span> Daily Challenge
+              </div>
+              <div className="banner-sub">Answer today's question!</div>
+              <div className="reward-badge">⭐ Reward: +25 pts</div>
+              <button className="btn-start">Start Challenge</button>
             </div>
-
-            <p>
-              Default level is set to Beginner. Please select your preferred
-              level to continue.
-            </p>
-          </Box>
-        </div>
+ 
+            <div className="banner-right">
+              <div className="diff-label">Choose Difficulty:</div>
+              <div className="diff-buttons">
+                {["Beginner", "Intermediate", "Advanced"].map((d) => (
+                  <button
+                    key={d}
+                    className={`diff-btn${difficulty === d ? " selected" : ""}`}
+                    onClick={() => setDifficulty(d)}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+              <div className="diff-hint">
+                Default level is set to <strong>{difficulty}</strong>. Please select your preferred level to continue.
+              </div>
+            </div>
+          </div>
 
         <Box>
           <Cards />

@@ -17,6 +17,7 @@ const Cards = () => {
   const {
     setCategory,
     searchTerm,
+    setSearchTerm,
     fetchQuestions,
     questions,
     isLoading
@@ -70,31 +71,72 @@ const Cards = () => {
   return (
     <Box>
       <div>
+        {/* Search + Section Header */}
+          <div className="search-row">
+            <div className="search-wrap">
+              <span className="search-icon">🔍</span>
+              <input
+                className="search-input"
+                type="text"
+                placeholder="Search Data SKills..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button className="search-clear" onClick={() => setSearchTerm("")}>✕</button>
+              )}
+            </div>
+          </div>
+
         <Box className="card-grid">
-          {filteredCategories.map((cat, index) => (
-            <div className="card visible" key={cat.id || index}>
-              <div className="content">
-                <h3>{cat.name}</h3>
-                <p>{cat.description}</p>
-
-                <div className="btns-box">
-                  <button
-                    onClick={() => quickPlay(cat)}
-                    className="btn card-btn"
-                  >
-                    {loading === `solo-${cat.id}` ? <Spinner size="sm" color="white" /> : "Qucik Play"}
-                  </button>
-
-                  <button
+          {filteredCategories.length > 0 ? filteredCategories.map((cat, index) => (
+            <div
+                key={cat.name}
+                className="topic-card"
+                style={{ "--card-accent": cat.accent, "--card-bg": cat.iconBg }}
+              >
+                <div className="bot-badge">🤖 Bot Mode</div>
+                <div className="card-icon-wrap">{cat.icon}</div>
+                <div className="card-title">{cat.name}</div>
+                <div className="card-desc">{cat.description}</div>
+                <div className="card-footer">
+                  <button 
+                    onClick={() => quickPlay(cat)} 
+                    className="card-btn primary">⚡ Quick Play</button>
+                  <button 
                     onClick={() => botMode(cat)}
-                    className="btn card-btn"
-                  >
-                    {loading === `bot-${cat.id}` ? <Spinner size="sm" color="white" /> : "Bot Mode"}
-                  </button>
+                    className="card-btn">🤖 Bot Mode</button>
                 </div>
               </div>
-            </div>
-          ))}
+            // <div className="card visible" key={cat.id || index}>
+            //   <div className="content">
+            //     <h3>{cat.name}</h3>
+            //     <p>{cat.description}</p>
+
+            //     <div className="btns-box">
+            //       <button
+            //         onClick={() => quickPlay(cat)}
+            //         className="btn card-btn"
+            //       >
+            //         {loading === `solo-${cat.id}` ? <Spinner size="sm" color="white" /> : "Qucik Play"}
+            //       </button>
+
+            //       <button
+            //         onClick={() => botMode(cat)}
+            //         className="btn card-btn"
+            //       >
+            //         {loading === `bot-${cat.id}` ? <Spinner size="sm" color="white" /> : "Bot Mode"}
+            //       </button>
+            //     </div>
+            //   </div>
+            // </div>
+          )): (
+              <div className="empty-state">
+                <div className="empty-icon">🔎</div>
+                <h3>No Data Skill found</h3>
+                <p>No results for "<strong>{searchTerm}</strong>". Try a different keyword.</p>
+              </div>
+            )}
         </Box>
       </div>
     </Box>
