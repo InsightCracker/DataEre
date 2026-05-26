@@ -16,7 +16,7 @@ const Footer = () => {
   return (
     <Box
       bg={C.bg0}
-      borderTop="1px solid rgba(74,158,255,0.1)"
+      borderTop="1px solid rgba(59,110,240,0.08)"
       pt={{ base: "4rem", md: "5rem" }}
       pb={{ base: "2.5rem", md: "3rem" }}
       px={{ base: "1.5rem", md: "6%" }}
@@ -29,13 +29,13 @@ const Footer = () => {
         {/* Brand */}
         <Box>
           <Text
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
             fontSize="1.6rem" fontWeight={900} mb="1rem" letterSpacing="-1px"
           >
             Data<Text as="span" color={C.accent}>Ere</Text>
           </Text>
           <Text
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
             fontSize="0.88rem" color={C.muted} lineHeight={1.8}
             maxW="240px" mb="1.5rem"
           >
@@ -46,13 +46,13 @@ const Footer = () => {
               <Box
                 key={i} as="a" href="#"
                 w="36px" h="36px" borderRadius="10px"
-                bg="rgba(74,158,255,0.07)" border="1px solid rgba(74,158,255,0.15)"
+                bg="rgba(74,158,255,0.07)" border="1px solid rgba(59,110,240,0.10)"
                 display="flex" alignItems="center" justifyContent="center"
                 transition="all 0.2s"
                 _hover={{
-                  bg: "rgba(74,158,255,0.18)",
+                  bg: "rgba(59,110,240,0.14)",
                   transform: "translateY(-3px)",
-                  borderColor: "rgba(74,158,255,0.4)",
+                  borderColor: "rgba(59,110,240,0.35)",
                 }}
               >
                 <Icon size={14} color={C.accent} />
@@ -64,9 +64,9 @@ const Footer = () => {
         {/* Quick Links */}
         <Box>
           <Text
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
             fontSize="0.85rem" fontWeight={800} mb="1.5rem"
-            color="white" letterSpacing="0.08em" textTransform="uppercase"
+            color={C.text} letterSpacing="0.08em" textTransform="uppercase"
           >
             Quick Links
           </Text>
@@ -74,7 +74,7 @@ const Footer = () => {
             {quickLinks.map((l) => (
               <Box
                 key={l.label} as="a" href={l.href}
-                fontFamily="'Cabinet Grotesk',sans-serif"
+                fontFamily="'Sora',sans-serif"
                 fontSize="0.9rem" color={C.muted}
                 textDecoration="none" fontWeight={500}
                 transition="color 0.2s, padding-left 0.2s"
@@ -89,21 +89,21 @@ const Footer = () => {
         {/* Contact */}
         <Box>
           <Text
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
             fontSize="0.85rem" fontWeight={800} mb="1.5rem"
-            color="white" letterSpacing="0.08em" textTransform="uppercase"
+            color={C.text} letterSpacing="0.08em" textTransform="uppercase"
           >
             Contact
           </Text>
           <Text
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
             fontSize="0.88rem" color={C.muted} mb="0.8rem" lineHeight={1.7}
           >
             Have questions or feedback? We'd love to hear from you.
           </Text>
           <Box
             as="a" href="mailto:hello@dataere.com"
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
             fontSize="0.9rem" color={C.accent} fontWeight={600}
             textDecoration="none"
             _hover={{ textDecoration: "underline" }}
@@ -115,19 +115,19 @@ const Footer = () => {
 
       {/* Bottom bar */}
       <Box
-        borderTop="1px solid rgba(255,255,255,0.06)" pt="2rem"
+        borderTop="1px solid rgba(59,110,240,0.07)" pt="2rem"
         display="flex" flexWrap="wrap"
         justifyContent="space-between" alignItems="center"
         gap="1rem" maxW="1100px" mx="auto"
       >
-        <Text fontFamily="'Cabinet Grotesk',sans-serif" fontSize="0.8rem" color={C.dim}>
+        <Text fontFamily="'Sora',sans-serif" fontSize="0.8rem" color={C.dim}>
           © 2026 DataEre. All rights reserved.
         </Text>
         <HStack spacing="1.5rem">
           {["Privacy Policy", "Terms of Service"].map((t) => (
             <Box
               key={t} as="a" href="#"
-              fontFamily="'Cabinet Grotesk',sans-serif"
+              fontFamily="'Sora',sans-serif"
               fontSize="0.8rem" color={C.dim}
               textDecoration="none"
               _hover={{ color: C.muted, textDecoration: "none" }}

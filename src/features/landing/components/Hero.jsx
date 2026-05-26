@@ -1,5 +1,14 @@
-import { Box, Badge, Flex, Text, Button, HStack } from "@chakra-ui/react";
+import { 
+  Box, 
+  Badge, 
+  Flex, 
+  Text, 
+  Button, 
+  HStack 
+} from "@chakra-ui/react";
+
 import { useEffect, useRef } from "react";
+
 import { C, fadeUp, glowPulse, shimmer, float } from "./tokens";
 
 const Hero = () => {
@@ -25,7 +34,7 @@ const Hero = () => {
       ctx.clearRect(0, 0, W, H);
 
       // Grid lines
-      ctx.strokeStyle = "rgba(74,158,255,0.04)";
+      ctx.strokeStyle = "rgba(59,110,240,0.07)";
       ctx.lineWidth = 1;
       for (let x = 0; x < W; x += 80) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
@@ -40,7 +49,7 @@ const Hero = () => {
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < 140) {
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(74,158,255,${0.12 * (1 - d / 140)})`;
+            ctx.strokeStyle = `rgba(59,110,240,${0.10 * (1 - d / 140)})`;
             ctx.lineWidth = 0.5; ctx.stroke();
           }
         })
@@ -49,7 +58,7 @@ const Hero = () => {
       // Particles
       pts.forEach((p) => {
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(74,158,255,${p.op})`; ctx.fill();
+        ctx.fillStyle = `rgba(59,110,240,${p.op * 0.5})`; ctx.fill();
         p.x += p.dx; p.y += p.dy;
         if (p.x < 0 || p.x > W) p.dx *= -1;
         if (p.y < 0 || p.y > H) p.dy *= -1;
@@ -87,7 +96,7 @@ const Hero = () => {
       <Box
         position="absolute" top="15%" left="10%"
         w={{ base: "280px", md: "500px" }} h={{ base: "280px", md: "500px" }}
-        bg="radial-gradient(circle,rgba(48,78,207,0.18),transparent 70%)"
+        bg="radial-gradient(circle,rgba(59,110,240,0.06),transparent 70%)"
         borderRadius="full" pointerEvents="none"
       />
       <Box
@@ -99,7 +108,7 @@ const Hero = () => {
       <Box
         position="absolute" top="50%" left="50%" transform="translate(-50%,-50%)"
         w={{ base: "400px", md: "700px" }} h={{ base: "400px", md: "700px" }}
-        bg="radial-gradient(circle,rgba(48,78,207,0.06),transparent 65%)"
+        bg="radial-gradient(circle,rgba(59,110,240,0.03),transparent 65%)"
         borderRadius="full" pointerEvents="none"
       />
 
@@ -113,10 +122,10 @@ const Hero = () => {
         <Box animation={`${fadeUp} 0.7s ease both`}>
           <Badge
             px="1rem" py="0.4rem" borderRadius="full"
-            bg="rgba(74,158,255,0.08)" border="1px solid rgba(74,158,255,0.25)"
+            bg="rgba(59,110,240,0.07)" border="1px solid rgba(59,110,240,0.25)"
             color={C.accent} fontSize="0.75rem" fontWeight={700}
             letterSpacing="0.08em" textTransform="uppercase"
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
           >
             ✦ All-in-one data platform
           </Badge>
@@ -124,15 +133,15 @@ const Hero = () => {
 
         <Box animation={`${fadeUp} 0.7s 0.1s ease both`} opacity={0}>
           <Text
-            as="h1" fontFamily="'Cabinet Grotesk',sans-serif"
+            as="h1" fontFamily="'Sora',sans-serif"
             fontSize={{ base: "2.6rem", md: "3.6rem", lg: "4.4rem" }}
-            fontWeight={900} lineHeight={1.05} color="white" letterSpacing="-2px"
+            fontWeight={900} lineHeight={1.05} color={C.text} letterSpacing="-2px"
           >
             Build World-Class{" "}
             <Text
-              as="span" fontFamily="'Instrument Serif',serif" fontStyle="italic"
+              as="span" fontFamily="'DM Sans',sans-serif" fontStyle="italic"
               sx={{
-                background: "linear-gradient(135deg,#7eb8ff 0%,#4a9eff 40%,#304ecf 100%)",
+                background: "linear-gradient(135deg,#6b96f5 0%,#3b6ef0 40%,#2251cc 100%)",
                 backgroundSize: "200% auto",
                 animation: `${shimmer} 4s linear infinite`,
                 WebkitBackgroundClip: "text",
@@ -147,7 +156,7 @@ const Hero = () => {
 
         <Box animation={`${fadeUp} 0.7s 0.2s ease both`} opacity={0} maxW="560px">
           <Text
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontFamily="'Sora',sans-serif"
             fontSize={{ base: "1rem", md: "1.15rem" }}
             color={C.muted} lineHeight={1.8} fontWeight={400}
           >
@@ -162,27 +171,33 @@ const Hero = () => {
         >
           <Button
             as="a" href="/users/login"
-            bgGradient="linear(135deg,#304ecf,#4a9eff)"
-            color="white" fontFamily="'Cabinet Grotesk',sans-serif"
+            bgGradient="linear(135deg,#2251cc,#3b6ef0)"
+            color="white" fontFamily="'Sora',sans-serif"
             fontSize="0.95rem" fontWeight={800}
             px={{ base: "1.6rem", md: "2.2rem" }} py="1.5rem"
             borderRadius="10px"
-            boxShadow="0 8px 30px rgba(48,78,207,0.45)"
+            boxShadow="0 8px 30px rgba(59,110,240,0.28)"
             animation={`${glowPulse} 3s ease infinite`}
-            _hover={{ transform: "translateY(-3px)", boxShadow: "0 16px 40px rgba(48,78,207,0.65)" }}
+            _hover={{ 
+              transform: "translateY(-3px)", 
+              boxShadow: "0 16px 40px rgba(59,110,240,0.42)" 
+            }}
             transition="all 0.25s"
           >
             Start Practicing Free →
           </Button>
           <Button
             as="a" href="#services"
-            bg="rgba(255,255,255,0.04)" color="white"
-            fontFamily="'Cabinet Grotesk',sans-serif"
+            bg="rgba(59,110,240,0.04)" color={C.text}
+            fontFamily="'Sora',sans-serif"
             fontSize="0.95rem" fontWeight={700}
             px={{ base: "1.6rem", md: "2.2rem" }} py="1.5rem"
-            borderRadius="10px" border="1px solid rgba(255,255,255,0.12)"
+            borderRadius="10px" border="1px solid rgba(59,110,240,0.12)"
             backdropFilter="blur(10px)"
-            _hover={{ bg: "rgba(255,255,255,0.08)", transform: "translateY(-2px)" }}
+            _hover={{ 
+              bg: "rgba(59,110,240,0.06)", 
+              transform: "translateY(-2px)" 
+            }}
             transition="all 0.25s"
           >
             Explore Services
@@ -196,9 +211,15 @@ const Hero = () => {
         >
           {stats.map((s) => (
             <HStack key={s} spacing="0.5rem">
-              <Box w="5px" h="5px" borderRadius="full" bg={C.accent} boxShadow={`0 0 8px ${C.accent}`} />
+              <Box 
+                w="5px" 
+                h="5px" 
+                borderRadius="full" 
+                bg={C.accent} 
+                boxShadow={`0 0 8px ${C.accent}`} 
+              />
               <Text
-                fontFamily="'Cabinet Grotesk',sans-serif"
+                fontFamily="'Sora',sans-serif"
                 fontSize="0.78rem" color={C.dim} fontWeight={600} letterSpacing="0.04em"
               >
                 {s}
@@ -210,7 +231,7 @@ const Hero = () => {
         {/* Scroll hint */}
         <Box mt="2rem" animation={`${float} 2.5s ease infinite`} opacity={0.4}>
           <Flex flexDir="column" align="center" gap={1}>
-            <Box w="1px" h="40px" bgGradient="linear(to-b,transparent,#4a9eff)" />
+            <Box w="1px" h="40px" bgGradient="linear(to-b,transparent,#3b6ef0)" />
             <Box w="6px" h="6px" borderRadius="full" bg={C.accent} />
           </Flex>
         </Box>

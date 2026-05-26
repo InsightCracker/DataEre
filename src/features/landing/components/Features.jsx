@@ -6,7 +6,7 @@ import { SectionHeader, FeatureCard } from "./shared";
 const featureItems = [
   {
     icon: FaRocket,
-    color: "#4a9eff",
+    color: "#3b6ef0",
     title: "Real-World Practice, Not Passive Learning",
     desc: "Engaging scenario-based quizzes with messy, realistic datasets that mirror actual analyst work — so you can move beyond tutorials and build real confidence.",
   },
@@ -43,11 +43,11 @@ const Features = () => {
       {/* Top & bottom border accents */}
       <Box
         position="absolute" top={0} left={0} right={0} h="1px"
-        bg="linear-gradient(90deg,transparent,rgba(74,158,255,0.3),transparent)"
+        bg="linear-gradient(90deg,transparent,rgba(59,110,240,0.20),transparent)"
       />
       <Box
         position="absolute" bottom={0} left={0} right={0} h="1px"
-        bg="linear-gradient(90deg,transparent,rgba(74,158,255,0.3),transparent)"
+        bg="linear-gradient(90deg,transparent,rgba(59,110,240,0.20),transparent)"
       />
 
       <Box ref={ref} maxW="1100px" mx="auto">

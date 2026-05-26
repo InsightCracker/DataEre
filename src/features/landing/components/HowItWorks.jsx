@@ -7,7 +7,7 @@ const steps = [
   {
     number: "01",
     icon: FaBook,
-    color: "#4a9eff",
+    color: "#3b6ef0",
     title: "Choose Your Journey",
     desc: "Pick what you want to master — Excel, SQL, Power BI, Python, or real-world projects. Start where your curiosity takes you.",
   },
@@ -40,7 +40,7 @@ const HowItWorks = () => {
       <Box
         position="absolute" top="50%" left="50%" transform="translate(-50%,-50%)"
         w="800px" h="800px"
-        bg="radial-gradient(circle,rgba(48,78,207,0.05),transparent 60%)"
+        bg="radial-gradient(circle,rgba(59,110,240,0.03),transparent 60%)"
         borderRadius="full" pointerEvents="none"
       />
 
@@ -69,7 +69,7 @@ const HowItWorks = () => {
                   position="absolute" top="36px"
                   left="calc(50% + 60px)"
                   w="calc(100% - 120px + 2rem)" h="1px"
-                  bg="linear-gradient(90deg,rgba(74,158,255,0.4),rgba(74,158,255,0.1))"
+                  bg="linear-gradient(90deg,rgba(59,110,240,0.35),rgba(59,110,240,0.08))"
                   zIndex={1}
                   sx={{
                     transformOrigin: "left",
@@ -82,26 +82,26 @@ const HowItWorks = () => {
 
               <Flex
                 flexDir="column" align="center" textAlign="center"
-                bg="rgba(255,255,255,0.025)"
-                border="1px solid rgba(74,158,255,0.1)"
+                bg="rgba(59,110,240,0.03)"
+                border="1px solid rgba(59,110,240,0.08)"
                 borderRadius="24px"
                 p={{ base: "2rem", md: "2.5rem" }}
                 position="relative" overflow="hidden"
                 _hover={{
-                  border: "1px solid rgba(74,158,255,0.35)",
+                  border: "1px solid rgba(59,110,240,0.35)",
                   transform: "translateY(-6px)",
-                  boxShadow: "0 20px 50px rgba(0,0,0,0.4)",
+                  boxShadow: "0 16px 40px rgba(59,110,240,0.15)",
                 }}
                 transition="all 0.3s ease"
               >
                 {/* Step number badge */}
                 <Flex
                   w="52px" h="52px" borderRadius="full"
-                  bgGradient="linear(135deg,#304ecf,#4a9eff)"
+                  bgGradient="linear(135deg,#2251cc,#3b6ef0)"
                   align="center" justify="center"
-                  boxShadow="0 6px 20px rgba(48,78,207,0.45)" mb="1.8rem"
-                  fontFamily="'Cabinet Grotesk',sans-serif"
-                  fontSize="0.8rem" fontWeight={900} color="white" letterSpacing="0.05em"
+                  boxShadow="0 6px 20px rgba(59,110,240,0.28)" mb="1.8rem"
+                  fontFamily="'Sora',sans-serif"
+                  fontSize="0.8rem" fontWeight={900} color={C.text} letterSpacing="0.05em"
                 >
                   {step.number}
                 </Flex>
@@ -116,14 +116,14 @@ const HowItWorks = () => {
                 </Flex>
 
                 <Text
-                  fontFamily="'Cabinet Grotesk',sans-serif"
+                  fontFamily="'Sora',sans-serif"
                   fontSize={{ base: "1rem", md: "1.1rem" }}
                   fontWeight={800} color={step.color} mb="0.8rem" letterSpacing="-0.3px"
                 >
                   {step.title}
                 </Text>
                 <Text
-                  fontFamily="'Cabinet Grotesk',sans-serif"
+                  fontFamily="'Sora',sans-serif"
                   fontSize={{ base: "0.87rem", md: "0.9rem" }}
                   color={C.muted} lineHeight={1.75}
                 >

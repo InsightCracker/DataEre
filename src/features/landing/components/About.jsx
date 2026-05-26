@@ -7,7 +7,7 @@ import { SectionHeader, FeatureCard } from "./shared";
 const aboutFeatures = [
   {
     icon: BsBarChartFill,
-    color: "#4a9eff",
+    color: "#3b6ef0",
     title: "Smart Data Quizzes",
     desc: "Tackle real-world challenges with messy datasets and ambiguous business questions. Practice cleaning data, choosing the right approach, and turning insights into recommendations — just like on the job.",
   },
@@ -44,7 +44,7 @@ const About = () => {
       {/* Background accent */}
       <Box
         position="absolute" bottom={0} right={0} w="400px" h="400px"
-        bg="radial-gradient(circle,rgba(48,78,207,0.08),transparent 70%)"
+        bg="radial-gradient(circle,rgba(59,110,240,0.04),transparent 70%)"
         pointerEvents="none"
       />
 
