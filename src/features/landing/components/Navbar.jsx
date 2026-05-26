@@ -36,8 +36,12 @@ const Navbar = () => {
 
   return (
     <Box
+      className="Nav-bg"
       position="fixed" top={0} left={0} right={0} zIndex={2000}
-      bg={scrolled ? "rgba(255,255,255,0.96)" : "transparent"}
+      bg={{
+        base: "rgba(255,255,255,0.96)",
+        md: scrolled ? "rgba(255,255,255,0.96)" : "transparent"
+      }}
       backdropFilter={scrolled ? "blur(20px)" : "none"}
       borderBottom={scrolled ? "1px solid rgba(59,110,240,0.10)" : "none"}
       boxShadow={scrolled ? "0 8px 40px rgba(59,110,240,0.12)" : "none"}
@@ -82,22 +86,6 @@ const Navbar = () => {
 
         {/* CTA buttons */}
         <Flex gap={3} align="center">
-          <Button
-            as="a" href="/users/login"
-            display={{ base: "none", md: "inline-flex" }}
-            bg="transparent" color={C.accent}
-            border="1px solid rgba(59,110,240,0.35)"
-            fontFamily="'Sora',sans-serif"
-            fontSize="0.85rem" fontWeight={700}
-            px="1.4rem" py="0.45rem" borderRadius="8px"
-            transition="all 0.25s"
-            _hover={{ 
-              bg: "rgba(59,110,240,0.08)", 
-              borderColor: C.accent, transform: "translateY(-1px)" 
-            }}
-          >
-            Sign In
-          </Button>
           <Button
             as="a" href="/users/login"
             display={{ base: "none", md: "inline-flex" }}

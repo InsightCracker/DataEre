@@ -9,7 +9,7 @@ const aboutFeatures = [
     icon: BsBarChartFill,
     color: "#3b6ef0",
     title: "Smart Data Quizzes",
-    desc: "Tackle real-world challenges with messy datasets and ambiguous business questions. Practice cleaning data, choosing the right approach, and turning insights into recommendations — just like on the job.",
+    desc: "Tackle real-world challenges with messy datasets and ambiguous business questions. Practice cleaning data, choosing the right approach, and turning insights into recommendations; just like on the job.",
   },
   {
     icon: FaFilePdf,
@@ -27,7 +27,7 @@ const aboutFeatures = [
     icon: FaFileAlt,
     color: "#34d399",
     title: "Instant Report Generator",
-    desc: "Turn your analysis into clear, professional reports that communicate insights effectively to stakeholders — in seconds.",
+    desc: "Turn your analysis into clear, professional reports that communicate insights effectively to stakeholders in seconds.",
   },
 ];
 
@@ -53,7 +53,7 @@ const About = () => {
           badge="Who we are"
           title="Building a Smarter Way to"
           highlight="Master Data"
-          sub="DataEre helps aspiring and junior data analysts go beyond passive tutorials — with real-world quizzes, PDF-to-Excel conversion, and messy scenario challenges."
+          sub="DataEre helps aspiring and junior data analysts go beyond passive tutorials, with real-world quizzes, PDF-to-Excel conversion, and messy scenario challenges."
           visible={visible}
         />
         <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={{ base: "1.2rem", md: "1.8rem" }}>

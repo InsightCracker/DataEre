@@ -161,7 +161,7 @@ const Hero = () => {
             color={C.muted} lineHeight={1.8} fontWeight={400}
           >
             Practice real-world scenarios, convert messy PDFs into clean Excel files,
-            and generate professional reports — all in one powerful platform built for analysts.
+            and generate professional reports; all in one powerful platform built for analysts.
           </Text>
         </Box>
 
@@ -184,7 +184,7 @@ const Hero = () => {
             }}
             transition="all 0.25s"
           >
-            Start Practicing Free →
+            Start Practicing Free
           </Button>
           <Button
             as="a" href="#services"

@@ -33,7 +33,7 @@ const CTA = () => {
           letterSpacing="0.08em" textTransform="uppercase"
           fontFamily="'Sora',sans-serif"
         >
-          ✦ Start today — it's free
+          ✦ Start today. It's free
         </Badge>
 
         <Text
@@ -70,7 +70,7 @@ const CTA = () => {
           _hover={{ transform: "translateY(-3px)", boxShadow: "0 16px 40px rgba(59,110,240,0.42)" }}
           transition="all 0.25s"
         >
-          Get Started Free →
+          Get Started Free
         </Button>
       </Flex>
     </Box>

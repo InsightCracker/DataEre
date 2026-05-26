@@ -30,7 +30,7 @@ const Footer = () => {
         <Box>
           <Text
             fontFamily="'Sora',sans-serif"
-            fontSize="1.6rem" fontWeight={900} mb="1rem" letterSpacing="-1px"
+            fontSize="1.6rem" fontWeight={900} mb="1rem" letterSpacing="-1px" color={C.text}
           >
             Data<Text as="span" color={C.accent}>Ere</Text>
           </Text>
@@ -39,7 +39,7 @@ const Footer = () => {
             fontSize="0.88rem" color={C.muted} lineHeight={1.8}
             maxW="240px" mb="1.5rem"
           >
-            Your complete data learning hub — quizzes, converters, and reports in one place.
+            Your complete data learning hub; quizzes, converters, and reports in one place.
           </Text>
           <HStack spacing="0.7rem">
             {socials.map((Icon, i) => (

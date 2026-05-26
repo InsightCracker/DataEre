@@ -1,5 +1,3 @@
-import '../styles/landing.css'
-
 import { 
     Box
 } from "@chakra-ui/react";

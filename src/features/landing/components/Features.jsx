@@ -8,25 +8,25 @@ const featureItems = [
     icon: FaRocket,
     color: "#3b6ef0",
     title: "Real-World Practice, Not Passive Learning",
-    desc: "Engaging scenario-based quizzes with messy, realistic datasets that mirror actual analyst work — so you can move beyond tutorials and build real confidence.",
+    desc: "Engaging scenario-based quizzes with messy, realistic datasets that mirror actual analyst work; so you can move beyond tutorials and build real confidence.",
   },
   {
     icon: FaBrain,
     color: "#a78bfa",
-    title: "Beyond Tools — Real Thinking",
+    title: "Beyond Tools - Real Thinking",
     desc: "Go beyond clicking buttons. Develop strong analytical reasoning, decision-making, and problem-solving skills that help you handle ambiguity and deliver actionable insights.",
   },
   {
     icon: FaGlobe,
     color: "#34d399",
     title: "Built for Real Progress",
-    desc: "Whether you're an aspiring analyst, career switcher, student, or junior professional — DataEre helps you learn faster, retain more, and perform better in real job situations.",
+    desc: "Whether you're an aspiring analyst, career switcher, student, or junior professional. DataEre helps you learn faster, retain more, and perform better in real job situations.",
   },
   {
     icon: FaLightbulb,
     color: "#fbbf24",
     title: "Instant Feedback & Progress Tracking",
-    desc: "Receive smart, actionable feedback after every challenge so you clearly understand your strengths and exactly what to improve — no guessing, just growth.",
+    desc: "Receive smart, actionable feedback after every challenge so you clearly understand your strengths and exactly what to improve no guessing, just growth.",
   },
 ];
 
