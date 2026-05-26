@@ -184,18 +184,16 @@ const SoloPlay = () => {
   };
 
   const finishQuiz = () => {
-    const finishQuiz = () => {
-  if (chosenIsCorrect) setScore(score + 1);
-  else setWrongAnswer(wrongAnswer + 1);
+    if (chosenIsCorrect) setScore(score + 1);
+    else setWrongAnswer(wrongAnswer + 1);
 
-  // SAVE QUIZ STATUS
-  localStorage.setItem("soloQuizCompleted", "true");
+    // SAVE QUIZ STATUS
+    localStorage.setItem("soloQuizCompleted", "true");
 
-  setOptionChosenKey("");
-  setCurrQuestion(0);
+    setOptionChosenKey("");
+    setCurrQuestion(0);
 
-  navigate("/quiz/results?mode=solo");
-};
+    navigate("/quiz/results?mode=solo");
   };
 
   const isLast  = currQuestion === questions.length - 1;

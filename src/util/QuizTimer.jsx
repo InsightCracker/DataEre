@@ -2,7 +2,9 @@ import {
   useContext, 
   useEffect 
 } from "react";
+
 import { useNavigate, useLocation } from "react-router-dom";
+
 import { 
   Flex, 
   Text 
@@ -28,18 +30,22 @@ const QuizTimer = () => {
   const isDanger  = timeLeft <= 30;
 
   useEffect(() => {
-    if (timeLeft <= 0) {
-      if (location.pathname === "/quiz/solo")  
-        navigate("/quiz/results?mode=solo");
-      if (location.pathname === "/quiz/vsbot") 
-        navigate("/quiz/results?mode=vsbot");
-      return;
-    }
+  const isOnQuizPage =
+    location.pathname === "/quiz/solo" ||
+    location.pathname === "/quiz/vsbot";
 
-    const timer = setInterval(() => setTimeLeft((p) => p - 1), 1000);
+  // Don't countdown or navigate if not on a quiz page
+  if (!isOnQuizPage) return;
 
-    return () => clearInterval(timer);
-  }, [timeLeft, navigate, location.pathname, setTimeLeft]);
+  if (timeLeft <= 0) {
+    if (location.pathname === "/quiz/solo")  navigate("/quiz/results?mode=solo");
+    if (location.pathname === "/quiz/vsbot") navigate("/quiz/results?mode=vsbot");
+    return;
+  }
+
+  const timer = setInterval(() => setTimeLeft((p) => p - 1), 1000);
+  return () => clearInterval(timer);
+}, [timeLeft, navigate, location.pathname, setTimeLeft]);
 
   return (
     <Flex
