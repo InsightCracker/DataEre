@@ -1,51 +1,61 @@
-import { Box, Flex, Text, SimpleGrid, Link, HStack } from "@chakra-ui/react";
+import { Box, Flex, Text, HStack, SimpleGrid } from "@chakra-ui/react";
 import { FaLinkedin, FaInstagram, FaTiktok } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { C } from "./tokens";
 
 const Footer = () => {
+  const socials = [FaInstagram, FaXTwitter, FaLinkedin, FaTiktok];
+
+  const quickLinks = [
+    { label: "Home",     href: "#hero"     },
+    { label: "About Us", href: "#about"    },
+    { label: "Services", href: "#services" },
+    { label: "Features", href: "#features" },
+  ];
+
   return (
     <Box
-      bg="#050812"
-      borderTop="1px solid rgba(19, 44, 207, 0.2)"
-      pt={{ base: "3rem", md: "4rem" }}
-      pb={{ base: "2rem", md: "2.5rem" }}
-      px={{ base: "1.5rem", md: "5%" }}
-      color="white"
+      bg={C.bg0}
+      borderTop="1px solid rgba(74,158,255,0.1)"
+      pt={{ base: "4rem", md: "5rem" }}
+      pb={{ base: "2.5rem", md: "3rem" }}
+      px={{ base: "1.5rem", md: "6%" }}
     >
       <SimpleGrid
         columns={{ base: 1, sm: 2, md: 3 }}
-        spacing={{ base: "2.5rem", md: "3rem" }}
-        maxW="1100px"
-        mx="auto"
-        mb="3rem"
+        spacing={{ base: "3rem", md: "4rem" }}
+        maxW="1100px" mx="auto" mb="4rem"
       >
         {/* Brand */}
         <Box>
-          <Text fontSize="1.5rem" fontWeight="800" mb="0.8rem">
-            Data<Text as="span" color="#4a9eff">Ere</Text>
+          <Text
+            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontSize="1.6rem" fontWeight={900} mb="1rem" letterSpacing="-1px"
+          >
+            Data<Text as="span" color={C.accent}>Ere</Text>
           </Text>
-          <Text fontSize="0.9rem" color="rgba(255,255,255,0.55)" lineHeight="1.7" maxW="240px">
+          <Text
+            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontSize="0.88rem" color={C.muted} lineHeight={1.8}
+            maxW="240px" mb="1.5rem"
+          >
             Your complete data learning hub — quizzes, converters, and reports in one place.
           </Text>
-          <HStack spacing="1rem" mt="1.2rem">
-            {/* TODO: Replace # with actual social media URLs */}
-          {[FaInstagram, FaXTwitter, FaLinkedin, FaTiktok].map((Icon, i) => (
+          <HStack spacing="0.7rem">
+            {socials.map((Icon, i) => (
               <Box
-                key={i}
-                as="a"
-                href="#"
-                w="36px"
-                h="36px"
-                borderRadius="full"
-                bg="rgba(74,158,255,0.1)"
-                border="1px solid rgba(74,158,255,0.2)"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
+                key={i} as="a" href="#"
+                w="36px" h="36px" borderRadius="10px"
+                bg="rgba(74,158,255,0.07)" border="1px solid rgba(74,158,255,0.15)"
+                display="flex" alignItems="center" justifyContent="center"
                 transition="all 0.2s"
-                _hover={{ bg: "rgba(74,158,255,0.2)", transform: "translateY(-2px)" }}
+                _hover={{
+                  bg: "rgba(74,158,255,0.18)",
+                  transform: "translateY(-3px)",
+                  borderColor: "rgba(74,158,255,0.4)",
+                }}
               >
-                <Icon size={15} color="#4a9eff" />
+                <Icon size={14} color={C.accent} />
               </Box>
             ))}
           </HStack>
@@ -53,63 +63,80 @@ const Footer = () => {
 
         {/* Quick Links */}
         <Box>
-          <Text fontWeight="700" fontSize="0.95rem" mb="1.2rem" color="white">
+          <Text
+            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontSize="0.85rem" fontWeight={800} mb="1.5rem"
+            color="white" letterSpacing="0.08em" textTransform="uppercase"
+          >
             Quick Links
           </Text>
-          <Flex direction="column" gap="0.7rem">
-            {[
-              { label: "Home", href: "#hero" },
-              { label: "About Us", href: "#about" },
-              { label: "Services", href: "#services" },
-              { label: "Features", href: "#features" },
-            ].map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                fontSize="0.9rem"
-                color="rgba(255,255,255,0.55)"
-                textDecoration="none"
-                _hover={{ color: "#4a9eff", textDecoration: "none" }}
-                transition="color 0.2s"
+          <Flex direction="column" gap="0.85rem">
+            {quickLinks.map((l) => (
+              <Box
+                key={l.label} as="a" href={l.href}
+                fontFamily="'Cabinet Grotesk',sans-serif"
+                fontSize="0.9rem" color={C.muted}
+                textDecoration="none" fontWeight={500}
+                transition="color 0.2s, padding-left 0.2s"
+                _hover={{ color: C.accent, pl: "4px", textDecoration: "none" }}
               >
-                {link.label}
-              </Link>
+                {l.label}
+              </Box>
             ))}
           </Flex>
         </Box>
 
         {/* Contact */}
         <Box>
-          <Text fontWeight="700" fontSize="0.95rem" mb="1.2rem" color="white">
+          <Text
+            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontSize="0.85rem" fontWeight={800} mb="1.5rem"
+            color="white" letterSpacing="0.08em" textTransform="uppercase"
+          >
             Contact
           </Text>
-          <Flex direction="column" gap="0.7rem">
-            <Text fontSize="0.9rem" color="rgba(255,255,255,0.55)">
-              Have questions or feedback?
-            </Text>
-            {/* TODO: Replace with actual company email */}
-            <Link
-              href="mailto:hello@dataere.com"
-              fontSize="0.9rem"
-              color="#4a9eff"
-              textDecoration="none"
-              _hover={{ textDecoration: "underline" }}
-            >
-              hello@dataere.com
-            </Link>
-          </Flex>
+          <Text
+            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontSize="0.88rem" color={C.muted} mb="0.8rem" lineHeight={1.7}
+          >
+            Have questions or feedback? We'd love to hear from you.
+          </Text>
+          <Box
+            as="a" href="mailto:hello@dataere.com"
+            fontFamily="'Cabinet Grotesk',sans-serif"
+            fontSize="0.9rem" color={C.accent} fontWeight={600}
+            textDecoration="none"
+            _hover={{ textDecoration: "underline" }}
+          >
+            hello@dataere.com
+          </Box>
         </Box>
       </SimpleGrid>
 
       {/* Bottom bar */}
       <Box
-        borderTop="1px solid rgba(255,255,255,0.08)"
-        pt="1.5rem"
-        textAlign="center"
+        borderTop="1px solid rgba(255,255,255,0.06)" pt="2rem"
+        display="flex" flexWrap="wrap"
+        justifyContent="space-between" alignItems="center"
+        gap="1rem" maxW="1100px" mx="auto"
       >
-        <Text fontSize="0.82rem" color="rgba(255,255,255,0.35)">
+        <Text fontFamily="'Cabinet Grotesk',sans-serif" fontSize="0.8rem" color={C.dim}>
           © 2026 DataEre. All rights reserved.
         </Text>
+        <HStack spacing="1.5rem">
+          {["Privacy Policy", "Terms of Service"].map((t) => (
+            <Box
+              key={t} as="a" href="#"
+              fontFamily="'Cabinet Grotesk',sans-serif"
+              fontSize="0.8rem" color={C.dim}
+              textDecoration="none"
+              _hover={{ color: C.muted, textDecoration: "none" }}
+              transition="color 0.2s"
+            >
+              {t}
+            </Box>
+          ))}
+        </HStack>
       </Box>
     </Box>
   );
