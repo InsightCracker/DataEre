@@ -42,7 +42,7 @@ export const sendPasswordResetEmail = async (toEmail, resetURL, username) => {
                       </p>
                       <p style="margin:0 0 24px;font-size:15px;color:#4b5563;line-height:1.6;">
                         Hi ${username}, we received a request to reset the password for your DataEre account.
-                        Click the button below — this link is valid for <strong>1 hour</strong>.
+                        Click the button below. This link is valid for <strong>1 hour</strong>.
                       </p>
 
                       <!-- CTA Button -->

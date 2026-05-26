@@ -7,7 +7,7 @@ import cors from "cors";
 // import path from "path";
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import connectDB from "./config/db.js";
+import connectDB from "./config/Db.js";
 import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
