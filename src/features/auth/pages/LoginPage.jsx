@@ -241,7 +241,11 @@ const LoginPage = () => {
           </Box>
 
           {/* Submit */}
-          <Box as="button" onClick={login_handler} disabled={loading}
+          <Box 
+            as="button" 
+            onClick={login_handler} 
+            // onClick={navigate("/users/profile")}
+            disabled={loading}
             style={anim(280)}
             sx={{
               width: "100%", py: "13px", borderRadius: "12px",

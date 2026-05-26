@@ -7,14 +7,33 @@ import cors from "cors";
 // import path from "path";
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// ─── Middleware ───────────────────────────────────────────────────────────────
+app.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  credentials: true,
+}));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const upload = multer({ dest: "uploads/" });
+
+// ─── Database ─────────────────────────────────────────────────────────────────
+connectDB();
+
+// ─── Auth Routes ──────────────────────────────────────────────────────────────
+// POST /api/auth/register
+// POST /api/auth/login
+// POST /api/auth/forgot-password
+// POST /api/auth/reset-password/:token
+app.use("/api/auth", authRoutes);
+
 
 // // ================= PDF CONVERTER =================
 // app.post("/api/convert", upload.single("file"), async (req, res) => {
@@ -36,18 +55,18 @@ const upload = multer({ dest: "uploads/" });
 //       outputPath = `output/${Date.now()}.csv`;
 //       const csvContent = table.map((row) => row.join(",")).join("\n");
 //       fs.writeFileSync(outputPath, csvContent);
-//     } 
+//     }
 //     else if (format === "xlsx") {
 //       outputPath = `output/${Date.now()}.xlsx`;
 //       const wb = XLSX.utils.book_new();
 //       const ws = XLSX.utils.aoa_to_sheet(table);
 //       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 //       XLSX.writeFile(wb, outputPath);
-//     } 
+//     }
 //     else if (format === "json") {
 //       outputPath = `output/${Date.now()}.json`;
 //       fs.writeFileSync(outputPath, JSON.stringify(table, null, 2));
-//     } 
+//     }
 //     else {
 //       return res.status(400).send("Invalid format");
 //     }
@@ -67,8 +86,7 @@ const upload = multer({ dest: "uploads/" });
 // ================= AI SETUP =================
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Use a valid text generation model
-const AI_MODEL = "text-bison-001"; // Replace with the correct model name for your account
+const AI_MODEL = "gemini-1.5-flash"; // Updated: text-bison-001 is deprecated
 
 // ================= GENERATE QUESTIONS =================
 app.post("/api/generate", async (req, res) => {
@@ -91,10 +109,8 @@ app.post("/api/generate", async (req, res) => {
     const result = await model.generateContent(prompt);
 
     let resultText = result.response.text();
-    // Remove ```json or ``` if AI wraps it
     resultText = resultText.replace(/```json|```/g, "").trim();
 
-    // Parse JSON safely
     let parsed;
     try {
       parsed = JSON.parse(resultText);
@@ -121,7 +137,21 @@ app.get("/api/test-ai", async (req, res) => {
   }
 });
 
+// ─── Health Check ─────────────────────────────────────────────────────────────
+app.get("/api/health", (req, res) => {
+  res.json({ success: true, message: "DataEre API is running 🚀" });
+});
 
+// ─── 404 Handler ─────────────────────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not found" });
+});
+
+// ─── Global Error Handler ─────────────────────────────────────────────────────
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ success: false, message: "Internal server error" });
+});
 
 // ================= START SERVER =================
 const PORT = process.env.PORT || 5000;
