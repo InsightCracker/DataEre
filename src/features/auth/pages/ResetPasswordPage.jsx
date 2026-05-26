@@ -1,18 +1,22 @@
 import {
-  Box,
-  Text,
-  Input,
-  InputGroup,
+  Box, 
+  Text, 
+  Input, 
+  InputGroup, 
   InputLeftElement,
-  Spinner,
-  Flex,
-  useToast,
+  InputRightElement, 
+  IconButton, 
+  Spinner, 
+  Flex, 
+  useToast
 } from "@chakra-ui/react";
-import { LuMail } from "react-icons/lu";
+
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { LuLock } from "react-icons/lu";
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { showToast } from "../../../util/toastUtil";
-import { useNavigate } from "react-router-dom";
-// import { forgotPassword } from "../../../util/api";
+import { resetPassword } from "../../../util/api";
 
 const C = {
   bg:      "#f0f4ff",
@@ -50,9 +54,6 @@ const Orbs = () => (
     <Box position="absolute" bottom="-60px" right="-60px" w="300px" h="300px" borderRadius="full"
       bg="radial-gradient(circle, rgba(107,150,245,0.12) 0%, transparent 70%)"
       style={{ animation: "floatB 10s ease-in-out infinite" }} pointerEvents="none" />
-    <Box position="absolute" top="40%" left="60%" w="200px" h="200px" borderRadius="full"
-      bg="radial-gradient(circle, rgba(124,92,252,0.07) 0%, transparent 70%)"
-      style={{ animation: "floatA 12s ease-in-out infinite reverse" }} pointerEvents="none" />
   </>
 );
 
@@ -65,38 +66,46 @@ const GridBg = () => (
     }} />
 );
 
-const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState("");
+const ResetPasswordPage = () => {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const { token } = useParams();
   const toast = useToast();
   const navigate = useNavigate();
 
   useEffect(() => { setTimeout(() => setMounted(true), 60); }, []);
 
-  const forgot_password_handler = async () => {
+  const reset_handler = async () => {
     if (loading) return;
 
-    if (!email) {
-      showToast(toast, "warning", "Email is required");
+    if (!password || !confirm) {
+      showToast(toast, "warning", "Both fields are required");
+      return;
+    }
+    if (password.length < 6) {
+      showToast(toast, "warning", "Password must be at least 6 characters");
+      return;
+    }
+    if (password !== confirm) {
+      showToast(toast, "error", "Passwords do not match");
       return;
     }
 
     setLoading(true);
-
     try {
-      // const res = await forgotPassword(email);
-
+      const res = await resetPassword(token, password);
       if (res.success) {
-        showToast(toast, "success", "Password reset link sent to your email 📩");
-        setTimeout(() => {
-          navigate("/users/login");
-        }, 1200);
+        showToast(toast, "success", "Password reset! Redirecting to login...");
+        setTimeout(() => navigate("/users/login"), 1500);
       } else {
-        showToast(toast, "error", res.message || "Unable to process request");
+        showToast(toast, "error", res.message || "Link is invalid or expired");
       }
-    } catch (err) {
+    } catch {
       showToast(toast, "error", "Network error. Please try again.");
     } finally {
       setLoading(false);
@@ -106,7 +115,8 @@ const ForgotPasswordPage = () => {
   const anim = (delay = 0) => ({
     opacity: mounted ? 1 : 0,
     transform: mounted ? "translateY(0)" : "translateY(22px)",
-    transition: `opacity 0.55s ease ${delay}ms, transform 0.55s cubic-bezier(0.34,1.2,0.64,1) ${delay}ms`,
+    transition: `opacity 0.55s ease ${delay}ms, 
+        transform 0.55s cubic-bezier(0.34,1.2,0.64,1) ${delay}ms`,
   });
 
   return (
@@ -116,28 +126,29 @@ const ForgotPasswordPage = () => {
 
       <style>{`
         @keyframes floatA { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-18px) scale(1.04)} }
-        @keyframes floatB { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(14px) scale(0.97)} }
-        @keyframes shimmerText {
-          0%{background-position:200% center}
-          100%{background-position:-200% center}
-        }
+
+        @keyframes floatB { 0%,100%{transform:translateY(0) scale(1)} 
+            50%{transform:translateY(14px) scale(0.97)} }
+
+        @keyframes shimmerText { 0%{background-position:200% center} 
+        100%{background-position:-200% center} }
+
         @keyframes pulseRing {
           0%,100%{box-shadow:0 0 0 0 rgba(59,110,240,0.18)}
           50%{box-shadow:0 0 0 8px rgba(59,110,240,0)}
         }
+
         @keyframes spinSlow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
       `}</style>
 
       <GridBg />
       <Orbs />
 
-      {/* Decorative spinning rings */}
-      <Box position="absolute" top="12%" right="8%"
-        w="90px" h="90px" borderRadius="full"
+      <Box position="absolute" top="12%" right="8%" w="90px" h="90px" borderRadius="full"
         border="1.5px dashed rgba(59,110,240,0.20)"
         style={{ animation: "spinSlow 18s linear infinite" }} pointerEvents="none" />
-      <Box position="absolute" bottom="15%" left="6%"
-        w="60px" h="60px" borderRadius="full"
+        
+      <Box position="absolute" bottom="15%" left="6%" w="60px" h="60px" borderRadius="full"
         border="1.5px dashed rgba(107,150,245,0.18)"
         style={{ animation: "spinSlow 24s linear infinite reverse" }} pointerEvents="none" />
 
@@ -146,8 +157,8 @@ const ForgotPasswordPage = () => {
         {/* Logo */}
         <Box textAlign="center" mb="2rem" style={anim(0)}>
           <Text fontFamily="'Sora', sans-serif" fontSize="1.8rem"
-            fontWeight={900} letterSpacing="-1px" color={C.text} cursor="pointer"
-            as="a" href="/">
+            fontWeight={900} letterSpacing="-1px" color={C.text}
+            cursor="pointer" as="a" href="/">
             Data
             <Text as="span" sx={{
               background: "linear-gradient(135deg,#2251cc,#3b6ef0,#6b96f5)",
@@ -164,59 +175,81 @@ const ForgotPasswordPage = () => {
           border="1px solid rgba(59,110,240,0.12)"
           boxShadow="0 8px 40px rgba(59,110,240,0.10), 0 2px 8px rgba(0,0,0,0.04)"
           px={{ base: "1.8rem", md: "2.4rem" }} py="2.4rem"
-          position="relative" overflow="hidden"
-          style={anim(80)}>
+          position="relative" overflow="hidden" style={anim(80)}>
 
-          {/* Top accent line */}
           <Box position="absolute" top={0} left="10%" right="10%" h="2px"
             bg="linear-gradient(90deg,transparent,#3b6ef0,#6b96f5,transparent)" borderRadius="full" />
 
           {/* Badge */}
           <Box display="inline-flex" alignItems="center" gap="6px"
             px="0.85rem" py="0.35rem" borderRadius="full"
-            bg="rgba(59,110,240,0.07)" border="1px solid rgba(59,110,240,0.18)"
-            mb="1.2rem">
+            bg="rgba(59,110,240,0.07)" border="1px solid rgba(59,110,240,0.18)" mb="1.2rem">
             <Box w="5px" h="5px" borderRadius="full" bg={C.accent}
               boxShadow="0 0 6px rgba(59,110,240,0.6)"
               style={{ animation: "pulseRing 2.5s ease infinite" }} />
             <Text fontSize="0.72rem" fontWeight={700} color={C.accent}
               letterSpacing="0.08em" textTransform="uppercase" fontFamily="'Sora',sans-serif">
-              Password Reset
+              New Password
             </Text>
           </Box>
 
           <Text fontFamily="'Sora', sans-serif" fontSize={{ base: "1.4rem", md: "1.6rem" }}
             fontWeight={800} color={C.text} letterSpacing="-0.5px" mb="0.3rem">
-            Forgot your password?
+            Set a new password
           </Text>
           <Text fontSize="0.88rem" color={C.muted} mb="1.8rem" lineHeight={1.6}>
-            Enter your email and we'll send you a reset link.
+            Choose a strong password for your DataEre account.
           </Text>
 
-          {/* Email */}
-          <Box mb="1.6rem" style={anim(160)}>
+          {/* New Password */}
+          <Box mb="1.1rem" style={anim(160)}>
             <Text fontSize="0.8rem" fontWeight={600} color={C.muted} mb="0.45rem"
               letterSpacing="0.02em" fontFamily="'Sora',sans-serif">
-              Email address
+              New password
             </Text>
             <InputGroup>
               <InputLeftElement pointerEvents="none" mt="1px">
-                <LuMail color={C.accent} size={15} />
+                <LuLock color={C.accent} size={15} />
               </InputLeftElement>
-              <Input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                variant="outline"
-                type="email"
-                placeholder="you@example.com"
-                sx={inputSx}
-              />
+              <Input value={password} variant="outline"
+                type={showPass ? "text" : "password"}
+                placeholder="At least 6 characters"
+                onChange={(e) => setPassword(e.target.value)} sx={inputSx} />
+              <InputRightElement>
+                <IconButton size="sm" variant="ghost" onClick={() => setShowPass(!showPass)}
+                  icon={showPass ? <ViewOffIcon color={C.dim} /> : <ViewIcon color={C.dim} />}
+                  aria-label="Toggle password"
+                  _hover={{ bg: "rgba(59,110,240,0.07)" }} />
+              </InputRightElement>
+            </InputGroup>
+          </Box>
+
+          {/* Confirm Password */}
+          <Box mb="1.6rem" style={anim(220)}>
+            <Text fontSize="0.8rem" fontWeight={600} color={C.muted} mb="0.45rem"
+              letterSpacing="0.02em" fontFamily="'Sora',sans-serif">
+              Confirm password
+            </Text>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" mt="1px">
+                <LuLock color={C.accent} size={15} />
+              </InputLeftElement>
+              <Input value={confirm} variant="outline"
+                type={showConfirm ? "text" : "password"}
+                placeholder="Re-enter your password"
+                onChange={(e) => setConfirm(e.target.value)} sx={inputSx} />
+              <InputRightElement>
+                <IconButton size="sm" variant="ghost" onClick={() => setShowConfirm(!showConfirm)}
+                  icon={showConfirm ? <ViewOffIcon color={C.dim} /> : <ViewIcon color={C.dim} />}
+                  aria-label="Toggle confirm password"
+                  _hover={{ bg: "rgba(59,110,240,0.07)" }} />
+              </InputRightElement>
             </InputGroup>
           </Box>
 
           {/* Submit */}
-          <Box as="button" onClick={forgot_password_handler} disabled={loading}
-            style={anim(220)}
+          <Box as="button" onClick={reset_handler} disabled={loading}
+            style={anim(280)}
             sx={{
               width: "100%", py: "13px", borderRadius: "12px",
               background: loading
@@ -235,18 +268,17 @@ const ForgotPasswordPage = () => {
               },
               _active: { transform: "translateY(0)" },
             }}>
-            {loading ? <Spinner size="sm" color="white" /> : "Send Reset Link"}
+            {loading ? <Spinner size="sm" color="white" /> : "Reset Password"}
           </Box>
 
           {/* Divider */}
-          <Flex align="center" gap="0.8rem" my="1.4rem" style={anim(280)}>
+          <Flex align="center" gap="0.8rem" my="1.4rem" style={anim(320)}>
             <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
             <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or</Text>
             <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
           </Flex>
 
-          {/* Back to login */}
-          <Box textAlign="center" style={anim(320)}>
+          <Box textAlign="center" style={anim(360)}>
             <Text fontSize="0.875rem" color={C.muted}>
               Remember your password?{" "}
               <Text as="a" href="/users/login" color={C.accent} fontWeight={700}
@@ -257,8 +289,7 @@ const ForgotPasswordPage = () => {
           </Box>
         </Box>
 
-        {/* Footer note */}
-        <Box textAlign="center" mt="1.6rem" style={anim(360)}>
+        <Box textAlign="center" mt="1.6rem" style={anim(400)}>
           <Text fontSize="0.75rem" color={C.dim}>
             By continuing, you agree to our{" "}
             <Text as="a" href="#" color={C.accent3} _hover={{ textDecoration: "underline" }}>
@@ -271,4 +302,4 @@ const ForgotPasswordPage = () => {
   );
 };
 
-export default ForgotPasswordPage;
+export default ResetPasswordPage;
