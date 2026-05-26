@@ -1,7 +1,7 @@
 import { Box, Flex, Text, SimpleGrid } from "@chakra-ui/react";
 import { FaBook, FaLaptopCode, FaChartLine } from "react-icons/fa";
 import { C, lineGrow, useFadeIn } from "./Tokens";
-import { SectionHeader } from "./shared";
+import { SectionHeader } from "./Shared";
 
 const steps = [
   {
