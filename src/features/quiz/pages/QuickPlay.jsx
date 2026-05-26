@@ -5,6 +5,7 @@ import { QuizContext } from "../../../util/Contexts";
 import { FaHome } from "react-icons/fa";
 import Navbar from "../../../util/Navbar";
 import SoloPlay from "../components/SoloPlay"; 
+import Sidebar from "../../profile/components/Sidebar";
 
 const QuickPlay = () => {
   const { 
@@ -48,12 +49,16 @@ const QuickPlay = () => {
       bgColor: '#fff',
       color: '#000'
     }}>
-      <Box sx={{
-          maxW: '600px',
-          m: '0 auto'
-        }}>
-          <Navbar />
-          <SoloPlay />
+      <Box>
+        <Sidebar />
+
+          <Box className="main" sx={{
+            maxW: '600px',
+            m: '0 auto'
+          }}>
+            <Navbar />
+            <SoloPlay />
+        </Box>
       </Box>
     </Box>
   )
