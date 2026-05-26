@@ -86,8 +86,6 @@ const ForgotPasswordPage = () => {
     setLoading(true);
 
     try {
-      // const res = await forgotPassword(email);
-
       if (res.success) {
         showToast(toast, "success", "Password reset link sent to your email 📩");
         setTimeout(() => {

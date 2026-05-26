@@ -8,6 +8,7 @@ import LandingPage from "./features/landing/pages/LandingPage";
 import LoginPage from "./features/auth/pages/LoginPage";
 import SignupPage from './features/auth/pages/SIgnupPage';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
 import QuizDashboard from './features/quiz/pages/QuizDashboard';
 import Results from './features/quiz/pages/Result';
@@ -180,6 +181,7 @@ function App() {
             <Route path="/users/login" element={<LoginPage />} />
             <Route path="/users/signup" element={<SignupPage />} />
             <Route path="/users/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/users/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="/users/profile" element={<ProfilePage />} />
             <Route path="/quiz/topics" element={<QuizDashboard />} />
             <Route path="/quiz/solo" element={<QuickPlay />} />
