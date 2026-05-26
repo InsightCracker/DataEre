@@ -9,7 +9,7 @@ import {
 
 import { useEffect, useRef } from "react";
 
-import { C, fadeUp, glowPulse, shimmer, float } from "./tokens";
+import { C, fadeUp, glowPulse, shimmer, float } from "./Tokens";
 
 const Hero = () => {
   const canvasRef = useRef(null);

@@ -1,6 +1,6 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { FaRocket, FaBrain, FaGlobe, FaLightbulb } from "react-icons/fa";
-import { C, useFadeIn } from "./tokens";
+import { C, useFadeIn } from "./Tokens";
 import { SectionHeader, FeatureCard } from "./shared";
 
 const featureItems = [

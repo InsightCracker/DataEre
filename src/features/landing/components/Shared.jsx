@@ -1,5 +1,5 @@
 import { Box, Badge, Text, Flex } from "@chakra-ui/react";
-import { C } from "./tokens";
+import { C } from "./Tokens";
 
 // ─── SectionHeader
 export const SectionHeader = ({ badge, title, highlight, sub, visible, delay = "0s" }) => (

@@ -16,7 +16,7 @@ import {
 
 import { useEffect, useState } from "react";
 
-import { C } from "./tokens";
+import { C } from "./Tokens";
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -30,7 +30,7 @@ const Navbar = () => {
 
   const links = [
     { label: "About",    href: "#about"    },
-    { label: "Services", href: "#services" },
+    { label: "How It Works", href: "#services" },
     { label: "Features", href: "#features" },
   ];
 

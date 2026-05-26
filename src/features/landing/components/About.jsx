@@ -1,7 +1,7 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { BsBarChartFill } from "react-icons/bs";
 import { FaFilePdf, FaBrain, FaFileAlt } from "react-icons/fa";
-import { C, useFadeIn } from "./tokens";
+import { C, useFadeIn } from "./Tokens";
 import { SectionHeader, FeatureCard } from "./shared";
 
 const aboutFeatures = [

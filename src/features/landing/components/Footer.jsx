@@ -1,7 +1,7 @@
 import { Box, Flex, Text, HStack, SimpleGrid } from "@chakra-ui/react";
 import { FaLinkedin, FaInstagram, FaTiktok } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { C } from "./tokens";
+import { C } from "./Tokens";
 
 const Footer = () => {
   const socials = [FaInstagram, FaXTwitter, FaLinkedin, FaTiktok];

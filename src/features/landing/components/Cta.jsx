@@ -1,5 +1,5 @@
 import { Box, Badge, Flex, Text, Button } from "@chakra-ui/react";
-import { C, glowPulse, useFadeIn } from "./tokens";
+import { C, glowPulse, useFadeIn } from "./Tokens";
 
 const CTA = () => {
   const [ref, visible] = useFadeIn();
