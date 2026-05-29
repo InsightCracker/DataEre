@@ -1,11 +1,11 @@
 const BASE_URL =
   import.meta.env.VITE_API_URL ||
-  "https://dataere-main-m9j2if.free.laravel.cloud/api";
+  "http://localhost:5000/api";
 
-// ─── Token Helper 
+// ─── Token Helper ─────────────────────────────────────────────────────────────
 const getToken = () => localStorage.getItem("dataere_token");
 
-// ─── Generic Request Helper 
+// ─── Generic Request Helper ───────────────────────────────────────────────────
 const request = async (
   endpoint,
   method = "GET",
@@ -15,12 +15,10 @@ const request = async (
 ) => {
   const headers = {};
 
-  // Only set JSON header if NOT sending FormData
   if (!isFormData) {
     headers["Content-Type"] = "application/json";
   }
 
-  // Attach token if provided or available globally
   const authToken = token || getToken();
   if (authToken) {
     headers["Authorization"] = `Bearer ${authToken}`;
@@ -39,18 +37,13 @@ const request = async (
   return res.json();
 };
 
-// ─── AUTH ENDPOINTS 
-export const registerUser = (firstName, lastName, email, password, password_confirmation) =>
-  request("/register", "POST", {
-    firstName,
-    lastName,
-    email,
-    password,
-    password_confirmation,
-  });
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+export const registerUser = (username, email, password) =>
+  request("/auth/register", "POST", { username, email, password });
 
-export const loginUser = (email, password) =>
-  request("/login", "POST", { email, password });
+// identifier can be email or username
+export const loginUser = (identifier, password) =>
+  request("/auth/login", "POST", { identifier, password });
 
 export const forgotPassword = (email) =>
   request("/auth/forgot-password", "POST", { email });
@@ -58,10 +51,9 @@ export const forgotPassword = (email) =>
 export const resetPassword = (token, password) =>
   request(`/auth/reset-password/${token}`, "POST", { password });
 
-// ─── FILE UPLOAD 
+// ─── FILE UPLOAD ──────────────────────────────────────────────────────────────
 export const uploadFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
-
   return request("/upload", "POST", formData, null, true);
 };

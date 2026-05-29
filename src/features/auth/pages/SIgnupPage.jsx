@@ -94,17 +94,17 @@ const SignupPage = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   const filledFields = [
-    firstName, 
-    lastName, 
-    email, 
-    password, 
-    passwordConfirmation
+    firstName,
+    lastName,
+    email,
+    password,
+    passwordConfirmation,
   ].filter(Boolean).length;
 
   const togglePassword = () => setShow(!show);
   const { login } = useAuth();
-  const toast     = useToast();
-  const navigate  = useNavigate();
+  const toast    = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => { setTimeout(() => setMounted(true), 60); }, []);
 
@@ -118,12 +118,16 @@ const SignupPage = () => {
     if (password !== passwordConfirmation) {
       showToast(toast, "warning", "Passwords do not match"); return;
     }
+
+    // Combine first + last into a single username for the backend
+    const username = `${firstName.trim()} ${lastName.trim()}`;
+
     setLoading(true);
     try {
-      const res = await registerUser(firstName, lastName, email, password, passwordConfirmation);
+      const res = await registerUser(username, email, password);
       if (res.token) {
         showToast(toast, "success", "Account created successfully 🎉");
-        login(res.data, res.token);
+        login(res.user, res.token);
         setTimeout(() => navigate("/users/profile"), 800);
       } else {
         showToast(toast, "error", res.message || "Registration failed. Please try again.");
@@ -150,22 +154,17 @@ const SignupPage = () => {
       <style>{`
         @keyframes floatA { 0%,100%{transform:translateY(0) scale(1)} 
         50%{transform:translateY(-18px) scale(1.04)} }
-
         @keyframes floatB { 0%,100%{transform:translateY(0) scale(1)} 
         50%{transform:translateY(14px) scale(0.97)} }
-
         @keyframes shimmerText {
           0%{background-position:200% center} 
           100%{background-position:-200% center}
         }
-
         @keyframes pulseRing {
           0%,100%{box-shadow:0 0 0 0 rgba(59,110,240,0.18)}
           50%{box-shadow:0 0 0 8px rgba(59,110,240,0)}
         }
-
         @keyframes spinSlow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-        
         @keyframes checkIn {
           0%{transform:scale(0) rotate(-45deg);opacity:0}
           70%{transform:scale(1.2) rotate(5deg)}
@@ -325,9 +324,7 @@ const SignupPage = () => {
               <Box mt="0.5rem">
                 <Box h="3px" bg="rgba(59,110,240,0.10)" borderRadius="full" overflow="hidden">
                   <Box h="100%" borderRadius="full"
-                    bg={password.length < 4 ? "#f87171" : password.length < 7 
-                      ? "#f59e0b" : "#0ea874"}
-
+                    bg={password.length < 4 ? "#f87171" : password.length < 7 ? "#f59e0b" : "#0ea874"}
                     w={`${Math.min((password.length / 12) * 100, 100)}%`}
                     transition="width 0.35s ease, background 0.35s" />
                 </Box>

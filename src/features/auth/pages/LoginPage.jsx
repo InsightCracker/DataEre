@@ -4,11 +4,10 @@ import {
   InputLeftElement, InputRightElement, IconButton, Spinner, Flex,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { LuMail, LuLock } from "react-icons/lu";
-import { useContext, useState, useEffect } from "react";
+import { LuUser, LuLock } from "react-icons/lu";
+import { useState, useEffect } from "react";
 import { showToast } from "../../../util/toastUtil";
 import { useNavigate } from "react-router-dom";
-import { QuizContext } from "../../../util/Contexts";
 import { useAuth } from "../../../util/AuthContext";
 import { loginUser } from "../../../util/api";
 
@@ -64,38 +63,43 @@ const GridBg = () => (
 );
 
 const LoginPage = () => {
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const togglePassword = () => setShow(!show);
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword]     = useState("");
+  const [show, setShow]             = useState(false);
+  const [loading, setLoading]       = useState(false);
+  const [mounted, setMounted]       = useState(false);
 
-  const { email, setEmail, password, setPassword } = useContext(QuizContext);
   const { login } = useAuth();
-  const toast = useToast();
-  const navigate = useNavigate();
+  const toast     = useToast();
+  const navigate  = useNavigate();
 
   useEffect(() => { setTimeout(() => setMounted(true), 60); }, []);
 
   const login_handler = async () => {
-    if (!email || !password) {
-      showToast(toast, "warning", "Please enter your email and password");
+    if (!identifier || !password) {
+      showToast(toast, "warning", "Please enter your email/username and password");
       return;
     }
     setLoading(true);
     try {
-      const res = await loginUser(email, password);
+      const res = await loginUser(identifier, password);
       if (res.token) {
         showToast(toast, "success", "Login successful");
-        login({ email }, res.token);
+        login(res.user, res.token);
         navigate("/users/profile");
       } else {
-        showToast(toast, "error", res.message || "Incorrect email or password");
+        showToast(toast, "error", res.message || "Incorrect credentials");
       }
     } catch {
       showToast(toast, "error", "Unable to login. Check your connection and try again.");
     } finally {
       setLoading(false);
     }
+  };
+
+  // Allow Enter key to submit
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") login_handler();
   };
 
   const anim = (delay = 0) => ({
@@ -111,17 +115,12 @@ const LoginPage = () => {
       fontFamily="'DM Sans', sans-serif">
 
       <style>{`
-        @keyframes floatA { 0%,100%{transform:translateY(0) 
-        scale(1)} 50%{transform:translateY(-18px) scale(1.04)} }
-
-        @keyframes floatB { 0%,100%{transform:translateY(0) 
-        scale(1)} 50%{transform:translateY(14px) scale(0.97)} }
-
+        @keyframes floatA { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-18px) scale(1.04)} }
+        @keyframes floatB { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(14px) scale(0.97)} }
         @keyframes shimmerText {
           0%{background-position:200% center} 
           100%{background-position:-200% center}
         }
-
         @keyframes pulseRing {
           0%,100%{box-shadow:0 0 0 0 rgba(59,110,240,0.18)}
           50%{box-shadow:0 0 0 8px rgba(59,110,240,0)}
@@ -132,13 +131,10 @@ const LoginPage = () => {
       <GridBg />
       <Orbs />
 
-      {/* Decorative spinning ring */}
-      <Box position="absolute" top="12%" right="8%"
-        w="90px" h="90px" borderRadius="full"
+      <Box position="absolute" top="12%" right="8%" w="90px" h="90px" borderRadius="full"
         border="1.5px dashed rgba(59,110,240,0.20)"
         style={{ animation: "spinSlow 18s linear infinite" }} pointerEvents="none" />
-      <Box position="absolute" bottom="15%" left="6%"
-        w="60px" h="60px" borderRadius="full"
+      <Box position="absolute" bottom="15%" left="6%" w="60px" h="60px" borderRadius="full"
         border="1.5px dashed rgba(107,150,245,0.18)"
         style={{ animation: "spinSlow 24s linear infinite reverse" }} pointerEvents="none" />
 
@@ -162,7 +158,7 @@ const LoginPage = () => {
 
         {/* Card */}
         <Box bg={C.card} borderRadius="24px"
-          border={`1px solid rgba(59,110,240,0.12)`}
+          border="1px solid rgba(59,110,240,0.12)"
           boxShadow="0 8px 40px rgba(59,110,240,0.10), 0 2px 8px rgba(0,0,0,0.04)"
           px={{ base: "1.8rem", md: "2.4rem" }} py="2.4rem"
           position="relative" overflow="hidden"
@@ -194,19 +190,25 @@ const LoginPage = () => {
             Continue your data learning journey
           </Text>
 
-          {/* Email */}
+          {/* Email or Username */}
           <Box mb="1.1rem" style={anim(160)}>
             <Text fontSize="0.8rem" fontWeight={600} color={C.muted} mb="0.45rem"
               letterSpacing="0.02em" fontFamily="'Sora',sans-serif">
-              Email address
+              Email or username
             </Text>
             <InputGroup>
               <InputLeftElement pointerEvents="none" mt="1px">
-                <LuMail color={C.accent} size={15} />
+                <LuUser color={C.accent} size={15} />
               </InputLeftElement>
-              <Input value={email} variant="outline" type="email"
-                placeholder="you@example.com"
-                onChange={(e) => setEmail(e.target.value)} sx={inputSx} />
+              <Input
+                value={identifier}
+                variant="outline"
+                type="text"
+                placeholder="you@example.com or johndoe"
+                onChange={(e) => setIdentifier(e.target.value)}
+                onKeyDown={handleKeyDown}
+                sx={inputSx}
+              />
             </InputGroup>
           </Box>
 
@@ -227,12 +229,17 @@ const LoginPage = () => {
               <InputLeftElement pointerEvents="none" mt="1px">
                 <LuLock color={C.accent} size={15} />
               </InputLeftElement>
-              <Input value={password} variant="outline"
+              <Input
+                value={password}
+                variant="outline"
                 type={show ? "text" : "password"}
                 placeholder="Enter your password"
-                onChange={(e) => setPassword(e.target.value)} sx={inputSx} />
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={handleKeyDown}
+                sx={inputSx}
+              />
               <InputRightElement>
-                <IconButton size="sm" variant="ghost" onClick={togglePassword}
+                <IconButton size="sm" variant="ghost" onClick={() => setShow(!show)}
                   icon={show ? <ViewOffIcon color={C.dim} /> : <ViewIcon color={C.dim} />}
                   aria-label="Toggle password visibility"
                   _hover={{ bg: "rgba(59,110,240,0.07)" }} />
@@ -241,11 +248,7 @@ const LoginPage = () => {
           </Box>
 
           {/* Submit */}
-          <Box 
-            as="button" 
-            onClick={login_handler} 
-            // onClick={navigate("/users/profile")}
-            disabled={loading}
+          <Box as="button" onClick={login_handler} disabled={loading}
             style={anim(280)}
             sx={{
               width: "100%", py: "13px", borderRadius: "12px",
