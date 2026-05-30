@@ -110,7 +110,8 @@ const LoginPage = () => {
   });
 
   return (
-    <Box minH="100vh" bg={C.bg} display="flex" alignItems="center" justifyContent="center"
+    <Box 
+      minH="100vh" bg={C.bg} display="flex" alignItems="center" justifyContent="center"
       px="1.5rem" py="2rem" position="relative" overflow="hidden"
       fontFamily="'DM Sans', sans-serif">
 

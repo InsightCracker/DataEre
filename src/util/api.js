@@ -2,10 +2,8 @@ const BASE_URL =
   import.meta.env.VITE_API_URL ||
   "http://localhost:5000/api";
 
-// ─── Token Helper ─────────────────────────────────────────────────────────────
 const getToken = () => localStorage.getItem("dataere_token");
 
-// ─── Generic Request Helper ───────────────────────────────────────────────────
 const request = async (
   endpoint,
   method = "GET",
@@ -37,7 +35,7 @@ const request = async (
   return res.json();
 };
 
-// ─── AUTH ─────────────────────────────────────────────────────────────────────
+// ─── AUTH 
 export const registerUser = (username, email, password) =>
   request("/auth/register", "POST", { username, email, password });
 
@@ -51,7 +49,7 @@ export const forgotPassword = (email) =>
 export const resetPassword = (token, password) =>
   request(`/auth/reset-password/${token}`, "POST", { password });
 
-// ─── FILE UPLOAD ──────────────────────────────────────────────────────────────
+// ─── FILE UPLOAD
 export const uploadFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);

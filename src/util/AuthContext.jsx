@@ -12,11 +12,17 @@ const safeParseUser = () => {
   }
 };
 
+// Split "John Doe" → { firstName: "John", lastName: "Doe" }
+const splitUsername = (username = "") => {
+  const parts = username.trim().split(" ");
+  const firstName = parts[0] || "";
+  const lastName  = parts.slice(1).join(" ") || "";
+  return { firstName, lastName };
+};
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(safeParseUser());
-  const [token, setToken] = useState(
-    localStorage.getItem('dataere_token') || null
-  );
+  const [user, setUser]   = useState(safeParseUser());
+  const [token, setToken] = useState(localStorage.getItem('dataere_token') || null);
 
   const login = (userData, authToken) => {
     setUser(userData);
@@ -32,8 +38,29 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('dataere_token');
   };
 
+  // Derived values — always in sync with user object
+  const { firstName, lastName } = splitUsername(user?.username);
+  const email    = user?.email    || "";
+  const userId   = user?.id       || null;
+  const username = user?.username || "";
+  const isLoggedIn = !!token;
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{
+      // Raw
+      user,
+      token,
+      // Derived
+      userId,
+      username,
+      firstName,
+      lastName,
+      email,
+      isLoggedIn,
+      // Actions
+      login,
+      logout,
+    }}>
       {children}
     </AuthContext.Provider>
   );

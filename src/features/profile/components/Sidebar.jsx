@@ -1,55 +1,59 @@
 import { Box } from "@chakra-ui/react";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../util/AuthContext";
 import {
   FaHome,
   FaQuestionCircle,
   FaTrophy,
   FaFilePdf,
-  FaChartBar, 
+  FaChartBar,
   FaSignOutAlt,
 } from "react-icons/fa";
 import "../styles/sidebar.css";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
-  const { logout, user } = useAuth();
-const location = useLocation();
+  const navigate  = useNavigate();
+  const location  = useLocation();
+  const { logout, firstName, lastName, email } = useAuth();
+
   const handleLogout = () => {
     logout();
     navigate("/users/login");
   };
 
   const navLinks = [
-    { label: "Dashboard", icon: FaHome, path: "/users/profile" },
-    { label: "Quizzes", icon: FaQuestionCircle, path: "/quiz/topics" },
-    { label: "Leaderboard", icon: FaTrophy, path: "/board" },
-    { label: "PDF Converter", icon: FaFilePdf, path: "/converter" },
-    { label: "Reports", icon: FaChartBar, path: "/reports" },
+    { label: "Dashboard",    icon: FaHome,          path: "/users/profile" },
+    { label: "Quizzes",      icon: FaQuestionCircle, path: "/quiz/topics" },
+    { label: "Leaderboard",  icon: FaTrophy,         path: "/board" },
+    { label: "PDF Converter", icon: FaFilePdf,       path: "/converter" },
+    { label: "Reports",      icon: FaChartBar,       path: "/reports" },
   ];
+
+  const avatarLetter = firstName
+    ? firstName[0].toUpperCase()
+    : email
+    ? email[0].toUpperCase()
+    : "U";
+
+  
+  const displayName = firstName
+    ? `${firstName}${lastName ? " " + lastName : ""}`
+    : "Welcome!";
 
   return (
     <Box className="sidebar">
-      {/* Logo Section */}
-      {/* <div className="sidebar-logo">
-        <h1>DataEre</h1>
-      </div> */}
-    {/* User Profile Section */}
+
+      {/* User Profile Section */}
       <div className="sidebar-profile">
         <div className="sidebar-avatar">
-          {
-            user?.firstName ? 
-            user.firstName[0].toUpperCase() : 
-            user?.email ? 
-            user.email[0].toUpperCase() : "U"}
+          {avatarLetter}
         </div>
         <div className="sidebar-user-info">
-          <p className="sidebar-user-name">
-            {user?.firstName ? `${user.firstName} ${user.lastName}` : "Welcome!"}
-          </p>
-          <p className="sidebar-user-email">{user?.email || ""}</p>
+          <p className="sidebar-user-name">{displayName}</p>
+          <p className="sidebar-user-email">{email}</p>
         </div>
       </div>
+
       {/* Nav Links Section */}
       <nav className="sidebar-nav">
         <ul>
@@ -63,7 +67,7 @@ const location = useLocation();
                     e.preventDefault();
                     navigate(link.path);
                   }}
-                 className={`nav-link ${location.pathname === link.path ? "active" : ""}`}
+                  className={`nav-link ${location.pathname === link.path ? "active" : ""}`}
                 >
                   <Icon className="nav-icon" />
                   <span>{link.label}</span>
@@ -81,6 +85,7 @@ const location = useLocation();
           <span>Logout</span>
         </button>
       </div>
+
     </Box>
   );
 };

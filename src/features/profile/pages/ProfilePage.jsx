@@ -42,14 +42,14 @@ const fetchDailyChallenge = async () => {
   );
 };
 
-const ProfilePage = () => {
 
+const ProfilePage = () => {
   const [challenge, setChallenge] = useState(null);
   const [timeLeft, setTimeLeft] = useState(86400);
   const [progress] = useState(4);
   const toast = useToast();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { firstName } = useAuth();
 
   // Timer logic
     useEffect(() => {
@@ -91,7 +91,7 @@ const ProfilePage = () => {
       
       <Box className="dashboard_container">
         <div className="profile">
-          <h1 className="welcome-heading">Welcome back, {user?.firstName}</h1>
+          <h1 className="welcome-heading">Welcome back, {firstName}</h1>
 
           <div className="dash-list">
             <div className="rank-badge">
