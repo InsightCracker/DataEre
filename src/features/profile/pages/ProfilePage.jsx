@@ -12,7 +12,11 @@ import {
 } from "@chakra-ui/react";
 
 import { SiThunderstore } from "react-icons/si";
+
 import { useAuth } from "../../../util/AuthContext";
+import { getMyScores } from "../../../util/api";
+import { getLeaderboard } from "../../../util/api";
+
 import {
   FaAward,
   FaBullseye,
@@ -50,6 +54,30 @@ const ProfilePage = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { firstName } = useAuth();
+  const [stats, setStats] = useState({ totalCorrect: 0, total: 0, avgScore: 0 });
+  const [scores, setScores] = useState([]);
+  const [bestSkill, setBestSkill] = useState(null);
+  const [worstSkill, setWorstSkill] = useState(null);
+  const [topicAverages, setTopicAverages] = useState([]);
+  const [board, setBoard] = useState([]);
+
+  useEffect(() => {
+    getMyScores().then((res) => {
+      if (res.success) {
+        setStats(res.data.stats);
+        setScores(res.data.scores);
+        setBestSkill(res.data.bestSkill);
+        setWorstSkill(res.data.worstSkill);
+        setTopicAverages(res.data.topicAverages);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    getLeaderboard().then((res) => {
+      if (res.success) setBoard(res.data);
+    });
+  }, []);
 
   // Timer logic
     useEffect(() => {
@@ -121,7 +149,7 @@ const ProfilePage = () => {
               </Box>
               <div className="list-text">
                 <p>Total Points</p>
-                <h3>0 pts</h3>
+                <h3>{stats.totalCorrect} pts</h3>
               </div>
             </div>
           </div>
@@ -194,19 +222,19 @@ const ProfilePage = () => {
               <div className="third-inner">
                 <div>
                   <p>
-                    Quizzes Taken: <span>18</span>
+                    Quizzes Taken: <span>{stats.total}</span>
                   </p>
                   <p>
-                    Best Skill: <span>Excel</span>
+                    Best Skill: <span>{bestSkill.topic}</span>
                   </p>
                 </div>
 
                 <div>
                   <p>
-                    Average Score <span>82%</span>
+                    Average Score <span>{stats.avgScore}%</span>
                   </p>
                   <p>
-                    Weak Skill: <span>SQL</span>
+                    Weak Skill: <span>{topicAverages.length > 1 ? worstSkill.topic : "N/A"}</span>
                   </p>
                 </div>
               </div>

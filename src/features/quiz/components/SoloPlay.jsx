@@ -12,18 +12,17 @@ import { keyframes } from "@emotion/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { QuizContext } from "../../../util/Contexts";
+import { saveScore } from "../../../util/api";
 
 // ── Animations 
 const slideUp = keyframes`
   from { opacity:0; transform:translateY(30px) scale(0.97); }
   to   { opacity:1; transform:translateY(0)    scale(1);    }
 `;
-
 const optionIn = keyframes`
   from { opacity:0; transform:translateX(-18px); }
   to   { opacity:1; transform:translateX(0);     }
 `;
-
 const feedbackIn = keyframes`
   from { opacity:0; transform:translateY(12px) scale(0.95); }
   to   { opacity:1; transform:translateY(0)    scale(1);    }
@@ -33,7 +32,6 @@ const correctPop = keyframes`
   50% { transform:translateX(6px) scale(1.03); }
   100%{ transform:translateX(6px) scale(1);    }
 `;
-
 const shakeAnim = keyframes`
   0%,100%{ transform:translateX(6px); }
   20%    { transform:translateX(0);   }
@@ -53,11 +51,11 @@ const difficultyConfig = {
 // ── OptionButton 
 const OptionButton = ({ label, text, index, revealed, isSelected, isCorrect, isWrong, onSelect }) => {
   const borderColor = isCorrect ? "#10b981" : isWrong 
-  ? "#ef4444" : isSelected ? "#4263eb" : "#e2e8f0";
+    ? "#ef4444" : isSelected ? "#4263eb" : "#e2e8f0";
   const bg          = isCorrect ? "#ecfdf5" : isWrong  
-  ? "#fef2f2" : isSelected ? "#eef2ff" : "white";
+    ? "#fef2f2" : isSelected ? "#eef2ff" : "white";
   const letterBg    = isCorrect ? "#10b981" : isWrong  
-  ? "#ef4444" : isSelected ? "#4263eb" : "#f1f5f9";
+    ? "#ef4444" : isSelected ? "#4263eb" : "#f1f5f9";
   const letterColor = (isCorrect || isWrong || isSelected) ? "white" : "#64748b";
 
   const animation = isCorrect
@@ -109,17 +107,8 @@ const OptionButton = ({ label, text, index, revealed, isSelected, isCorrect, isW
   );
 };
 
-
 const SoloPlay = () => {
   const navigate = useNavigate();
-  
-  useEffect(() => {
-  const completed = localStorage.getItem("soloQuizCompleted");
-
-  if (completed === "true") {
-    navigate("/quiz/results?mode=solo");
-  }
-}, [navigate]);
 
   const {
     score, setScore,
@@ -128,23 +117,22 @@ const SoloPlay = () => {
     wrongAnswer, setWrongAnswer,
   } = useContext(QuizContext);
 
-  // optionChosenKey: "A"|"B"|"C"|"D"|""  — which letter is highlighted
   const [optionChosenKey, setOptionChosenKey] = useState("");
-  // revealed: true once an option is clicked
-  const [revealed, setRevealed] = useState(false);
-  // pointsHistory: array of 0|1 per question navigated
-  const [pointsHistory, setPointsHistory] = useState([]);
-  // animKey: forces re-mount of quiz body on navigation → re-triggers animations
-  const [animKey, setAnimKey] = useState(0);
+  const [revealed, setRevealed]               = useState(false);
+  const [pointsHistory, setPointsHistory]     = useState([]);
+  const [animKey, setAnimKey]                 = useState(0);
+
+  // ── Clear stale completion flag when quiz mounts
+  // This prevents instant redirect on a new quiz session
+  useEffect(() => {
+    localStorage.removeItem("soloQuizCompleted");
+  }, []); // empty deps = runs once on mount only
 
   const q = questions[currQuestion];
 
-  // Map answer keys to the question data shape
-  const optionKeys  = ["A", "B", "C", "D"];
-  const answerKeys  = ["answer_a", "answer_b", "answer_c", "answer_d"];
-  const correctKeys = ["answer_a_correct", "answer_b_correct", "answer_c_correct", "answer_d_correct"];
+  const optionKeys = ["A", "B", "C", "D"];
 
-  const getOptionText   = (key) => q.answers?.[`answer_${key.toLowerCase()}`]   ?? "";
+  const getOptionText   = (key) => q.answers?.[`answer_${key.toLowerCase()}`] ?? "";
   const isOptionCorrect = (key) =>
     (q.correct_answers?.[`answer_${key.toLowerCase()}_correct`] ?? "false") === "true";
 
@@ -183,16 +171,30 @@ const SoloPlay = () => {
     setCurrQuestion(currQuestion + 1);
   };
 
-  const finishQuiz = () => {
-    if (chosenIsCorrect) setScore(score + 1);
-    else setWrongAnswer(wrongAnswer + 1);
+  const finishQuiz = async () => {
+    const finalScore = chosenIsCorrect ? score + 1 : score;
+    const finalWrong = chosenIsCorrect ? wrongAnswer : wrongAnswer + 1;
 
-    // SAVE QUIZ STATUS
+    if (chosenIsCorrect) setScore(finalScore);
+    else setWrongAnswer(finalWrong);
+
+    // Save score to backend
+    try {
+      await saveScore({
+        topic:   q.topic ?? q.category ?? "General",
+        score:   finalScore,
+        total:   questions.length,
+        wrong:   finalWrong,
+        skipped: questions.length - finalScore - finalWrong,
+        mode:    "solo",
+      });
+    } catch (err) {
+      console.error("Failed to save score:", err);
+    }
+
     localStorage.setItem("soloQuizCompleted", "true");
-
     setOptionChosenKey("");
     setCurrQuestion(0);
-
     navigate("/quiz/results?mode=solo");
   };
 
@@ -297,7 +299,7 @@ const SoloPlay = () => {
               >
                 {chosenIsCorrect
                   ? "Great answer! That's correct."
-                  : `Not quite. Review the correct option highlighted above.`}
+                  : "Not quite. Review the correct option highlighted above."}
               </Text>
               <Text
                 fontSize="12px" mt={1} opacity={0.75}
@@ -324,7 +326,6 @@ const SoloPlay = () => {
         position="sticky"
         bottom={0}
       >
-        {/* Prev */}
         <Button
           leftIcon={<ArrowLeftIcon />}
           onClick={prevQuestion}
@@ -340,7 +341,6 @@ const SoloPlay = () => {
           Prev
         </Button>
 
-        {/* Skip — hidden on last question */}
         {!isLast && (
           <Button
             onClick={skipQuestion}
@@ -355,7 +355,6 @@ const SoloPlay = () => {
           </Button>
         )}
 
-        {/* Next / Finish */}
         {isLast ? (
           <Button
             rightIcon={<FaRegCheckCircle />}

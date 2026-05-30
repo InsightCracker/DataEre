@@ -2,8 +2,10 @@ const BASE_URL =
   import.meta.env.VITE_API_URL ||
   "http://localhost:5000/api";
 
+// ─── Token Helper ─────────────────────────────────────────────────────────────
 const getToken = () => localStorage.getItem("dataere_token");
 
+// ─── Generic Request Helper ───────────────────────────────────────────────────
 const request = async (
   endpoint,
   method = "GET",
@@ -35,11 +37,10 @@ const request = async (
   return res.json();
 };
 
-// ─── AUTH 
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
 export const registerUser = (username, email, password) =>
   request("/auth/register", "POST", { username, email, password });
 
-// identifier can be email or username
 export const loginUser = (identifier, password) =>
   request("/auth/login", "POST", { identifier, password });
 
@@ -49,7 +50,21 @@ export const forgotPassword = (email) =>
 export const resetPassword = (token, password) =>
   request(`/auth/reset-password/${token}`, "POST", { password });
 
-// ─── FILE UPLOAD
+// ─── SCORES ───────────────────────────────────────────────────────────────────
+
+// Save a score after finishing a quiz
+export const saveScore = ({ topic, score, total, wrong, skipped, mode }) =>
+  request("/scores", "POST", { topic, score, total, wrong, skipped, mode });
+
+// Get logged-in user's scores + stats (for profile page)
+export const getMyScores = () =>
+  request("/scores/me", "GET");
+
+// Get leaderboard (public)
+export const getLeaderboard = () =>
+  request("/scores/leaderboard", "GET");
+
+// ─── FILE UPLOAD ──────────────────────────────────────────────────────────────
 export const uploadFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
