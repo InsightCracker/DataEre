@@ -209,7 +209,7 @@ const ProfilePage = () => {
                 }}
                 className="max-box-btn"
               >
-                Resume Quiz
+                Resume Session
               </div>
             </div>
 
@@ -222,7 +222,7 @@ const ProfilePage = () => {
               <div className="third-inner">
                 <div>
                   <p>
-                    Quizzes Taken: <span>{String(stats.total).padStart(2, "0")}</span>
+                    Session Taken: <span>{String(stats.total).padStart(2, "0")}</span>
                   </p>
                   <p>
                     Best Skill: <span style={{

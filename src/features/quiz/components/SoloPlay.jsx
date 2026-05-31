@@ -122,8 +122,6 @@ const SoloPlay = () => {
   const [pointsHistory, setPointsHistory]     = useState([]);
   const [animKey, setAnimKey]                 = useState(0);
 
-  // ── Clear stale completion flag when quiz mounts
-  // This prevents instant redirect on a new quiz session
   useEffect(() => {
     localStorage.removeItem("soloQuizCompleted");
   }, []); // empty deps = runs once on mount only
@@ -151,16 +149,6 @@ const SoloPlay = () => {
     if (chosenIsCorrect) setScore(score + 1);
     else setWrongAnswer(wrongAnswer + 1);
     advance(chosenIsCorrect ? 1 : 0);
-  };
-
-  const prevQuestion = () => {
-    const prev = pointsHistory.length > 0 ? pointsHistory[pointsHistory.length - 1] : 0;
-    setPointsHistory((h) => h.slice(0, -1));
-    if (prev === 1) setScore(score - 1);
-    setOptionChosenKey("");
-    setRevealed(false);
-    setAnimKey((k) => k + 1);
-    setCurrQuestion(currQuestion - 1);
   };
 
   const skipQuestion = () => {
@@ -326,21 +314,6 @@ const SoloPlay = () => {
         position="sticky"
         bottom={0}
       >
-        <Button
-          leftIcon={<ArrowLeftIcon />}
-          onClick={prevQuestion}
-          isDisabled={isFirst}
-          bg="#1e3058" color="whiteAlpha.700"
-          borderRadius="10px" px={6} py={6}
-          fontWeight={600} fontSize="14px"
-          _hover={{ bg: "#263d6b", color: "white", transform: "translateY(-3px)" }}
-          _active={{ transform: "scale(0.96)" }}
-          _disabled={{ opacity: 0.4, cursor: "not-allowed", transform: "none" }}
-          transition="all 0.22s"
-        >
-          Prev
-        </Button>
-
         {!isLast && (
           <Button
             onClick={skipQuestion}
