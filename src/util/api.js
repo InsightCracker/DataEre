@@ -17,7 +17,7 @@ const request = async (endpoint, method = "GET", body = null, token = null, isFo
   return res.json();
 };
 
-// ─── AUTH ─────────────────────────────────────────────────────────────────────
+// ─── AUTH 
 export const registerUser  = (username, email, password) =>
   request("/auth/register", "POST", { username, email, password });
 
@@ -30,7 +30,7 @@ export const forgotPassword = (email) =>
 export const resetPassword = (token, password) =>
   request(`/auth/reset-password/${token}`, "POST", { password });
 
-// ─── SCORES ───────────────────────────────────────────────────────────────────
+// ─── SCORES 
 export const saveScore = ({ topic, score, total, wrong, skipped, mode }) =>
   request("/scores", "POST", { topic, score, total, wrong, skipped, mode });
 
@@ -44,7 +44,7 @@ export const getLeaderboard = (topic = "overall") =>
 export const getTopics = () =>
   request("/scores/topics", "GET");
 
-// ─── FILE UPLOAD ──────────────────────────────────────────────────────────────
+// ─── FILE UPLOAD
 export const uploadFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);

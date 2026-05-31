@@ -124,7 +124,7 @@ const SoloPlay = () => {
 
   useEffect(() => {
     localStorage.removeItem("soloQuizCompleted");
-  }, []); // empty deps = runs once on mount only
+  }, []); 
 
   const q = questions[currQuestion];
 
