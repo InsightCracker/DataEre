@@ -12,7 +12,7 @@ import { LuMail } from "react-icons/lu";
 import { useState, useEffect } from "react";
 import { showToast } from "../../../util/toastUtil";
 import { useNavigate } from "react-router-dom";
-// import { forgotPassword } from "../../../util/api";
+import { forgotPassword } from "../../../util/api"; // ← uncommented
 
 const C = {
   bg:      "#f0f4ff",
@@ -66,31 +66,27 @@ const GridBg = () => (
 );
 
 const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail]     = useState("");
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [sent, setSent]       = useState(false);
 
-  const toast = useToast();
+  const toast    = useToast();
   const navigate = useNavigate();
 
   useEffect(() => { setTimeout(() => setMounted(true), 60); }, []);
 
   const forgot_password_handler = async () => {
     if (loading) return;
-
     if (!email) {
       showToast(toast, "warning", "Email is required");
       return;
     }
-
     setLoading(true);
-
     try {
+      const res = await forgotPassword(email); // ← res is now properly defined
       if (res.success) {
-        showToast(toast, "success", "Password reset link sent to your email 📩");
-        setTimeout(() => {
-          navigate("/users/login");
-        }, 1200);
+        setSent(true);
       } else {
         showToast(toast, "error", res.message || "Unable to process request");
       }
@@ -99,6 +95,10 @@ const ForgotPasswordPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") forgot_password_handler();
   };
 
   const anim = (delay = 0) => ({
@@ -115,27 +115,26 @@ const ForgotPasswordPage = () => {
       <style>{`
         @keyframes floatA { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-18px) scale(1.04)} }
         @keyframes floatB { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(14px) scale(0.97)} }
-        @keyframes shimmerText {
-          0%{background-position:200% center}
-          100%{background-position:-200% center}
-        }
+        @keyframes shimmerText { 0%{background-position:200% center} 100%{background-position:-200% center} }
         @keyframes pulseRing {
           0%,100%{box-shadow:0 0 0 0 rgba(59,110,240,0.18)}
           50%{box-shadow:0 0 0 8px rgba(59,110,240,0)}
         }
         @keyframes spinSlow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes checkPop {
+          0%{transform:scale(0);opacity:0}
+          70%{transform:scale(1.2)}
+          100%{transform:scale(1);opacity:1}
+        }
       `}</style>
 
       <GridBg />
       <Orbs />
 
-      {/* Decorative spinning rings */}
-      <Box position="absolute" top="12%" right="8%"
-        w="90px" h="90px" borderRadius="full"
+      <Box position="absolute" top="12%" right="8%" w="90px" h="90px" borderRadius="full"
         border="1.5px dashed rgba(59,110,240,0.20)"
         style={{ animation: "spinSlow 18s linear infinite" }} pointerEvents="none" />
-      <Box position="absolute" bottom="15%" left="6%"
-        w="60px" h="60px" borderRadius="full"
+      <Box position="absolute" bottom="15%" left="6%" w="60px" h="60px" borderRadius="full"
         border="1.5px dashed rgba(107,150,245,0.18)"
         style={{ animation: "spinSlow 24s linear infinite reverse" }} pointerEvents="none" />
 
@@ -165,97 +164,140 @@ const ForgotPasswordPage = () => {
           position="relative" overflow="hidden"
           style={anim(80)}>
 
-          {/* Top accent line */}
           <Box position="absolute" top={0} left="10%" right="10%" h="2px"
             bg="linear-gradient(90deg,transparent,#3b6ef0,#6b96f5,transparent)" borderRadius="full" />
 
-          {/* Badge */}
-          <Box display="inline-flex" alignItems="center" gap="6px"
-            px="0.85rem" py="0.35rem" borderRadius="full"
-            bg="rgba(59,110,240,0.07)" border="1px solid rgba(59,110,240,0.18)"
-            mb="1.2rem">
-            <Box w="5px" h="5px" borderRadius="full" bg={C.accent}
-              boxShadow="0 0 6px rgba(59,110,240,0.6)"
-              style={{ animation: "pulseRing 2.5s ease infinite" }} />
-            <Text fontSize="0.72rem" fontWeight={700} color={C.accent}
-              letterSpacing="0.08em" textTransform="uppercase" fontFamily="'Sora',sans-serif">
-              Password Reset
-            </Text>
-          </Box>
-
-          <Text fontFamily="'Sora', sans-serif" fontSize={{ base: "1.4rem", md: "1.6rem" }}
-            fontWeight={800} color={C.text} letterSpacing="-0.5px" mb="0.3rem">
-            Forgot your password?
-          </Text>
-          <Text fontSize="0.88rem" color={C.muted} mb="1.8rem" lineHeight={1.6}>
-            Enter your email and we'll send you a reset link.
-          </Text>
-
-          {/* Email */}
-          <Box mb="1.6rem" style={anim(160)}>
-            <Text fontSize="0.8rem" fontWeight={600} color={C.muted} mb="0.45rem"
-              letterSpacing="0.02em" fontFamily="'Sora',sans-serif">
-              Email address
-            </Text>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none" mt="1px">
-                <LuMail color={C.accent} size={15} />
-              </InputLeftElement>
-              <Input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                variant="outline"
-                type="email"
-                placeholder="you@example.com"
-                sx={inputSx}
-              />
-            </InputGroup>
-          </Box>
-
-          {/* Submit */}
-          <Box as="button" onClick={forgot_password_handler} disabled={loading}
-            style={anim(220)}
-            sx={{
-              width: "100%", py: "13px", borderRadius: "12px",
-              background: loading
-                ? "rgba(59,110,240,0.55)"
-                : "linear-gradient(135deg, #2251cc, #3b6ef0)",
-              color: "white", fontWeight: 700, fontSize: "0.95rem",
-              fontFamily: "'Sora', sans-serif",
-              border: "none", cursor: loading ? "not-allowed" : "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-              boxShadow: "0 4px 20px rgba(59,110,240,0.28)",
-              transition: "all 0.22s",
-              _hover: !loading && {
-                background: "linear-gradient(135deg, #1a3fa8, #2251cc)",
-                transform: "translateY(-2px)",
-                boxShadow: "0 8px 30px rgba(59,110,240,0.38)",
-              },
-              _active: { transform: "translateY(0)" },
-            }}>
-            {loading ? <Spinner size="sm" color="white" /> : "Send Reset Link"}
-          </Box>
-
-          {/* Divider */}
-          <Flex align="center" gap="0.8rem" my="1.4rem" style={anim(280)}>
-            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
-            <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or</Text>
-            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
-          </Flex>
-
-          {/* Back to login */}
-          <Box textAlign="center" style={anim(320)}>
-            <Text fontSize="0.875rem" color={C.muted}>
-              Remember your password?{" "}
-              <Text as="a" href="/users/login" color={C.accent} fontWeight={700}
-                _hover={{ textDecoration: "underline" }}>
-                Back to login
+          {sent ? (
+            /* ── Success state ── */
+            <Box textAlign="center" py="1rem">
+              <Box
+                display="inline-flex" alignItems="center" justifyContent="center"
+                w="64px" h="64px" borderRadius="full"
+                bg="rgba(14,168,116,0.10)" border="2px solid rgba(14,168,116,0.30)"
+                mb="1.2rem"
+                style={{ animation: "checkPop 0.5s cubic-bezier(0.34,1.2,0.64,1) forwards" }}>
+                <Text fontSize="1.8rem">📩</Text>
+              </Box>
+              <Text fontFamily="'Sora', sans-serif" fontSize="1.4rem"
+                fontWeight={800} color={C.text} mb="0.5rem">
+                Check your inbox
               </Text>
-            </Text>
-          </Box>
+              <Text fontSize="0.88rem" color={C.muted} lineHeight={1.7} mb="1.8rem">
+                We sent a reset link to{" "}
+                <Text as="span" fontWeight={700} color={C.text}>{email}</Text>.
+                It expires in 1 hour.
+              </Text>
+              <Box as="button" onClick={() => navigate("/users/login")}
+                sx={{
+                  width: "100%", py: "13px", borderRadius: "12px",
+                  background: "linear-gradient(135deg, #2251cc, #3b6ef0)",
+                  color: "white", fontWeight: 700, fontSize: "0.95rem",
+                  fontFamily: "'Sora', sans-serif", border: "none",
+                  cursor: "pointer", boxShadow: "0 4px 20px rgba(59,110,240,0.28)",
+                  transition: "all 0.22s",
+                  _hover: {
+                    background: "linear-gradient(135deg, #1a3fa8, #2251cc)",
+                    transform: "translateY(-2px)",
+                  },
+                }}>
+                Back to login
+              </Box>
+              <Text fontSize="0.78rem" color={C.dim} mt="1rem">
+                Didn't receive it?{" "}
+                <Text as="span" color={C.accent} fontWeight={600} cursor="pointer"
+                  onClick={() => { setSent(false); setEmail(""); }}
+                  _hover={{ textDecoration: "underline" }}>
+                  Try again
+                </Text>
+              </Text>
+            </Box>
+          ) : (
+            /* ── Form state ── */
+            <>
+              <Box display="inline-flex" alignItems="center" gap="6px"
+                px="0.85rem" py="0.35rem" borderRadius="full"
+                bg="rgba(59,110,240,0.07)" border="1px solid rgba(59,110,240,0.18)"
+                mb="1.2rem">
+                <Box w="5px" h="5px" borderRadius="full" bg={C.accent}
+                  boxShadow="0 0 6px rgba(59,110,240,0.6)"
+                  style={{ animation: "pulseRing 2.5s ease infinite" }} />
+                <Text fontSize="0.72rem" fontWeight={700} color={C.accent}
+                  letterSpacing="0.08em" textTransform="uppercase" fontFamily="'Sora',sans-serif">
+                  Password Reset
+                </Text>
+              </Box>
+
+              <Text fontFamily="'Sora', sans-serif" fontSize={{ base: "1.4rem", md: "1.6rem" }}
+                fontWeight={800} color={C.text} letterSpacing="-0.5px" mb="0.3rem">
+                Forgot your password?
+              </Text>
+              <Text fontSize="0.88rem" color={C.muted} mb="1.8rem" lineHeight={1.6}>
+                Enter your email and we'll send you a reset link.
+              </Text>
+
+              <Box mb="1.6rem" style={anim(160)}>
+                <Text fontSize="0.8rem" fontWeight={600} color={C.muted} mb="0.45rem"
+                  letterSpacing="0.02em" fontFamily="'Sora',sans-serif">
+                  Email address
+                </Text>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none" mt="1px">
+                    <LuMail color={C.accent} size={15} />
+                  </InputLeftElement>
+                  <Input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    variant="outline"
+                    type="email"
+                    placeholder="you@example.com"
+                    sx={inputSx}
+                  />
+                </InputGroup>
+              </Box>
+
+              <Box as="button" onClick={forgot_password_handler} disabled={loading}
+                style={anim(220)}
+                sx={{
+                  width: "100%", py: "13px", borderRadius: "12px",
+                  background: loading
+                    ? "rgba(59,110,240,0.55)"
+                    : "linear-gradient(135deg, #2251cc, #3b6ef0)",
+                  color: "white", fontWeight: 700, fontSize: "0.95rem",
+                  fontFamily: "'Sora', sans-serif",
+                  border: "none", cursor: loading ? "not-allowed" : "pointer",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  boxShadow: "0 4px 20px rgba(59,110,240,0.28)",
+                  transition: "all 0.22s",
+                  _hover: !loading && {
+                    background: "linear-gradient(135deg, #1a3fa8, #2251cc)",
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 8px 30px rgba(59,110,240,0.38)",
+                  },
+                  _active: { transform: "translateY(0)" },
+                }}>
+                {loading ? <Spinner size="sm" color="white" /> : "Send Reset Link"}
+              </Box>
+
+              <Flex align="center" gap="0.8rem" my="1.4rem" style={anim(280)}>
+                <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
+                <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or</Text>
+                <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
+              </Flex>
+
+              <Box textAlign="center" style={anim(320)}>
+                <Text fontSize="0.875rem" color={C.muted}>
+                  Remember your password?{" "}
+                  <Text as="a" href="/users/login" color={C.accent} fontWeight={700}
+                    _hover={{ textDecoration: "underline" }}>
+                    Back to login
+                  </Text>
+                </Text>
+              </Box>
+            </>
+          )}
         </Box>
 
-        {/* Footer note */}
         <Box textAlign="center" mt="1.6rem" style={anim(360)}>
           <Text fontSize="0.75rem" color={C.dim}>
             By continuing, you agree to our{" "}

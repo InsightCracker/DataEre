@@ -42,10 +42,10 @@ const AVATAR_COLORS = [
 ];
 
 const FILTERS = [
-  { key: "total",     label: "Total XP"},
-  { key: "bestScore",    label: "Best score"},
-  { key: "totalQuizzes", label: "Quizzes played"},
-  { key: "totalCorrect", label: "Total correct"},
+  { key: "totalCorrect",  label: "Total correct" },
+  { key: "bestScore",     label: "Best score" },
+  { key: "totalQuizzes",  label: "Quizzes played" },
+  { key: "avgScore",      label: "Avg score" },
 ];
 
 const initials = (name = "") =>
@@ -82,13 +82,14 @@ const StatCard = ({ label, value, delay = "0s" }) => (
   </Box>
 );
 
+
 const PodiumBlock = ({ user, rank, height, index }) => {
   if (!user) return <Box />;
   const medals = { 1: "🥇", 2: "🥈", 3: "🥉" };
   const colors = {
-    1: { bg: "#faeeda", border: "#ef9f27", text: "#854f0b" },
-    2: { bg: "#e6f1fb", border: "#85b7eb", text: "#185fa5" },
-    3: { bg: "#faece7", border: "#f0997b", text: "#993c1d" },
+    1: { bg: "#faeeda", border: "#ef9f27" },
+    2: { bg: "#e6f1fb", border: "#85b7eb" },
+    3: { bg: "#faece7", border: "#f0997b" },
   };
   const c = colors[rank];
   return (
@@ -99,7 +100,7 @@ const PodiumBlock = ({ user, rank, height, index }) => {
         fontFamily="'Sora',sans-serif" textAlign="center" maxW="80px" noOfLines={1}>
         {user.username}
       </Text>
-      <Text fontSize="0.72rem" color={C.muted}>{user.avgScore}% avg</Text>
+      {/* top score subheading removed */}
       <Flex
         w="76px" h={`${height}px`}
         bg={c.bg} border={`1px solid ${c.border}`}
@@ -113,23 +114,11 @@ const PodiumBlock = ({ user, rank, height, index }) => {
   );
 };
 
-const BarRow = ({ value, max }) => {
-  const pct = max > 0 ? Math.round((value / max) * 100) : 0;
-  return (
-    <Flex align="center" gap="8px" flex={1}>
-      <Box flex={1} h="6px" bg="rgba(59,110,240,0.10)" borderRadius="99px" overflow="hidden" minW="50px">
-        <Box h="100%" borderRadius="99px" bg={C.accent}
-          w={`${pct}%`} transition="width 0.6s cubic-bezier(0.34,1.3,0.64,1)" />
-      </Box>
-    </Flex>
-  );
-};
-
 const LeaderBoard = () => {
   const { userId, username } = useAuth();
   const [data, setData]       = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter]   = useState("avgScore");
+  const [filter, setFilter]   = useState("totalCorrect");
   const [search, setSearch]   = useState("");
 
   useEffect(() => {
@@ -139,27 +128,21 @@ const LeaderBoard = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  console.log(data)
   const sorted = [...data].sort((a, b) => b[filter] - a[filter]);
 
   const filtered = sorted.filter((u) =>
     u.username.toLowerCase().includes(search.toLowerCase())
   );
 
-  const maxVal   = sorted[0]?.[filter] ?? 1;
-  const myRank   = sorted.findIndex((u) => String(u._id) === String(userId)) + 1;
-  const avgAll   = data.length > 0
-    ? Math.round(data.reduce((s, u) => s + u.avgScore, 0) / data.length)
-    : 0;
-  const topScore = sorted[0]?.avgScore ?? 0;
-  // const totalCorrect = 
+  const myRank       = sorted.findIndex((u) => String(u._id) === String(userId)) + 1;
+  const topCorrect   = sorted[0]?.totalCorrect ?? 0;
+  const topScore     = sorted[0]?.avgScore ?? 0;
 
-  // Podium order: 2nd, 1st, 3rd
-  const podium = sorted.slice(0, 3);
-  const podiumOrder = podium.length >= 2
+  const podium       = sorted.slice(0, 3);
+  const podiumOrder  = podium.length >= 2
     ? [podium[1], podium[0], podium[2]]
     : podium;
-  const podiumRanks  = [2, 1, 3];
+  const podiumRanks   = [2, 1, 3];
   const podiumHeights = [60, 80, 44];
 
   const getDisplayVal = (u) => {
@@ -170,11 +153,11 @@ const LeaderBoard = () => {
   };
 
   const getTrend = (rank) => {
-    if (rank === 1) return { icon: <LuTrendingUp size={12} />, label: "Top", bg: "#eaf3de", color: "#3b6d11" };
-    if (rank <= 3)  return { icon: <LuTrendingUp size={12} />, label: "Top 3", bg: "#eaf3de", color: "#3b6d11" };
+    if (rank === 1) return { icon: <LuTrendingUp size={12} />, bg: "#eaf3de", color: "#3b6d11" };
+    if (rank <= 3)  return { icon: <LuTrendingUp size={12} />, bg: "#eaf3de", color: "#3b6d11" };
     if (rank > Math.ceil(sorted.length * 0.7))
-      return { icon: <LuTrendingDown size={12} />, label: "", bg: "#fcebeb", color: "#a32d2d" };
-    return { icon: <LuMinus size={12} />, label: "", bg: "rgba(0,0,0,0.06)", color: C.dim };
+      return { icon: <LuTrendingDown size={12} />, bg: "#fcebeb", color: "#a32d2d" };
+    return { icon: <LuMinus size={12} />, bg: "rgba(0,0,0,0.06)", color: C.dim };
   };
 
   const isYou = (u) => String(u._id) === String(userId) || u.username === username;
@@ -198,7 +181,6 @@ const LeaderBoard = () => {
 
       <Box maxW="720px" mx="auto">
 
-        {/* Header */}
         <Flex align="center" justify="center" gap="10px" mb="0.5rem"
           style={{ animation: "slideUp 0.4s ease both" }}>
           <FaTrophy color="#ef9f27" size={22} />
@@ -212,15 +194,13 @@ const LeaderBoard = () => {
           <Center py="4rem"><Spinner color={C.accent} size="lg" /></Center>
         ) : (
           <>
-            {/* Stats */}
             <SimpleGrid columns={{ base: 2, md: 4 }} gap="12px" mb="2rem">
-              <StatCard label="Players"   value={data.length} delay="0.05s" />
-              <StatCard label="Total score" value={avgAll + "%"} delay="0.10s" />
-              <StatCard label="Top score" value={topScore + "%"} delay="0.15s" />
-              <StatCard label="Your rank" value={myRank ? `#${myRank}` : "—"} delay="0.20s" />
+              <StatCard label="Players"    value={data.length}       delay="0.05s" />
+              <StatCard label="Top XP" value={topCorrect}       delay="0.10s" />
+              <StatCard label="Top avg"    value={topScore + "%"}    delay="0.15s" />
+              <StatCard label="Your rank"  value={myRank ? `#${myRank}` : "—"} delay="0.20s" />
             </SimpleGrid>
 
-            {/* Podium */}
             {podium.length >= 1 && (
               <Box bg={C.card} borderRadius="20px" border={`1px solid ${C.border}`}
                 boxShadow="0 4px 24px rgba(59,110,240,0.08)"
@@ -234,8 +214,7 @@ const LeaderBoard = () => {
                   {podiumOrder.map((u, i) =>
                     u ? (
                       <PodiumBlock
-                        key={u._id}
-                        user={u}
+                        key={u._id} user={u}
                         rank={podiumRanks[i]}
                         height={podiumHeights[i]}
                         index={i}
@@ -246,12 +225,10 @@ const LeaderBoard = () => {
               </Box>
             )}
 
-            {/* Filters */}
             <Flex gap="8px" mb="1rem" flexWrap="wrap">
               {FILTERS.map((f) => (
                 <Box
-                  key={f.key}
-                  as="button"
+                  key={f.key} as="button"
                   onClick={() => setFilter(f.key)}
                   px="14px" py="6px" borderRadius="99px" fontSize="0.8rem"
                   fontWeight={600} cursor="pointer" transition="all 0.15s"
@@ -265,15 +242,13 @@ const LeaderBoard = () => {
               ))}
             </Flex>
 
-            {/* Search */}
             <InputGroup mb="1.2rem">
               <InputLeftElement pointerEvents="none" mt="1px">
                 <LuSearch color={C.dim} size={15} />
               </InputLeftElement>
               <Input
                 placeholder="Search players..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={search} onChange={(e) => setSearch(e.target.value)}
                 bg={C.card} border={`1px solid ${C.border}`}
                 borderRadius="12px" color={C.text} fontSize="0.9rem"
                 _placeholder={{ color: C.dim }}
@@ -281,22 +256,17 @@ const LeaderBoard = () => {
               />
             </InputGroup>
 
-            {/* Table */}
             <Box bg={C.card} borderRadius="20px" border={`1px solid ${C.border}`}
               boxShadow="0 4px 24px rgba(59,110,240,0.08)" overflow="hidden">
 
-              {/* Table header */}
+              {/* ── table header now includes Total Correct column ── */}
               <Flex px="16px" py="10px" borderBottom={`1px solid ${C.border}`}>
                 <Text w="36px" fontSize="0.7rem" color={C.dim} fontWeight={600}
                   textTransform="uppercase" letterSpacing="0.06em">#</Text>
                 <Text flex={1} fontSize="0.7rem" color={C.dim} fontWeight={600}
                   textTransform="uppercase" letterSpacing="0.06em">Player</Text>
-                <Text w="120px" fontSize="0.7rem" color={C.dim} fontWeight={600}
-                  textTransform="uppercase" letterSpacing="0.06em">Score</Text>
-                <Text w="60px" fontSize="0.7rem" color={C.dim} fontWeight={600}
-                  textTransform="uppercase" letterSpacing="0.06em" textAlign="right">
-                  Quizzes
-                </Text>
+                <Text w="90px" fontSize="0.7rem" color={C.dim} fontWeight={600}
+                  textTransform="uppercase" letterSpacing="0.06em">Correct</Text>
               </Flex>
 
               {filtered.length === 0 ? (
@@ -307,7 +277,7 @@ const LeaderBoard = () => {
               ) : (
                 filtered.map((u, i) => {
                   const globalRank = sorted.indexOf(u) + 1;
-                  const you = isYou(u);
+                  const you   = isYou(u);
                   const medal = globalRank === 1 ? "🥇" : globalRank === 2 ? "🥈" : globalRank === 3 ? "🥉" : null;
                   const trend = getTrend(globalRank);
                   const displayVal = getDisplayVal(u);
@@ -321,51 +291,31 @@ const LeaderBoard = () => {
                       transition="background 0.12s"
                       style={{ animation: `rowIn 0.3s ease ${i * 0.04}s both` }}
                     >
-                      {/* Rank */}
                       <Box w="36px">
                         {medal ? (
                           <Text fontSize="1rem">{medal}</Text>
                         ) : (
-                          <Text fontSize="0.8rem" color={C.dim} fontWeight={600}>
-                            {globalRank}
-                          </Text>
+                          <Text fontSize="0.8rem" color={C.dim} fontWeight={600}>{globalRank}</Text>
                         )}
                       </Box>
 
-                      {/* User */}
                       <Flex flex={1} align="center" gap="10px">
                         <Avatar name={u.username} size={34} index={sorted.indexOf(u)} />
-                        <Box>
-                          <Flex align="center" gap="6px">
-                            <Text fontSize="0.88rem" fontWeight={600} color={C.text}>
-                              {u.username}
-                            </Text>
-                            {you && (
-                              <Text fontSize="0.7rem" color={C.accent} fontWeight={600}>
-                                (you)
-                              </Text>
-                            )}
-                          </Flex>
-                        </Box>
+                        <Flex align="center" gap="6px">
+                          <Text fontSize="0.88rem" fontWeight={600} color={C.text}>
+                            {u.username}
+                          </Text>
+                          {you && (
+                            <Text fontSize="0.7rem" color={C.accent} fontWeight={600}>(you)</Text>
+                          )}
+                        </Flex>
                       </Flex>
 
-                      {/* Bar + value */}
-                      <Flex w="120px" align="center" gap="8px">
-                        <BarRow value={u[filter]} max={maxVal} />
-                        <Text fontSize="0.82rem" fontWeight={600} color={C.text} minW="36px" textAlign="right">
-                          {displayVal}
+                      {/* ── Total correct column ── */}
+                      <Flex w="90px" align="center">
+                        <Text fontSize="0.82rem" fontWeight={700} color={C.accent}>
+                          {u.totalCorrect}
                         </Text>
-                      </Flex>
-
-                      {/* Quizzes */}
-                      <Flex w="60px" justify="flex-end" align="center" gap="4px">
-                        <Box
-                          px="8px" py="2px" borderRadius="99px" fontSize="0.72rem"
-                          fontWeight={600} bg={trend.bg} color={trend.color}
-                          display="flex" alignItems="center" gap="3px"
-                        >
-                          {trend.icon}
-                        </Box>
                       </Flex>
                     </Flex>
                   );
@@ -373,9 +323,8 @@ const LeaderBoard = () => {
               )}
             </Box>
 
-            {/* Footer note */}
             <Text fontSize="0.75rem" color={C.dim} textAlign="center" mt="1.2rem">
-              Rankings update after each quiz · Based on total point across all attempts
+              Rankings update after each quiz · Sorted by total XP.
             </Text>
           </>
         )}
