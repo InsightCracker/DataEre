@@ -2,7 +2,8 @@ import "../styles/profile.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../../../util/Sidebar";
+import BottomNav from "../../../util/BottomNav";
 
 import { 
   Box, 
@@ -27,7 +28,6 @@ import {
   FaListCheck
 } from "react-icons/fa6";
 import { FaTrophy } from "react-icons/fa";
-import BottomNav from "../components/BottomNav";
 
 //Fake API (replace with real endpoints)
 const fetchDailyChallenge = async () => {
@@ -149,7 +149,7 @@ const ProfilePage = () => {
               </Box>
               <div className="list-text">
                 <p>Total Points</p>
-                <h3>{stats.totalCorrect} pts</h3>
+                <h3>{stats.totalCorrect} XP</h3>
               </div>
             </div>
           </div>
@@ -178,7 +178,7 @@ const ProfilePage = () => {
                 
                 <div className="instruction-item"> 
                   <span><FaTrophy className="box_icon" /></span>
-                  <span>{challenge.pts} pts</span>
+                  <span>{challenge.pts} XP</span>
                 </div>
               </HStack>
 
@@ -222,10 +222,13 @@ const ProfilePage = () => {
               <div className="third-inner">
                 <div>
                   <p>
-                    Quizzes Taken: <span>{stats.total}</span>
+                    Quizzes Taken: <span>{String(stats.total).padStart(2, "0")}</span>
                   </p>
                   <p>
-                    Best Skill: <span>{bestSkill.topic}</span>
+                    Best Skill: <span style={{
+                      textTransform: "capitalize",
+                      color: "green"
+                    }}>{bestSkill?.topic ?? "N/A"}</span>
                   </p>
                 </div>
 
@@ -234,7 +237,10 @@ const ProfilePage = () => {
                     Average Score <span>{stats.avgScore}%</span>
                   </p>
                   <p>
-                    Weak Skill: <span>{topicAverages.length > 1 ? worstSkill.topic : "N/A"}</span>
+                    Weak Skill: <span style={{
+                      textTransform: "capitalize",
+                      color: "red"
+                    }}>{worstSkill?.topic ?? "N/A"}</span>
                   </p>
                 </div>
               </div>

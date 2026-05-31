@@ -18,7 +18,7 @@ import QuickPlay from "./features/quiz/pages/QuickPlay";
 // Daily Challenge
 import DailyChallenge from './features/quiz/pages/DailyChallenge';
 
-import Leaderboard from './util/LeaderBoard';
+import Leaderboard from './features/leaderboard/LeaderBoard';
 
 // PDF Converter
 import PDFConverter from './pages/PDFConverter';

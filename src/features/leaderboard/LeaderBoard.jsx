@@ -13,8 +13,10 @@ import { LuSearch, LuTrendingUp, LuTrendingDown, LuMinus } from "react-icons/lu"
 import { FaTrophy } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { keyframes } from "@emotion/react";
-import { getLeaderboard } from "../util/api";
-import { useAuth } from "../util/AuthContext";
+import { getLeaderboard } from "../../util/api";
+import { useAuth } from "../../util/AuthContext";
+import Sidebar from "../../util/Sidebar";
+import BottomNav from "../../util/BottomNav";
 
 const slideUp = keyframes`
   from { opacity:0; transform:translateY(12px); }
@@ -40,10 +42,10 @@ const AVATAR_COLORS = [
 ];
 
 const FILTERS = [
-  { key: "avgScore",     label: "Avg score"     },
-  { key: "bestScore",    label: "Best score"     },
-  { key: "totalQuizzes", label: "Quizzes played" },
-  { key: "totalCorrect", label: "Total correct"  },
+  { key: "total",     label: "Total XP"},
+  { key: "bestScore",    label: "Best score"},
+  { key: "totalQuizzes", label: "Quizzes played"},
+  { key: "totalCorrect", label: "Total correct"},
 ];
 
 const initials = (name = "") =>
@@ -137,6 +139,7 @@ const LeaderBoard = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  console.log(data)
   const sorted = [...data].sort((a, b) => b[filter] - a[filter]);
 
   const filtered = sorted.filter((u) =>
@@ -149,6 +152,7 @@ const LeaderBoard = () => {
     ? Math.round(data.reduce((s, u) => s + u.avgScore, 0) / data.length)
     : 0;
   const topScore = sorted[0]?.avgScore ?? 0;
+  // const totalCorrect = 
 
   // Podium order: 2nd, 1st, 3rd
   const podium = sorted.slice(0, 3);
@@ -190,10 +194,12 @@ const LeaderBoard = () => {
         }
       `}</style>
 
+      <Sidebar />
+
       <Box maxW="720px" mx="auto">
 
         {/* Header */}
-        <Flex align="center" gap="10px" mb="0.5rem"
+        <Flex align="center" justify="center" gap="10px" mb="0.5rem"
           style={{ animation: "slideUp 0.4s ease both" }}>
           <FaTrophy color="#ef9f27" size={22} />
           <Text fontFamily="'Sora',sans-serif" fontSize={{ base:"1.5rem", md:"1.8rem" }}
@@ -201,10 +207,6 @@ const LeaderBoard = () => {
             Leaderboard
           </Text>
         </Flex>
-        <Text fontSize="0.88rem" color={C.muted} mb="1.8rem"
-          style={{ animation: "slideUp 0.4s ease 0.05s both" }}>
-          Top performers ranked by average quiz score
-        </Text>
 
         {loading ? (
           <Center py="4rem"><Spinner color={C.accent} size="lg" /></Center>
@@ -212,9 +214,9 @@ const LeaderBoard = () => {
           <>
             {/* Stats */}
             <SimpleGrid columns={{ base: 2, md: 4 }} gap="12px" mb="2rem">
-              <StatCard label="Players"   value={data.length}          delay="0.05s" />
-              <StatCard label="Avg score" value={avgAll + "%"}         delay="0.10s" />
-              <StatCard label="Top score" value={topScore + "%"}       delay="0.15s" />
+              <StatCard label="Players"   value={data.length} delay="0.05s" />
+              <StatCard label="Total score" value={avgAll + "%"} delay="0.10s" />
+              <StatCard label="Top score" value={topScore + "%"} delay="0.15s" />
               <StatCard label="Your rank" value={myRank ? `#${myRank}` : "—"} delay="0.20s" />
             </SimpleGrid>
 
@@ -344,9 +346,6 @@ const LeaderBoard = () => {
                               </Text>
                             )}
                           </Flex>
-                          <Text fontSize="0.75rem" color={C.dim}>
-                            {u.totalCorrect} correct
-                          </Text>
                         </Box>
                       </Flex>
 
@@ -366,7 +365,6 @@ const LeaderBoard = () => {
                           display="flex" alignItems="center" gap="3px"
                         >
                           {trend.icon}
-                          {trend.label}
                         </Box>
                       </Flex>
                     </Flex>
@@ -377,11 +375,13 @@ const LeaderBoard = () => {
 
             {/* Footer note */}
             <Text fontSize="0.75rem" color={C.dim} textAlign="center" mt="1.2rem">
-              Rankings update after each quiz · Based on average score across all attempts
+              Rankings update after each quiz · Based on total point across all attempts
             </Text>
           </>
         )}
       </Box>
+
+      <BottomNav />
     </Box>
   );
 };

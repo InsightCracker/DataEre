@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaHome, FaQuestionCircle, FaTrophy, FaFilePdf, FaChartBar, FaSignOutAlt } from "react-icons/fa";
-import { useAuth } from "../../../util/AuthContext";
-import "../styles/bottomnav.css";
+import { useAuth } from "./AuthContext";
+import "../style/bottomnav.css";
 
 const BottomNav = () => {
   const navigate = useNavigate();

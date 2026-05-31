@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../../util/AuthContext";
+import { useAuth } from "./AuthContext";
 import {
   FaHome,
   FaQuestionCircle,
@@ -9,7 +9,7 @@ import {
   FaChartBar,
   FaSignOutAlt,
 } from "react-icons/fa";
-import "../styles/sidebar.css";
+import "../style/sidebar.css";
 
 const Sidebar = () => {
   const navigate  = useNavigate();

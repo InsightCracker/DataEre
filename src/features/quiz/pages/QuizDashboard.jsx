@@ -6,9 +6,8 @@ import { Box, Heading } from "@chakra-ui/react";
 
 import { FaBullseye } from "react-icons/fa6";
 
-import Sidebar from "../../profile/components/Sidebar";
-import BottomNav from "../../profile/components/BottomNav";
-import Searchbar from "../components/Searchbar";
+import Sidebar from "../../../util/Sidebar";
+import BottomNav from "../../../util/BottomNav";
 import Cards from "../components/Cards";
 
 

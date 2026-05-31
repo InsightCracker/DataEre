@@ -5,7 +5,7 @@ import { QuizContext } from "../../../util/Contexts";
 import { FaHome } from "react-icons/fa";
 import Navbar from "../../../util/Navbar";
 import SoloPlay from "../components/SoloPlay"; 
-import Sidebar from "../../profile/components/Sidebar";
+import Sidebar from "../../../util/Sidebar";
 
 const QuickPlay = () => {
   const { 
