@@ -54,7 +54,7 @@ const QuizDashboard = () => {
                 <span className="icon">🎯</span> Daily Challenge
               </div>
               <div className="banner-sub">Answer today's question!</div>
-              <div className="reward-badge">⭐ Reward: +25 pts</div>
+              <div className="reward-badge">⭐ Reward: +25 XP</div>
               <button className="btn-start">Start Challenge</button>
             </div>
  

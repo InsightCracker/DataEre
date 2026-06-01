@@ -36,7 +36,7 @@ export const categoriesList = [
   },
   {
     name: "machine learning",
-    icon: "🧠",
+    icon: "⚙️",
     iconBg: "#faf5ff",
     accent: "linear-gradient(90deg,#8b5cf6,#a78bfa)",
     description: "Machine Learning is a branch of AI that enables computers to learn patterns from data and make predictions or decisions without explicit programming."
@@ -75,5 +75,12 @@ export const categoriesList = [
     iconBg: "#eff6ff",
     accent: "linear-gradient(90deg,#3b82f6,#60a5fa)",
     description: "Report writing is the process of creating a structured document that presents information, analysis, and recommendations clearly and formally."
+  },
+  {
+    name: "data concept",
+    icon: "🧠",
+    iconBg: "#faf5ff",
+    accent: "linear-gradient(90deg,#8b5cf6,#a78bfa)",
+    description: "Data concepts are the basic ideas and principles that explain how data is collected, organized, and used. They help you understand how data works and how it can be applied effectively."
   }
 ];
