@@ -12,9 +12,8 @@ const safeParseUser = () => {
   }
 };
 
-// Split "John Doe" → { firstName: "John", lastName: "Doe" }
 const splitUsername = (username = "") => {
-  const parts = username.trim().split(" ");
+  const parts     = username.trim().split(" ");
   const firstName = parts[0] || "";
   const lastName  = parts.slice(1).join(" ") || "";
   return { firstName, lastName };
@@ -38,12 +37,22 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('dataere_token');
   };
 
-  // Derived values — always in sync with user object
+  // Update stored user (used after profile edit)
+  const updateUser = (updatedData) => {
+    const merged = { ...user, ...updatedData };
+    setUser(merged);
+    localStorage.setItem('dataere_user', JSON.stringify(merged));
+  };
+
+  // Derived values
   const { firstName, lastName } = splitUsername(user?.username);
-  const email    = user?.email    || "";
-  const userId   = user?.id       || null;
-  const username = user?.username || "";
-  const isLoggedIn = !!token;
+  const email         = user?.email         || "";
+  const userId        = user?.id            || null;
+  const username      = user?.username      || "";
+  const streak        = user?.streak        ?? 0;
+  const longestStreak = user?.longestStreak ?? 0;
+  const joinDate      = user?.joinDate      || null;
+  const isLoggedIn    = !!token;
 
   return (
     <AuthContext.Provider value={{
@@ -56,10 +65,14 @@ export const AuthProvider = ({ children }) => {
       firstName,
       lastName,
       email,
+      streak,
+      longestStreak,
+      joinDate,
       isLoggedIn,
       // Actions
       login,
       logout,
+      updateUser,
     }}>
       {children}
     </AuthContext.Provider>
