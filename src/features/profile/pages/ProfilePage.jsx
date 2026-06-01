@@ -452,6 +452,12 @@ const ProfilePage = () => {
 
           {/* ── Left ── */}
           <div className="max_box left-side-box">
+            <div className="second_box">
+              <h2><FaLaptopFile className="box_icon" /> Enter Learning Lab</h2>
+              <p>Test your skill level.</p>
+              <div onClick={() => navigate("/quiz/topics")} className="max-box-btn">Start Learning Sprint</div>
+            </div>
+            
             <div className="first_box">
               <h2><FaBullseye className="box_icon" /> Daily Data Challenge</h2>
               <p>Sharpen your data skills in just 5 minutes and earn rewards.</p>
@@ -462,12 +468,6 @@ const ProfilePage = () => {
               </HStack>
               <div onClick={() => navigate("/challenge")} className="max-box-btn">Start Challenge</div>
               <p className="footer_note">Only 23% of users completed yesterday's challenge.</p>
-            </div>
-
-            <div className="second_box">
-              <h2><FaLaptopFile className="box_icon" /> Enter Learning Lab</h2>
-              <p>Test your skill level.</p>
-              <div onClick={() => navigate("/quiz/topics")} className="max-box-btn">Start Learning Sprint</div>
             </div>
 
             <div className="third_box">
