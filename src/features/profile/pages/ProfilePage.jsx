@@ -48,7 +48,7 @@ const computeBadges = (stats, scores, streak) => {
     badges.push({ id, label, icon, desc, earned: !!condition });
 
   add("first",    "DataEre Rookie",     "🎯", "Completed your first session", stats.total >= 1);
-  add("tenner",   "DataEre",   "📚", "Completed 10 sessions",             stats.total >= 10);
+  add("tenner",   "DataEre Starter",   "📚", "Completed 10 sessions",             stats.total >= 10);
   add("fifty",    "DataEre Master",    "🏅", "Completed 50 sessions",             stats.total >= 50);
   add("ace",      "High Achiever",  "⭐", "Maintained 80%+ average",          stats.avgScore >= 80);
   add("perfect",  "Perfectionist",  "💯", "Scored 100% on a quiz",            stats.bestScore === 100);
@@ -56,8 +56,8 @@ const computeBadges = (stats, scores, streak) => {
   add("streak3",  "On Fire",        "🔥", "3-day learning streak",            streak >= 3);
   add("streak7",  "Week Warrior",   "⚡", "7-day learning streak",            streak >= 7);
   add("streak10", "Streak Master",  "🏆", "10-day unbroken streak",           streak >= 10);
-  add("xp50",     "XP Collector",   "💎", "Earned 50+ total points",          stats.totalCorrect >= 50);
-  add("xp200",    "Point Hoarder",  "👑", "Earned 200+ total points",         stats.totalCorrect >= 200);
+  add("xp50",     "XP Collector",   "💎", "Earned 50+ total XP",          stats.totalCorrect >= 50);
+  add("xp200",    "XP Hoarder",  "👑", "Earned 200+ total XP",         stats.totalCorrect >= 200);
 
   return badges;
 };
@@ -457,7 +457,7 @@ const ProfilePage = () => {
               <p>Test your skill level.</p>
               <div onClick={() => navigate("/quiz/topics")} className="max-box-btn">Start Learning Sprint</div>
             </div>
-            
+
             <div className="first_box">
               <h2><FaBullseye className="box_icon" /> Daily Data Challenge</h2>
               <p>Sharpen your data skills in just 5 minutes and earn rewards.</p>

@@ -1,6 +1,6 @@
 const GROQ_API_URL = import.meta.env.DEV
-  ? "/groq/openai/v1/chat/completions"  // dev: Vite proxy (vite.config.js)
-  : "/api/groq";                        // prod: Vercel serverless function
+  ? "/groq/openai/v1/chat/completions"
+  : "/api/groq";                      
 
 const QUESTIONS_PER_QUIZ = 10;
 

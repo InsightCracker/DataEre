@@ -50,16 +50,16 @@ function App() {
   const [fetchError, setFetchError] = useState(null);
 
   // Adaptive quiz parameters
-  const [category, setCategory] = useState("");          // main topic
-  const [difficulty, setDifficulty] = useState("Beginner");  // Beginner | Intermediate | Advanced
+  const [category, setCategory] = useState("");
+  const [difficulty, setDifficulty] = useState("Beginner");
   const categoryRef = useRef("");
 
   // Keep ref in sync with state so fetchQuestions always reads the latest value
   useEffect(() => { categoryRef.current = category; }, [category]);
-  const [userWeakness, setUserWeakness] = useState("");      // concept the user struggles with
-  const [previousQuestions, setPreviousQuestions] = useState([]); // already-seen question texts
-  const [performance, setPerformance] = useState("average"); // low | average | high
-  const [learningObjective, setLearningObjective] = useState(""); // target learning goal
+  const [userWeakness, setUserWeakness] = useState("");
+  const [previousQuestions, setPreviousQuestions] = useState([]);
+  const [performance, setPerformance] = useState("average");
+  const [learningObjective, setLearningObjective] = useState("");
 
   // Derive performance level from score automatically
   // Call this after a quiz session ends to update the next session's difficulty
