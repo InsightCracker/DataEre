@@ -215,6 +215,10 @@
     line-height: 2rem;
 }
 
+.first_box p{
+    line-height: 1.3rem;
+}
+
 .second_box {
     background: #ebf1fd;
 }

@@ -454,7 +454,7 @@ const ProfilePage = () => {
           <div className="max_box left-side-box">
             <div className="first_box">
               <h2><FaBullseye className="box_icon" /> Daily Data Challenge</h2>
-              <p>Sharpen your data skills in 5 minutes.</p>
+              <p>Sharpen your data skills in just 5 minutes and earn rewards.</p>
               <HStack className="instruction" spacing={3} fontSize="sm">
                 <div className="instruction-item"><FaClock className="box_icon" /><span>{challenge.duration} mins</span></div>
                 <div className="instruction-item"><FaListCheck className="box_icon" /><span>{challenge.questions} questions</span></div>
@@ -465,7 +465,7 @@ const ProfilePage = () => {
             </div>
 
             <div className="second_box">
-              <h2><FaLaptopFile className="box_icon" /> Continue Learning</h2>
+              <h2><FaLaptopFile className="box_icon" /> Enter Learning Lab</h2>
               <p>Test your skill level.</p>
               <div onClick={() => navigate("/quiz/topics")} className="max-box-btn">Start Learning Sprint</div>
             </div>
@@ -564,7 +564,7 @@ const ProfilePage = () => {
                 🏆 Achievements Unlocked
               </h3>
               {badges.filter(b => b.earned).length === 0 ? (
-                <p style={{ fontSize:"0.8rem", color:"#9ca3af" }}>Play quizzes to unlock achievements!</p>
+                <p style={{ fontSize:"0.8rem", color:"#9ca3af" }}>Staart a session to unlock achievements!</p>
               ) : (
                 badges.filter(b => b.earned).slice(0, 4).map((b) => (
                   <div key={b.id} style={{

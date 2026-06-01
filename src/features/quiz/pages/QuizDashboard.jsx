@@ -53,7 +53,7 @@ const QuizDashboard = () => {
               <div className="banner-title">
                 <span className="icon">🎯</span> Daily Challenge
               </div>
-              <div className="banner-sub">Answer today's question!</div>
+              <div className="banner-sub">Join today's challenge!</div>
               <div className="reward-badge">⭐ Reward: +25 XP</div>
               <button className="btn-start">Start Challenge</button>
             </div>
@@ -72,7 +72,7 @@ const QuizDashboard = () => {
                 ))}
               </div>
               <div className="diff-hint">
-                Default level is set to <strong>{difficulty}</strong>. Please select your preferred level to continue.
+                Default level is <strong>{difficulty}</strong>. Select a level to continue.
               </div>
             </div>
           </div>

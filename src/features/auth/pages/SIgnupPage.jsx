@@ -403,7 +403,7 @@ const SignupPage = () => {
               Already a member?{" "}
               <Text as="a" href="/users/login" color={C.accent} fontWeight={700}
                 _hover={{ textDecoration: "underline" }}>
-                Log in to your account
+                Log in
               </Text>
             </Text>
           </Box>
