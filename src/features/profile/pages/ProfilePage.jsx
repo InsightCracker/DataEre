@@ -435,7 +435,7 @@ const ProfilePage = () => {
               <Box className="icon" sx={{ color: "#304ecf" }}><FaFire /></Box>
               <div className="list-text">
                 <p>Daily Streak</p>
-                <h3>{streak} day{streak !== 1 ? "s" : ""}</h3>
+                <h3>{streak}-day{streak !== 1 ? "s" : ""}</h3>
               </div>
             </div>
             <div className="dash-list-card">
