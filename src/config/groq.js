@@ -32,16 +32,61 @@ function buildPrompt({
 
   const topic = category?.trim() || "Data Analytics";
 
-  return `You are a quiz generator for DataEre, a data analytics learning platform.
+  return `You are a senior data analytics educator, technical interviewer, and certification exam designer.
 
 TOPIC: "${topic}" — Generate ALL ${QUESTIONS_PER_QUIZ} questions exclusively about "${topic}". Every single question must test knowledge of "${topic}" only. Do NOT generate questions about any other subject.
 
 DIFFICULTY: ${difficultyLabel}
+
+RULES:
+1. ALL questions must be about "${topic}" — no exceptions
+2. One correct answer only; correct_answers values are strings "true"/"false"
+3. Wrong answers must be plausible, not obviously wrong
+4. Distribute correct answers evenly across answer_a/b/c/d
+5. No two questions test the same concept
+6. Factually accurate only — do not guess
+7. Questions must test real-world practitioner knowledge, not textbook memorization.
+8. Prefer application, troubleshooting, optimization, and decision-making scenarios.
+9. Include edge cases, trade-offs, and best practices.
+10. Avoid simple definition questions unless required.
+11. Assume the learner is preparing for a professional data analyst role.
+12. Questions should resemble interview questions, certification questions, and workplace scenarios.
+13. DO not Ask "What is..." style questions unless unavoidable
+14. Do not ask simple definition questions repeatedly
+15. Do not Repeat concepts using different wording
+16. Do not Create questions solvable without domain knowledge
+17. DO not Use obvious distractors
+18. The correct answer MUST be randomly assigned across answer_a, answer_b, answer_c, and answer_d.
+19. Ensure uniform distribution across the full set of 10 questions.
+20. Do NOT default correct answers to any fixed position (especially not A or B).
+21. No predictable pattern is allowed (e.g., AABBCCDD, ABAB patterns, or clustering).
+22. Do not repeat the same correct answer position more than 2 times consecutively.
+
+DIFFICULTY DEFINITIONS:
+
+Beginner:
+- Fundamental concepts
+- Single-step reasoning
+
+Intermediate:
+- Multi-step reasoning
+- Real-world application
+- Tool usage
+
+Advanced:
+- Expert-level scenarios
+- Optimization problems
+- Troubleshooting
+- Architecture decisions
+- Performance considerations
+- Multiple concepts combined
+
 PERFORMANCE: ${performance || "average"} — ${
     performance === "low" ? "simplify slightly but keep educational value" :
     performance === "high" ? "increase complexity, use edge cases and multi-step reasoning" :
     "balanced mix of straightforward and moderately challenging questions"
   }
+
 USER WEAKNESS: ${userWeakness || "none — cover a balanced mix of subtopics within ${topic}"}
 AVOID REPEATING: ${prevQList}
 LEARNING OBJECTIVE: ${learningObjective || `Build well-rounded understanding of ${topic}`}
@@ -55,13 +100,19 @@ QUESTION TYPE DISTRIBUTION (strictly enforce across ${QUESTIONS_PER_QUIZ} questi
 Return a JSON array of exactly ${QUESTIONS_PER_QUIZ} objects with this structure:
 {"id":1,"question":"question about ${topic}?","description":"brief context","question_type":"scenario|practical|conceptual|calculation","answers":{"answer_a":"option","answer_b":"option","answer_c":"option","answer_d":"option"},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"false","answer_b_correct":"false","answer_c_correct":"true","answer_d_correct":"false"},"explanation":"why correct answer is right and others are wrong","tip":"memory trick","learning_objective":"specific goal","tags":["${topic.toLowerCase()}","tag2"],"category":"${topic}","difficulty":"${difficultyLabel}"}
 
-RULES:
-1. ALL questions must be about "${topic}" — no exceptions
-2. One correct answer only; correct_answers values are strings "true"/"false"
-3. Wrong answers must be plausible, not obviously wrong
-4. Distribute correct answers evenly across answer_a/b/c/d
-5. No two questions test the same concept
-6. Factually accurate only — do not guess
+
+Every scenario question must contain:
+- A realistic company situation
+- Dataset description
+- Business objective
+- Decision-making requirement
+
+Generate questions comparable to:
+- Microsoft PL-300
+- Google Data Analytics Professional Certificate
+- IBM Data Analyst Certification
+- SQL technical interviews
+- Real-world analyst assessments
 
 Return ONLY the JSON array. No markdown. No fences. No commentary.`;
 }
@@ -74,6 +125,7 @@ export async function fetchQuestionsFromGroq({
   previousQuestions = [],
   performance = "average",
   learningObjective = "",
+  rules= ""
 } = {}) {
   const topic = category?.trim() || "Data Analytics";
   const cacheKey = `${topic}__${difficulty}__${performance}__${userWeakness}`;
@@ -86,7 +138,7 @@ export async function fetchQuestionsFromGroq({
     return inflightRequest.promise;
   }
 
-  const prompt = buildPrompt({ category: topic, difficulty, userWeakness, previousQuestions, performance, learningObjective });
+  const prompt = buildPrompt({ category: topic, difficulty, userWeakness, previousQuestions, performance, learningObjective, rules });
 
   const headers = { "Content-Type": "application/json" };
   if (import.meta.env.DEV && import.meta.env.VITE_GROQ_API_KEY) {
