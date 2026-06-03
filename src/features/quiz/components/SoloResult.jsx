@@ -194,22 +194,22 @@ const SoloResult = () => {
         <Flex flexDir="column" gap={3}>
           <ActionButton
             icon={<FaSpinner />}
-            label="Retry Quiz"
+            label="Retake Session"
             onClick={retryQuiz}
             gradient="linear(to-r,#4263eb,#3b5bdb)"
             delay="0.05s"
+          />
+          <ActionButton
+            icon={<FaHouse />}
+            label="Back to Dashboard"
+            onClick={tryAnotherQuiz}
+            delay="0.15s"
           />
           <ActionButton
             icon={<FaTrophy />}
             label="View Leaderboard"
             onClick={() => navigate("/tune")}
             delay="0.1s"
-          />
-          <ActionButton
-            icon={<FaHouse />}
-            label="Try Another Quiz"
-            onClick={tryAnotherQuiz}
-            delay="0.15s"
           />
           <ActionButton
             icon={<FaShareNodes />}
@@ -236,7 +236,7 @@ const SoloResult = () => {
         >
           {/* stop click-through on the card */}
           <Box onClick={(e) => e.stopPropagation()}>
-            <QuizShareCard score={score} total={total} percentage={percentage} />
+            {/* <QuizShareCard score={score} total={total} percentage={percentage} /> */}
           </Box>
         </Box>
       )}

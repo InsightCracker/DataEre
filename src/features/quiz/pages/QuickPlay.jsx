@@ -33,16 +33,6 @@ const QuickPlay = () => {
         <span className="loadingThree">.</span>
       </Text>
     </Box>
-    
-    <Box sx={{
-          mt: '20px'
-        }}>
-        <Link to='/home'>
-          <Text sx={{
-            fontSize: '1.5rem'
-          }}><FaHome /></Text>
-      </Link>
-    </Box>
   </Box>) : (
     <Box sx={{
       minH: '100vh',

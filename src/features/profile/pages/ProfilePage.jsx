@@ -449,8 +449,6 @@ const ProfilePage = () => {
         </div>
 
         <div className="low-box">
-
-          {/* ── Left ── */}
           <div className="max_box left-side-box">
             <div className="second_box">
               <h2><FaLaptopFile className="box_icon" /> Enter Learning Lab</h2>
@@ -473,15 +471,54 @@ const ProfilePage = () => {
             <div className="third_box">
               <h2><FaChartColumn className="box_icon" /> Your Data Journey</h2>
               <div className="third-inner">
-                <div>
-                  <p>Sessions Taken: <span>{String(stats.total).padStart(2,"0")}</span></p>
-                  <p>Best Skill: <span style={{ textTransform:"capitalize", color:"green" }}>{bestSkill?.topic ?? "N/A"}</span></p>
-                </div>
-                <div>
-                  <p>Average Score: <span>{stats.avgScore}%</span></p>
-                  <p>Weak Skill: <span style={{ textTransform:"capitalize", color:"red" }}>{worstSkill?.topic ?? "N/A"}</span></p>
-                </div>
-              </div>
+              <table style={{ 
+                width: "100%", 
+                borderCollapse: "separate", 
+                borderSpacing: 0,
+                border: "1px solid #e5e7eb",
+                borderRadius: "8px",
+                overflow: "hidden"
+              }}>
+                <tbody>
+                  <tr>
+                    <td style={{ padding: "8px 12px", borderBottom: "1px solid #9baaf0", borderRight: "1px solid #9baaf0" }}>
+                      <p style={{ margin: 0 }}>
+                        Sessions Taken:{" "}
+                        <span style={{ textTransform: "capitalize", color: "#304ecf" }}>
+                          {String(stats.total).padStart(2, "0")}
+                        </span>
+                      </p>
+                    </td>
+                    <td style={{ padding: "8px 12px", borderBottom: "1px solid #9baaf0" }}>
+                      <p style={{ margin: 0 }}>
+                        Average Score:{" "}
+                        <span style={{ textTransform: "capitalize", color: "#304ecf" }}>
+                          {stats.avgScore}%
+                        </span>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: "8px 12px", borderRight: "1px solid #9baaf0" }}>
+                      <p style={{ margin: 0 }}>
+                        Best Skill:{" "}
+                        <span style={{ textTransform: "capitalize", color: "green" }}>
+                          {bestSkill?.topic ?? "N/A"}
+                        </span>
+                      </p>
+                    </td>
+                    <td style={{ padding: "8px 12px" }}>
+                      <p style={{ margin: 0 }}>
+                        Weak Skill:{" "}
+                        <span style={{ textTransform: "capitalize", color: "red" }}>
+                          {worstSkill?.topic ?? "N/A"}
+                        </span>
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
             </div>
 
             {/* Badges */}
