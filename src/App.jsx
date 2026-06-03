@@ -16,7 +16,7 @@ import VsBot from "./features/quiz/pages/VsBot";
 import QuickPlay from "./features/quiz/pages/QuickPlay";
 
 // Daily Challenge
-import DailyChallenge from './features/quiz/pages/DailyChallenge';
+// import DailyChallenge from './features/quiz/pages/DailyChallenge';
 
 import Leaderboard from './features/leaderboard/LeaderBoard';
 
@@ -190,7 +190,7 @@ function App() {
             <Route path="/board" element={<Leaderboard />} />
 
             {/* Daily Challenge */}
-            <Route path='/challenge' element={<DailyChallenge />} />
+            {/* <Route path='/challenge' element={<DailyChallenge />} /> */}
 
             {/* Converter */}
             <Route path="/converter" element={<PDFConverter />} />
