@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { fetchQuestionsFromGemini } from "../../../../api/gemini";
+import { getDailyQuestions } from "../../../api/dailyChallenge"
 
 const TOTAL_TIME = 300;
 
@@ -10,9 +10,6 @@ const difficultyConfig = {
 };
 
 export default function DailyChallengeQuestionPage() {
-  // =========================
-  // STATE
-  // =========================
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,14 +27,13 @@ export default function DailyChallengeQuestionPage() {
   const timerRef = useRef(null);
 
   // =========================
-  // LOAD QUESTIONS (GEMINI)
+  // LOAD QUESTIONS
   // =========================
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
-
-        const data = await fetchQuestionsFromGemini();
+        const data = await getDailyQuestions(); // ← updated
         setQuestions(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error loading questions:", err);
@@ -49,6 +45,8 @@ export default function DailyChallengeQuestionPage() {
 
     load();
   }, []);
+
+  // everything else below is unchanged...
 
   // =========================
   // TIMER (ONLY WHEN READY)

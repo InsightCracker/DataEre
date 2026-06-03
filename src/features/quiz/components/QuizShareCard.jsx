@@ -4,10 +4,10 @@ import { QuizContext } from "../../../util/Contexts";
 import confetti from "canvas-confetti";
 import {
   FaWhatsapp,
-  FaTwitter,
   FaLinkedinIn,
   FaFacebook,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 // ── Badge config 
 const getBadge = (pct) => {
@@ -21,9 +21,9 @@ const getBadge = (pct) => {
 const getShareMessage = (pct, category) => {
   const msgs = [
     `I just scored ${pct}% on the DataEre ${category} Session! 😎 Think you can beat me?`,
-    `${pct}% on the DataEre ${category} Session — bet you can't beat that 😏`,
-    `Just crushed the DataEre ${category} Quiz with ${pct}%! 🎉 Can you do better?`,
-    `${pct}% on the DataEre ${category} Quiz! Ready to challenge yourself? 😏`,
+    `${pct}% on the DataEre ${category} Session. Bet you can't beat that 😏`,
+    `Just crushed the DataEre ${category} Session with ${pct}%! 🎉 Can you do better?`,
+    `${pct}% on the DataEre ${category} Session! Ready to challenge yourself? 😏`,
   ];
   return msgs[Math.floor(Math.random() * msgs.length)];
 };
@@ -197,12 +197,9 @@ const QuizShareCard = ({ score = 0 }) => {
             <span>{badge.label}</span>
           </div>
           <div style={{ fontSize: "0.82rem", color: "#9ca3af" }}>
-            {category} Quiz
+            {category} Session
           </div>
         </div>
-
-        {/* Score ring */}
-        <ScoreRing percentage={pct} />
 
         {/* Stats row */}
         <div style={{ display: "flex", gap: "8px", margin: "18px 0" }}>
@@ -239,7 +236,7 @@ const QuizShareCard = ({ score = 0 }) => {
         <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
           {[
             { platform: "whatsapp", Icon: FaWhatsapp, color: "#25d366", bg: "#f0fdf4", border: "#bbf7d0" },
-            { platform: "twitter",  Icon: FaTwitter,  color: "#1da1f2", bg: "#eff6ff", border: "#bfdbfe" },
+            { platform: "twitter",  Icon: FaXTwitter,  color: "#fff", bg: "#2b2b2b", border: "#2b2b2b" },
             { platform: "facebook", Icon: FaFacebook, color: "#1877f2", bg: "#eff6ff", border: "#bfdbfe" },
             { platform: "linkedin", Icon: FaLinkedinIn, color: "#0a66c2", bg: "#eff6ff", border: "#bfdbfe" },
           ].map(({ platform, Icon, color, bg, border }) => (

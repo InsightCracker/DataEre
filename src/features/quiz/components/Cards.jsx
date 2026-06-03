@@ -108,7 +108,7 @@ const Cards = () => {
                         speed="0.65s"
                       />
                       <span className="card-loading-label">
-                        {isSoloLoading(cat) ? "Loading quiz…" : "Setting up bot…"}
+                        {isSoloLoading(cat) ? "Setting up the session…" : "Setting up bot…"}
                       </span>
                     </div>
                   </div>
@@ -132,7 +132,7 @@ const Cards = () => {
                         <span>Loading…</span>
                       </>
                     ) : (
-                      <>⚡ Quick Play</>
+                      <>⚡ Solo Mode</>
                     )}
                   </button>
 

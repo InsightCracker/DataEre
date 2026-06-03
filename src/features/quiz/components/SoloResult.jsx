@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../../../util/Contexts";
 import { TimerContext } from "../../../util/TimerProvider";
+import BottomNav from "../../../util/BottomNav";
+import Sidebar from "../../../util/Sidebar";
 
 import {
   Box, 
@@ -123,6 +125,8 @@ const SoloResult = () => {
       justify="center"
       p={{ base: 5, md: 8 }}
     >
+      <Sidebar />
+
       <Box
         bg="white"
         borderRadius="24px"
@@ -208,7 +212,7 @@ const SoloResult = () => {
           <ActionButton
             icon={<FaTrophy />}
             label="View Leaderboard"
-            onClick={() => navigate("/tune")}
+            onClick={() => navigate("/board")}
             delay="0.1s"
           />
           <ActionButton
@@ -236,10 +240,12 @@ const SoloResult = () => {
         >
           {/* stop click-through on the card */}
           <Box onClick={(e) => e.stopPropagation()}>
-            {/* <QuizShareCard score={score} total={total} percentage={percentage} /> */}
+            <QuizShareCard score={score} total={total} percentage={percentage} />
           </Box>
         </Box>
       )}
+
+      <BottomNav />
     </Flex>
   );
 };

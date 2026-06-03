@@ -1,5 +1,6 @@
 import "../styles/quiz.css";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../../../util/Contexts";
 
 import { Box, Heading } from "@chakra-ui/react";
@@ -17,6 +18,7 @@ const QuizDashboard = () => {
     setCategories,
     setDifficulty
   } = useContext(QuizContext);
+  const navigate = useNavigate();
 
   const quickPlay = (cat) => {
     if (window.gtag) {
@@ -55,7 +57,7 @@ const QuizDashboard = () => {
               </div>
               <div className="banner-sub">Join today's challenge!</div>
               <div className="reward-badge">⭐ Reward: +25 XP</div>
-              <button className="btn-start">Start Challenge</button>
+              <button className="btn-start" onClick={() => navigate("/coming-soon")}>Start Challenge</button>
             </div>
  
             <div className="banner-right">
