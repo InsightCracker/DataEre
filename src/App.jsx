@@ -196,7 +196,7 @@ function App() {
             <Route path="/converter" element={<PDFConverter />} />
 
             {/* Coming Soon */}
-            <Route path="/tune" element={<ComingSoon />} />
+            <Route path="/coming-soon" element={<ComingSoon />} />
           </Routes>
         </QuizContext.Provider>
         </TimerProvider>
