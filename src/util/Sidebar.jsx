@@ -22,11 +22,11 @@ const Sidebar = () => {
   };
 
   const navLinks = [
-    { label: "Dashboard",    icon: FaHome,          path: "/users/profile" },
-    { label: "Learning Lab",      icon: FaQuestionCircle, path: "/quiz/topics" },
-    { label: "Leaderboard",  icon: FaTrophy,         path: "/board" },
-    { label: "PDF Converter", icon: FaFilePdf,       path: "/converter" },
-    { label: "Reports",      icon: FaChartBar,       path: "/reports" },
+    { label: "Dashboard", icon: FaHome, path: "/users/profile" },
+    { label: "Learning Lab", icon: FaQuestionCircle, path: "/quiz/topics" },
+    { label: "Leaderboard",  icon: FaTrophy, path: "/board" },
+    { label: "PDF Converter", icon: FaFilePdf, path: "/coming-soon" },
+    { label: "Reports", icon: FaChartBar, path: "/coming-soon" },
   ];
 
   const avatarLetter = firstName
