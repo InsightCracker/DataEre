@@ -124,6 +124,7 @@ const SoloResult = () => {
       align="center"
       justify="center"
       p={{ base: 5, md: 8 }}
+      pb={{ base: "5rem", lg: 0}}
     >
       <Sidebar />
 
@@ -224,26 +225,11 @@ const SoloResult = () => {
         </Flex>
       </Box>
 
-      {/* ── Share modal overlay ── */}
-      {show && (
-        <Box
-          position="fixed" top={0} left={0}
-          w="100vw" h="100vh"
-          display="flex" 
-          alignItems="center" 
-          justifyContent="center"
-          bg="rgba(15,27,53,0.4)"
-          backdropFilter="blur(10px)"
-          sx={{ WebkitBackdropFilter: "blur(10px)" }}
-          zIndex={1000}
-          onClick={() => setShow(false)}
-        >
-          {/* stop click-through on the card */}
-          <Box onClick={(e) => e.stopPropagation()}>
-            <QuizShareCard score={score} total={total} percentage={percentage} />
-          </Box>
-        </Box>
-      )}
+      <QuizShareCard 
+        score={score} 
+        isOpen={show} 
+        onClose={() => setShow(false)} 
+      />
 
       <BottomNav />
     </Flex>

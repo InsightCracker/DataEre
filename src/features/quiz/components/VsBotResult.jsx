@@ -212,23 +212,11 @@ const MultiEnd = () => {
         </Flex>
       </Box>
 
-      {/* ── Share modal ── */}
-      {show && (
-        <Box
-          position="fixed" top={0} left={0}
-          w="100vw" h="100vh"
-          display="flex" alignItems="center" justifyContent="center"
-          bg="rgba(15,27,53,0.4)"
-          backdropFilter="blur(10px)"
-          sx={{ WebkitBackdropFilter:"blur(10px)" }}
-          zIndex={1000}
-          onClick={() => setShow(false)}
-        >
-          <Box onClick={(e) => e.stopPropagation()}>
-            <QuizShareCard score={score} total={total} percentage={percentage} />
-          </Box>
-        </Box>
-      )}
+      <QuizShareCard 
+        score={score} 
+        isOpen={show} 
+        onClose={() => setShow(false)} 
+      />
     </Flex>
   );
 };

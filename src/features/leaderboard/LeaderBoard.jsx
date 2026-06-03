@@ -152,7 +152,7 @@ const LeaderBoard = () => {
 
       <Sidebar />
 
-      <Box mx="auto" px={{ base: "1rem", md: "2rem" }} py="2rem" ml={{ base: 0, lg: "240px" }}>
+      <Box mx="auto" px={{ base: "1rem", md: "2rem" }} py="2rem" ml={{ base: 0, lg: "240px" }} pb={{ base: "5rem", lg: 0}}>
 
         {/* Header */}
         <Flex align="center" justify="center" gap="10px" mb="0.3rem"

@@ -16,14 +16,14 @@ const steps = [
     icon: FaLaptopCode,
     color: "#a78bfa",
     title: "Learn & Test Your Skills",
-    desc: "Dive into interactive lessons, hands-on quizzes, and real-world challenges. Get instant feedback and sharpen your knowledge step by step.",
+    desc: "Dive into interactive lessons, hands-on practice, and real-world challenges. Get instant feedback and sharpen your knowledge step by step.",
   },
   {
     number: "03",
     icon: FaChartLine,
     color: "#34d399",
     title: "Track Progress & Share",
-    desc: "Monitor your performance, climb the leaderboard, and share your quiz results to showcase your skills to peers and employers.",
+    desc: "Track your learning progress, climb the leaderboard, and share your results to demonstrate your data expertise to peers and employers.",
   },
 ];
 

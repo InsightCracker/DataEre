@@ -8,7 +8,7 @@ const featureItems = [
     icon: FaRocket,
     color: "#3b6ef0",
     title: "Real-World Practice, Not Passive Learning",
-    desc: "Engaging scenario-based quizzes with messy, realistic datasets that mirror actual analyst work; so you can move beyond tutorials and build real confidence.",
+    desc: "Engaging scenario-based challenges with messy, realistic datasets that mirror actual analyst work; so you can move beyond tutorials and build real confidence.",
   },
   {
     icon: FaBrain,

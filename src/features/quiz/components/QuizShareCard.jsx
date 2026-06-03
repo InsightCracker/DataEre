@@ -9,6 +9,10 @@ import {
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
+import {
+  Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton
+} from "@chakra-ui/react";
+
 // ── Badge config 
 const getBadge = (pct) => {
   if (pct >= 90) return { emoji: "🥇", label: "Outstanding!",  color: "#ef9f27", bg: "#faeeda", border: "#ef9f27" };
@@ -85,7 +89,7 @@ const StatPill = ({ label, value, color }) => (
 );
 
 // ── Main 
-const QuizShareCard = ({ score = 0 }) => {
+const QuizShareCard = ({ score = 0, isOpen, onClose }) => {
   const {
     questions = [],
     setWrongAnswer,
@@ -100,7 +104,6 @@ const QuizShareCard = ({ score = 0 }) => {
   const [searchParams] = useSearchParams();
   const [copied, setCopied]     = useState(false);
   const [sharing, setSharing]   = useState(false);
-  const [visible, setVisible]   = useState(false);
 
   const mode     = searchParams.get("mode");
   const total    = questions.length;
@@ -112,8 +115,6 @@ const QuizShareCard = ({ score = 0 }) => {
   const url      = "https://dataxo.cfd";
 
   useEffect(() => {
-    // Mount animation
-    setTimeout(() => setVisible(true), 50);
 
     // Confetti
     const fire = () => confetti({
@@ -161,28 +162,11 @@ const QuizShareCard = ({ score = 0 }) => {
   };
 
   return (
-    <div style={{
-      position: "fixed", inset: 0,
-      background: "rgba(15,27,53,0.55)",
-      backdropFilter: "blur(12px)",
-      WebkitBackdropFilter: "blur(12px)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      zIndex: 1000, padding: "1rem",
-      opacity: visible ? 1 : 0,
-      transition: "opacity 0.3s ease",
-    }}>
-      <div style={{
-        background: "#ffffff",
-        borderRadius: "24px",
-        width: "100%", maxWidth: "400px",
-        padding: "28px 24px",
-        boxShadow: "0 24px 60px rgba(15,27,53,0.18)",
-        transform: visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.96)",
-        transition: "transform 0.5s cubic-bezier(0.34,1.2,0.64,1), opacity 0.4s ease",
-        opacity: visible ? 1 : 0,
-        maxHeight: "90vh",
-        overflowY: "auto",
-      }}>
+  <Modal isOpen={isOpen} onClose={onClose} size="sm" scrollBehavior="inside" isCentered >
+    <ModalOverlay backdropFilter="blur(12px)" bg="rgba(15,27,53,0.55)" />
+    <ModalContent borderRadius="24px" mx="1rem"  maxH="80vh">
+      <ModalCloseButton />
+      <ModalBody p="28px 24px">
 
         {/* Badge + topic */}
         <div style={{ textAlign: "center", marginBottom: "18px" }}>
@@ -203,10 +187,10 @@ const QuizShareCard = ({ score = 0 }) => {
 
         {/* Stats row */}
         <div style={{ display: "flex", gap: "8px", margin: "18px 0" }}>
-          <StatPill label="Correct"  value={score}   color="#10b981" />
-          <StatPill label="Wrong"    value={wrongAnswer} color="#ef4444" />
-          <StatPill label="Skipped"  value={skipped} color="#f59e0b" />
-          <StatPill label="Total"    value={total}   color="#3b6ef0" />
+          <StatPill label="Correct"  value={score}        color="#10b981" />
+          <StatPill label="Wrong"    value={wrongAnswer}  color="#ef4444" />
+          <StatPill label="Skipped"  value={skipped}      color="#f59e0b" />
+          <StatPill label="Total"    value={total}        color="#3b6ef0" />
         </div>
 
         {/* Share message */}
@@ -235,9 +219,9 @@ const QuizShareCard = ({ score = 0 }) => {
         {/* Social buttons */}
         <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
           {[
-            { platform: "whatsapp", Icon: FaWhatsapp, color: "#25d366", bg: "#f0fdf4", border: "#bbf7d0" },
-            { platform: "twitter",  Icon: FaXTwitter,  color: "#fff", bg: "#2b2b2b", border: "#2b2b2b" },
-            { platform: "facebook", Icon: FaFacebook, color: "#1877f2", bg: "#eff6ff", border: "#bfdbfe" },
+            { platform: "whatsapp", Icon: FaWhatsapp,   color: "#25d366", bg: "#f0fdf4", border: "#bbf7d0" },
+            { platform: "twitter",  Icon: FaXTwitter,   color: "#fff",    bg: "#2b2b2b", border: "#2b2b2b" },
+            { platform: "facebook", Icon: FaFacebook,   color: "#1877f2", bg: "#eff6ff", border: "#bfdbfe" },
             { platform: "linkedin", Icon: FaLinkedinIn, color: "#0a66c2", bg: "#eff6ff", border: "#bfdbfe" },
           ].map(({ platform, Icon, color, bg, border }) => (
             <button key={platform} onClick={() => shareUrl(platform)}
@@ -282,9 +266,11 @@ const QuizShareCard = ({ score = 0 }) => {
             🏠 Dashboard
           </button>
         </div>
-      </div>
-    </div>
-  );
+
+      </ModalBody>
+    </ModalContent>
+  </Modal>
+);
 };
 
 export default QuizShareCard;

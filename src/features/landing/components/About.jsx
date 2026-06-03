@@ -152,7 +152,7 @@ const aboutFeatures = [
     icon: BsBarChartFill,
     color: "#3b6ef0",
     bg:    "rgba(59,110,240,0.09)",
-    title: "Smart Data Quizzes",
+    title: "Smart Data Challenges",
     desc:  "Tackle real-world challenges with messy datasets and ambiguous business questions. Practice cleaning data, choosing the right approach, and turning insights into recommendations; just like on the job.",
     stat:  { value: "500+", label: "Real scenarios" },
   },
@@ -379,7 +379,7 @@ const About = () => {
             color="#4b5563" lineHeight={1.8} maxW="560px" mx="auto"
           >
             DataEre helps aspiring and junior data analysts go beyond passive tutorials —
-            with real-world quizzes, PDF-to-Excel conversion, and messy scenario challenges.
+            with real-world challenges, PDF-to-Excel conversion, and messy scenario challenges.
           </Text>
 
           {/* divider with glow */}
