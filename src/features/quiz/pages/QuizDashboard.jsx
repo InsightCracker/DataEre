@@ -51,14 +51,14 @@ const QuizDashboard = () => {
       <div className="dashboard_container">
         {/* Daily Challenge Banner */}
           <div className="banner">
-            <div className="banner-left">
+            {/* <div className="banner-left">
               <div className="banner-title">
                 <span className="icon">🎯</span> Daily Challenge
               </div>
               <div className="banner-sub">Join today's challenge!</div>
               <div className="reward-badge">⭐ Reward: +25 XP</div>
               <button className="btn-start" onClick={() => navigate("/coming-soon")}>Start Challenge</button>
-            </div>
+            </div> */}
  
             <div className="banner-right">
               <div className="diff-label">Choose Difficulty:</div>

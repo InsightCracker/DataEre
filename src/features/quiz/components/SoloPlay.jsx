@@ -118,9 +118,9 @@ const SoloPlay = () => {
   } = useContext(QuizContext);
 
   const [optionChosenKey, setOptionChosenKey] = useState("");
-  const [revealed, setRevealed]               = useState(false);
-  const [pointsHistory, setPointsHistory]     = useState([]);
-  const [animKey, setAnimKey]                 = useState(0);
+  const [revealed, setRevealed] = useState(false);
+  const [pointsHistory, setPointsHistory] = useState([]);
+  const [animKey, setAnimKey] = useState(0);
 
   useEffect(() => {
     localStorage.removeItem("soloQuizCompleted");
