@@ -1,365 +1,354 @@
-import { Box, Text, VStack, HStack } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
+import { Box } from "@chakra-ui/react";
 import { FaRocket } from "react-icons/fa6";
+import { useEffect, useRef, useState } from "react";
 
-const orbit = keyframes`
-  from { transform: rotate(0deg) translateX(110px) rotate(0deg); }
-  to   { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
+const STYLES = `
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@700;800;900&family=DM+Sans:wght@400;500&display=swap');
+
+  @keyframes cs-fadeUp    { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes cs-drift1    { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,20px)} }
+  @keyframes cs-drift2    { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-22px,-28px)} }
+  @keyframes cs-drift3    { 0%,100%{transform:translate(0,0)} 50%{transform:translate(18px,-14px)} }
+  @keyframes cs-ping      { 0%,100%{transform:scale(1);opacity:.3} 50%{transform:scale(2.2);opacity:0} }
+  @keyframes cs-spin      { to{transform:rotate(360deg)} }
+  @keyframes cs-rocket-float { 0%,100%{transform:translateY(0) rotate(-12deg)} 50%{transform:translateY(-10px) rotate(-8deg)} }
+  @keyframes cs-shimmer-sweep{ 0%{transform:translateX(-100%)} 30%,100%{transform:translateX(200%)} }
+  @keyframes cs-flip      { from{transform:translateY(-6px);opacity:0} to{transform:translateY(0);opacity:1} }
+  @keyframes cs-dotbounce {
+    0%,80%,100%{ transform:scale(1);opacity:.5; }
+    40%        { transform:scale(1.7) translateY(-5px);opacity:1; }
+  }
+  @keyframes cs-bar-grow  { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+  @keyframes cs-glowPulse {
+    0%,100%{ box-shadow:0 8px 28px rgba(59,110,240,.28); }
+    50%     { box-shadow:0 14px 44px rgba(59,110,240,.50); }
+  }
+
+  .cs-orb{ position:absolute; border-radius:50%; pointer-events:none; }
+  .cs-orb1{ width:420px;height:420px;top:-120px;left:-120px;
+    background:radial-gradient(circle,rgba(59,110,240,.09),transparent 70%);
+    animation:cs-drift1 9s ease-in-out infinite; }
+  .cs-orb2{ width:300px;height:300px;bottom:-80px;right:-80px;
+    background:radial-gradient(circle,rgba(107,150,245,.12),transparent 70%);
+    animation:cs-drift2 11s ease-in-out infinite; }
+  .cs-orb3{ width:180px;height:180px;
+    background:radial-gradient(circle,rgba(167,139,250,.10),transparent 70%);
+    animation:cs-drift3 7s ease-in-out infinite; }
+
+  .cs-rocket-bg{ position:relative;overflow:hidden; }
+  .cs-rocket-bg::before{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+    transform:translateX(-100%);
+    animation:cs-shimmer-sweep 3s ease-in-out infinite 1s;
+  }
+  .cs-ring{ position:absolute;border-radius:50%;border-style:dashed;pointer-events:none; }
+  .cs-ring1{ inset:-18px;border:1.5px dashed rgba(59,110,240,.22);animation:cs-spin 12s linear infinite; }
+  .cs-ring2{ inset:-34px;border:1px dashed rgba(59,110,240,.12);animation:cs-spin 18s linear infinite reverse; }
+
+  .cs-unit{ transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease; }
+  .cs-unit:hover{
+    transform:translateY(-5px) !important;
+    box-shadow:0 12px 30px rgba(59,110,240,.16) !important;
+    border-color:rgba(59,110,240,.3) !important;
+  }
+  .cs-unit-num.flip{ animation:cs-flip .3s ease; }
+
+  .cs-pill{ transition:all .25s ease; }
+  .cs-pill:hover{
+    transform:translateY(-3px);
+    border-color:rgba(59,110,240,.3) !important;
+    color:#3b6ef0 !important;
+    box-shadow:0 8px 20px rgba(59,110,240,.12);
+  }
+
+  .cs-btn-notify{
+    background:linear-gradient(135deg,#2251cc,#3b6ef0);
+    color:#fff;border:none;cursor:pointer;padding:13px 24px;
+    font-family:'Sora',sans-serif;font-size:.85rem;font-weight:800;
+    letter-spacing:.02em;white-space:nowrap;
+    transition:filter .2s;position:relative;overflow:hidden;
+  }
+  .cs-btn-notify:hover{ filter:brightness(1.12); animation:cs-glowPulse 1.5s ease infinite; }
 `;
 
-const orbitReverse = keyframes`
-  from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
-  to   { transform: rotate(-360deg) translateX(160px) rotate(360deg); }
-`;
+const FEATURES = [
+  { label: "Daily Challenge",     dot: "#3b6ef0" },
+  { label: "PDF Converter",     dot: "#f87171" },
+  { label: "AI Insights",       dot: "#a78bfa" },
+  { label: "Report Generator",  dot: "#34d399" },
+];
 
-const orbitSlow = keyframes`
-  from { transform: rotate(45deg) translateX(210px) rotate(-45deg); }
-  to   { transform: rotate(405deg) translateX(210px) rotate(-405deg); }
-`;
+/* ── live countdown ── */
+const useCountdown = (targetDate) => {
+  const calc = () => {
+    const diff = Math.max(0, targetDate - Date.now());
+    return {
+      d: String(Math.floor(diff / 864e5)).padStart(2, "0"),
+      h: String(Math.floor((diff % 864e5) / 36e5)).padStart(2, "0"),
+      m: String(Math.floor((diff % 36e5) / 6e4)).padStart(2, "0"),
+      s: String(Math.floor((diff % 6e4) / 1e3)).padStart(2, "0"),
+    };
+  };
+  const [time, setTime] = useState(calc);
+  useEffect(() => {
+    const id = setInterval(() => setTime(calc()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+};
 
-const rocketFloat = keyframes`
-  0%   { transform: translateY(0px)   rotate(-30deg); }
-  50%  { transform: translateY(-18px) rotate(-24deg); }
-  100% { transform: translateY(0px)   rotate(-30deg); }
-`;
-
-const flameFlicker = keyframes`
-  0%, 100% { transform: scaleX(1) scaleY(1);   opacity: 1; }
-  33%       { transform: scaleX(0.8) scaleY(1.2); opacity: 0.85; }
-  66%       { transform: scaleX(1.2) scaleY(0.9); opacity: 0.9; }
-`;
-
-const glowPulse = keyframes`
-  0%, 100% { box-shadow: 0 0 30px 6px rgba(99,102,241,0.35), 0 0 60px 12px rgba(99,102,241,0.15); }
-  50%       { box-shadow: 0 0 50px 12px rgba(99,102,241,0.55), 0 0 90px 24px rgba(168,85,247,0.25); }
-`;
-
-const ringPulse = keyframes`
-  0%   { transform: scale(0.9); opacity: 0.7; }
-  50%  { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.7; }
-`;
-
-const textGlow = keyframes`
-  0%, 100% { text-shadow: 0 0 20px rgba(168,85,247,0.4), 0 0 40px rgba(99,102,241,0.2); }
-  50%       { text-shadow: 0 0 30px rgba(168,85,247,0.7), 0 0 60px rgba(99,102,241,0.4); }
-`;
-
-const dotBlink = keyframes`
-  0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
-  40%            { opacity: 1;   transform: scale(1.2); }
-`;
-
-const starTwinkle = keyframes`
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50%       { opacity: 1;   transform: scale(1.3); }
-`;
-
-const fadeSlideUp = keyframes`
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-`;
-
-const scanLine = keyframes`
-  0%   { transform: translateY(-100%); opacity: 0; }
-  10%  { opacity: 0.5; }
-  90%  { opacity: 0.5; }
-  100% { transform: translateY(600%); opacity: 0; }
-`;
-
-// ─── Star dot 
-
-const Star = ({ top, left, size, delay }) => (
+/* ── countdown unit ── */
+const Unit = ({ value, label, delay }) => (
   <Box
-    position="absolute"
-    top={top}
-    left={left}
-    w={`${size}px`}
-    h={`${size}px`}
-    borderRadius="full"
-    bg="white"
-    animation={`${starTwinkle} ${2 + Math.random() * 2}s ${delay}s ease-in-out infinite`}
-  />
+    className="cs-unit"
+    bg="#fff"
+    border="1px solid rgba(59,110,240,.12)"
+    borderRadius="16px"
+    px="20px" py="16px"
+    minW="72px" textAlign="center"
+    boxShadow="0 2px 12px rgba(59,110,240,.07)"
+    position="relative" overflow="hidden"
+    style={{ animation: `cs-fadeUp .6s ${delay} ease both` }}
+  >
+    <Box
+      className="cs-unit-num"
+      fontFamily="'Sora',sans-serif" fontSize="1.9rem" fontWeight={900}
+      color="#111827" letterSpacing="-1px" lineHeight={1} mb="6px"
+    >
+      {value}
+    </Box>
+    <Box
+      fontFamily="'Sora',sans-serif" fontSize=".62rem" fontWeight={800}
+      color="#9ca3af" letterSpacing=".08em" textTransform="uppercase"
+    >
+      {label}
+    </Box>
+    <Box
+      position="absolute" bottom={0} left={0} right={0} h="3px"
+      bg="linear-gradient(90deg,#3b6ef0,#6b96f5)"
+      transformOrigin="left"
+      style={{ animation: `cs-bar-grow .9s ${delay} ease both` }}
+    />
+  </Box>
 );
-
-// ─── Orbit dot 
-
-const OrbitDot = ({ color, size, anim, animDuration, delay = "0s" }) => (
-  <Box
-    position="absolute"
-    top="50%"
-    left="50%"
-    w={`${size}px`}
-    h={`${size}px`}
-    mt={`-${size / 2}px`}
-    ml={`-${size / 2}px`}
-    borderRadius="full"
-    bg={color}
-    boxShadow={`0 0 ${size * 3}px ${size}px ${color}80`}
-    animation={`${anim} ${animDuration} ${delay} linear infinite`}
-  />
-);
-
-// ─── Main Component 
 
 const ComingSoon = () => {
-  const stars = [
-    { top: "8%",  left: "5%",  size: 2, delay: 0 },
-    { top: "15%", left: "20%", size: 1, delay: 0.4 },
-    { top: "5%",  left: "40%", size: 3, delay: 0.8 },
-    { top: "12%", left: "65%", size: 2, delay: 0.2 },
-    { top: "7%",  left: "85%", size: 1, delay: 1.1 },
-    { top: "22%", left: "92%", size: 2, delay: 0.6 },
-    { top: "75%", left: "8%",  size: 2, delay: 1.4 },
-    { top: "82%", left: "25%", size: 1, delay: 0.3 },
-    { top: "90%", left: "55%", size: 3, delay: 0.9 },
-    { top: "78%", left: "78%", size: 2, delay: 0.5 },
-    { top: "88%", left: "93%", size: 1, delay: 1.3 },
-    { top: "45%", left: "2%",  size: 2, delay: 0.7 },
-    { top: "55%", left: "96%", size: 2, delay: 0.1 },
-  ];
+  const canvasRef = useRef(null);
+
+  /* launch date = 7 days from now */
+  const target = useRef(Date.now() + 2 * 864e5 + 14 * 36e5 + 32 * 6e4);
+  const time   = useCountdown(target.current);
+
+  /* canvas particle network */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const resize = () => {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const pts = Array.from({ length: 70 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.3 + 0.3,
+      dx: (Math.random() - 0.5) * 0.32,
+      dy: (Math.random() - 0.5) * 0.32,
+      op: Math.random() * 0.5 + 0.1,
+      pulse: Math.random() * Math.PI * 2,
+    }));
+
+    let raf;
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = "rgba(59,110,240,.05)"; ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 72) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 72) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+      }
+      pts.forEach((a, i) =>
+        pts.slice(i + 1).forEach((b) => {
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 130) {
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(59,110,240,${0.09 * (1 - d / 130)})`;
+            ctx.lineWidth = 0.5; ctx.stroke();
+          }
+        })
+      );
+      pts.forEach((p) => {
+        p.pulse += 0.018;
+        const r = p.r + Math.sin(p.pulse) * 0.35;
+        ctx.fillStyle = `rgba(59,110,240,${p.op * 0.5})`; ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width)  p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, []);
 
   return (
     <Box
-      minH="100vh"
-      w="full"
-      bg="#07060f"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      position="relative"
-      overflow="hidden"
-      fontFamily="'Space Grotesk', sans-serif"
+      minH="100vh" bg="#f0f4ff"
+      fontFamily="'DM Sans', sans-serif"
+      position="relative" overflow="hidden"
+      display="flex" flexDir="column"
+      alignItems="center" justifyContent="center"
+      px={{ base: "1.5rem", md: "2rem" }}
+      py={{ base: "4rem", md: "3rem" }}
     >
-      {/* Starfield */}
-      {stars.map((s, i) => (
-        <Star key={i} {...s} />
-      ))}
+      <style>{STYLES}</style>
 
-      {/* Scan line effect */}
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-        h="2px"
-        bgGradient="linear(to-r, transparent, rgba(99,102,241,0.6), transparent)"
-        animation={`${scanLine} 6s 1s linear infinite`}
-        pointerEvents="none"
-        zIndex={1}
+      {/* canvas */}
+      <canvas
+        ref={canvasRef}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
       />
 
-      {/* Ambient background glow blobs */}
+      {/* orbs */}
+      <Box className="cs-orb cs-orb1" />
+      <Box className="cs-orb cs-orb2" />
       <Box
-        position="absolute"
-        top="15%"
-        left="10%"
-        w="320px"
-        h="320px"
-        borderRadius="full"
-        bg="rgba(99,102,241,0.07)"
-        filter="blur(80px)"
-        pointerEvents="none"
-      />
-      <Box
-        position="absolute"
-        bottom="10%"
-        right="8%"
-        w="280px"
-        h="280px"
-        borderRadius="full"
-        bg="rgba(168,85,247,0.07)"
-        filter="blur(80px)"
-        pointerEvents="none"
+        className="cs-orb cs-orb3"
+        style={{ top: "40%", right: "15%" }}
       />
 
-      {/* Main card */}
-      <VStack
-        spacing={10}
-        position="relative"
-        zIndex={2}
-        align="center"
-        px={6}
+      <Box
+        position="relative" zIndex={2}
+        display="flex" flexDir="column" alignItems="center"
+        textAlign="center"
       >
-        {/* Orbital system */}
+
+        {/* badge */}
         <Box
-          position="relative"
-          w="260px"
-          h="260px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+          display="inline-flex" alignItems="center" gap="8px"
+          px="18px" py="7px" borderRadius="full" mb="28px"
+          bg="rgba(59,110,240,.07)" border="1px solid rgba(59,110,240,.22)"
+          style={{ animation: "cs-fadeUp .6s ease both" }}
         >
-          {/* Orbit ring 1 */}
+          <Box position="relative" w="7px" h="7px">
+            <Box position="absolute" inset={0} borderRadius="full" bg="#3b6ef0" opacity={0.35}
+              style={{ animation: "cs-ping 1.8s ease-in-out infinite" }} />
+            <Box position="absolute" inset={0} borderRadius="full" bg="#3b6ef0" />
+          </Box>
           <Box
-            position="absolute"
-            w="220px"
-            h="220px"
-            borderRadius="full"
-            border="1px dashed rgba(99,102,241,0.25)"
-            animation={`${ringPulse} 3s ease-in-out infinite`}
-          />
-          {/* Orbit ring 2 */}
-          <Box
-            position="absolute"
-            w="320px"
-            h="320px"
-            borderRadius="full"
-            border="1px dashed rgba(168,85,247,0.15)"
-            animation={`${ringPulse} 4s 1s ease-in-out infinite`}
-          />
-
-          {/* Orbiting dots — ring 1 */}
-          <OrbitDot
-            color="#818cf8"
-            size={8}
-            anim={orbit}
-            animDuration="4s"
-          />
-          <OrbitDot
-            color="#a78bfa"
-            size={6}
-            anim={orbit}
-            animDuration="4s"
-            delay="2s"
-          />
-
-          {/* Orbiting dots — ring 2 */}
-          <OrbitDot
-            color="#c084fc"
-            size={5}
-            anim={orbitReverse}
-            animDuration="7s"
-          />
-          <OrbitDot
-            color="#60a5fa"
-            size={4}
-            anim={orbitReverse}
-            animDuration="7s"
-            delay="3.5s"
-          />
-
-          {/* Orbiting dot — ring 3 */}
-          <OrbitDot
-            color="#f472b6"
-            size={5}
-            anim={orbitSlow}
-            animDuration="11s"
-          />
-
-          {/* Central glow disc */}
-          <Box
-            position="absolute"
-            w="90px"
-            h="90px"
-            borderRadius="full"
-            bg="rgba(99,102,241,0.12)"
-            animation={`${glowPulse} 3s ease-in-out infinite`}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          />
-
-          {/* Rocket */}
-          <Box
-            position="relative"
-            zIndex={3}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            animation={`${rocketFloat} 3.5s ease-in-out infinite`}
+            fontFamily="'Sora',sans-serif" fontSize="11px" fontWeight={800}
+            color="#3b6ef0" letterSpacing=".1em" textTransform="uppercase"
           >
-            <Box
-              fontSize="52px"
-              lineHeight={1}
-              color="#e0e7ff"
-              filter="drop-shadow(0 0 12px rgba(99,102,241,0.8)) drop-shadow(0 0 24px rgba(168,85,247,0.5))"
-              transform="rotate(-30deg)"
-            >
-              <FaRocket />
-            </Box>
-            {/* Flame */}
-            <Box
-              mt="-6px"
-              ml="-2px"
-              animation={`${flameFlicker} 0.2s ease-in-out infinite`}
-              transformOrigin="top center"
-              transform="rotate(-30deg)"
-            >
-              <Box
-                w="12px"
-                h="20px"
-                borderRadius="0 0 60% 60%"
-                bgGradient="linear(to-b, #fbbf24, #f97316, #ef444400)"
-                filter="blur(2px)"
-              />
-            </Box>
+            Something epic is coming
           </Box>
         </Box>
 
-        {/* Text section */}
-        <VStack
-          spacing={4}
-          animation={`${fadeSlideUp} 0.9s 0.3s ease-out both`}
-          textAlign="center"
-        >    
-
-          {/* Headline */}
-          <Text
-            fontSize={["44px", "64px"]}
-            fontWeight="800"
-            lineHeight={1.05}
-            letterSpacing="-0.03em"
-            bgGradient="linear(135deg, #e0e7ff, #a78bfa, #818cf8)"
-            bgClip="text"
-            color="transparent"
-            animation={`${textGlow} 3s ease-in-out infinite`}
-          >
-            Coming Soon
-          </Text>
-
-          {/* Subtitle */}
-          <Text
-            fontSize={["14px", "16px"]}
-            color="rgba(148,163,184,0.8)"
-            maxW="380px"
-            lineHeight={1.7}
-          >
-            Exciting new features are on the way.{" "}
-            <Box as="span" color="#a78bfa">
-              Stay tuned!
-            </Box>
-          </Text>
-        </VStack>
-
-        {/* Loading dots */}
-        <HStack
-          spacing={3}
-          animation={`${fadeSlideUp} 0.9s 0.6s ease-out both`}
+        {/* rocket */}
+        <Box
+          position="relative" w="100px" h="100px"
+          display="flex" alignItems="center" justifyContent="center"
+          mb="32px"
+          style={{ animation: "cs-fadeUp .6s .08s ease both" }}
         >
-          {[0, 1, 2].map((i) => (
+          <Box className="cs-ring cs-ring1" />
+          <Box className="cs-ring cs-ring2" />
+          <Box
+            className="cs-rocket-bg"
+            w="100px" h="100px" borderRadius="28px"
+            bg="rgba(59,110,240,.09)" border="1px solid rgba(59,110,240,.2)"
+            display="flex" alignItems="center" justifyContent="center"
+            style={{ animation: "cs-rocket-float 3s ease-in-out infinite" }}
+          >
+            <FaRocket
+              size={38}
+              color="#3b6ef0"
+              style={{ transform: "rotate(-45deg)", filter: "drop-shadow(0 4px 12px rgba(59,110,240,.35))" }}
+            />
+          </Box>
+        </Box>
+
+        {/* title */}
+        <Box
+          fontFamily="'Sora',sans-serif"
+          fontSize={{ base: "2.6rem", md: "3.2rem" }}
+          fontWeight={900} color="#111827"
+          letterSpacing="-1.5px" lineHeight={1.05} mb="16px"
+          style={{ animation: "cs-fadeUp .6s .16s ease both" }}
+        >
+          Coming{" "}
+          <Box
+            as="span"
+            sx={{
+              background: "linear-gradient(135deg,#6b96f5 0%,#3b6ef0 45%,#2251cc 100%)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Soon!
+          </Box>
+        </Box>
+
+        {/* sub */}
+        <Box
+          fontSize=".98rem" color="#4b5563" lineHeight={1.75}
+          maxW="440px" mb="40px"
+          style={{ animation: "cs-fadeUp .6s .24s ease both" }}
+        >
+          Exciting new features are on the way. We're building something that will completely transform your data journey.
+        </Box>
+
+        {/* countdown */}
+        <Box
+          display="flex" gap="12px" mb="40px" flexWrap="wrap" justifyContent="center"
+          style={{ animation: "cs-fadeUp .6s .32s ease both" }}
+        >
+          <Unit value={time.d} label="Days"  delay=".32s" />
+          <Unit value={time.h} label="Hours" delay=".38s" />
+          <Unit value={time.m} label="Mins"  delay=".44s" />
+          <Unit value={time.s} label="Secs"  delay=".50s" />
+        </Box>
+
+        {/* bouncing dots */}
+        <Box
+          display="flex" gap="6px" mb="36px"
+          style={{ animation: "cs-fadeUp .6s .4s ease both" }}
+        >
+          {[0, .2, .4].map((d, i) => (
             <Box
-              key={i}
-              w="8px"
-              h="8px"
-              borderRadius="full"
-              bg="#6366f1"
-              animation={`${dotBlink} 1.4s ${i * 0.2}s ease-in-out infinite`}
+              key={i} w="8px" h="8px" borderRadius="full" bg="#3b6ef0"
+              style={{ animation: `cs-dotbounce 1.3s ease-in-out infinite ${d}s` }}
             />
           ))}
-        </HStack>
+        </Box>
 
-        {/* Bottom label */}
-        <Text
-          fontSize="12px"
-          letterSpacing="0.15em"
-          color="rgba(170, 195, 230, 0.5)"
-          textTransform="uppercase"
-          animation={`${fadeSlideUp} 0.9s 0.9s ease-out both`}
+        {/* feature pills */}
+        <Box
+          display="flex" gap="10px" flexWrap="wrap" justifyContent="center"
+          style={{ animation: "cs-fadeUp .6s .56s ease both" }}
         >
-          In Progress
-        </Text>
-      </VStack>
+          {FEATURES.map((f) => (
+            <Box
+              key={f.label}
+              className="cs-pill"
+              display="inline-flex" alignItems="center" gap="7px"
+              bg="#fff" border="1px solid rgba(59,110,240,.12)" borderRadius="99px"
+              px="16px" py="7px"
+              fontFamily="'Sora',sans-serif" fontSize=".75rem" fontWeight={700}
+              color="#4b5563"
+              boxShadow="0 2px 8px rgba(59,110,240,.06)"
+            >
+              <Box w="5px" h="5px" borderRadius="full" bg={f.dot} />
+              {f.label}
+            </Box>
+          ))}
+        </Box>
+      </Box>
     </Box>
   );
 };
