@@ -464,7 +464,7 @@ const ProfilePage = () => {
                 <div className="instruction-item"><FaListCheck className="box_icon" /><span>{challenge.questions} questions</span></div>
                 <div className="instruction-item"><FaBoltLightning className="box_icon" /><span>{challenge.pts} XP</span></div>
               </HStack>
-              <div onClick={() => navigate("/challenge")} className="max-box-btn">Start Challenge</div>
+              <div onClick={() => navigate("/coming-soon")} className="max-box-btn">Start Challenge</div>
               {/* <p className="footer_note">Only 23% of users completed yesterday's challenge.</p> */}
             </div>
 
