@@ -205,10 +205,10 @@ const MultiEnd = () => {
 
         {/* ── Actions ── */}
         <Flex flexDir="column" gap={3}>
-          <ActionButton icon={<FaSpinner />}    label="Retake Session"        onClick={retryQuiz}        gradient="linear(to-r,#4263eb,#3b5bdb)" delay="0.05s" />
-          <ActionButton icon={<FaHouse />}      label="Back to Dashboard" onClick={tryAnotherQuiz}   delay="0.2s" />
-          <ActionButton icon={<FaTrophy />}     label="View Leaderboard"  onClick={() => navigate("/tune")} delay="0.1s" />
-          <ActionButton icon={<FaShareNodes />} label="Share Score"       onClick={() => setShow(true)} delay="0.15s" />
+          <ActionButton icon={<FaSpinner />} label="Retake Session" onClick={retryQuiz}        gradient="linear(to-r,#4263eb,#3b5bdb)" delay="0.05s" />
+          <ActionButton icon={<FaHouse />} label="Back to Dashboard" onClick={tryAnotherQuiz} delay="0.2s" />
+          <ActionButton icon={<FaTrophy />} label="View Leaderboard" onClick={() => navigate("/board")} delay="0.1s" />
+          <ActionButton icon={<FaShareNodes />} label="Share Score" onClick={() => setShow(true)} delay="0.15s" />
         </Flex>
       </Box>
 

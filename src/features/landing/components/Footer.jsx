@@ -7,8 +7,8 @@ const Footer = () => {
   const socials = [FaInstagram, FaXTwitter, FaLinkedin, FaTiktok];
 
   const quickLinks = [
-    { label: "Home",     href: "#hero"     },
-    { label: "About Us", href: "#about"    },
+    { label: "Home", href: "#hero" },
+    { label: "About Us", href: "#about" },
     { label: "How It Works", href: "#services" },
     { label: "Features", href: "#features" },
   ];
@@ -102,7 +102,7 @@ const Footer = () => {
             Have questions or feedback? We'd love to hear from you.
           </Text>
           <Box
-            as="a" href="mailto:hello@dataere.com"
+            as="a" href="https://docs.google.com/forms/d/e/1FAIpQLSei1F_Xjkfng779dawwecSf-Ne0Ut4NAhuYMMWwTeVjzxRP0Q/viewform?usp=publish-editor"
             fontFamily="'Sora',sans-serif"
             fontSize="0.9rem" color={C.accent} fontWeight={600}
             textDecoration="none"

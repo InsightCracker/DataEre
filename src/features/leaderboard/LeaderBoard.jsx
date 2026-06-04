@@ -236,7 +236,7 @@ const LeaderBoard = () => {
                 <LuSearch color={C.dim} size={15} />
               </InputLeftElement>
               <Input
-                placeholder="Search players..."
+                placeholder="Search dataerian..."
                 value={search} onChange={(e) => setSearch(e.target.value)}
                 bg={C.card} border={`1px solid ${C.border}`}
                 borderRadius="12px" color={C.text} fontSize="0.9rem"
