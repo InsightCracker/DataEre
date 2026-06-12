@@ -4,6 +4,7 @@ import {
 } from "@chakra-ui/react";
 import { LuSearch, LuTrendingUp, LuTrendingDown, LuMinus } from "react-icons/lu";
 import { FaTrophy } from "react-icons/fa";
+import { FaFire, FaBoltLightning, FaRankingStar, FaUsers } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { keyframes } from "@emotion/react";
 import { getLeaderboard, getTopics } from "../../util/api";
@@ -48,14 +49,20 @@ const Avatar = ({ name, size = 36, index = 0 }) => {
   );
 };
 
-const StatCard = ({ label, value, delay = "0s" }) => (
-  <Box bg="rgba(59,110,240,0.06)" borderRadius="14px" p="14px 18px" textAlign="center"
-    style={{ animation: `${slideUp} 0.4s ease ${delay} both` }}>
-    <Text fontSize="0.72rem" color={C.muted} fontFamily="'Sora',sans-serif"
-      fontWeight={600} letterSpacing="0.04em" textTransform="uppercase" mb="4px">
-      {label}
-    </Text>
-    <Text fontSize="1.4rem" fontWeight={800} color={C.text}
+const StatCard = ({ label, value, icon, delay = "0s" }) => (
+  <Box
+    bg={C.surface} borderRadius="14px" p="14px 16px"
+    border={`1px solid ${C.border}`}
+    style={{ animation: `slideUp 0.4s ease ${delay} both` }}
+  >
+    <Flex align="center" gap="7px" mb="6px">
+      <Box color={C.accent} opacity={0.7}>{icon}</Box>
+      <Text fontSize="0.7rem" color={C.muted} fontFamily="'Sora',sans-serif"
+        fontWeight={700} letterSpacing="0.05em" textTransform="uppercase">
+        {label}
+      </Text>
+    </Flex>
+    <Text fontSize="1.35rem" fontWeight={800} color={C.text}
       fontFamily="'Sora',sans-serif" letterSpacing="-0.5px">
       {value}
     </Text>
@@ -75,7 +82,7 @@ const PodiumBlock = ({ user, rank, height, index }) => {
     <Flex flexDir="column" align="center" gap="8px"
       style={{ animation: `${slideUp} 0.5s cubic-bezier(0.34,1.3,0.64,1) ${index * 0.1}s both` }}>
       <Avatar name={user.username} size={rank === 1 ? 56 : 44} index={index} />
-      <Text fontSize="0.8rem" fontWeight={700} color={C.text} fontFamily="'Sora',sans-serif"
+      <Text fontSize="0.8rem" fontWeight={700} color={C.text} 
         textAlign="center" maxW="80px" noOfLines={1}>
         {user.username}
       </Text>
@@ -135,7 +142,7 @@ const LeaderBoard = () => {
   
 
   return (
-    <Box minH="100vh" bg={C.bg} fontFamily="'DM Sans', sans-serif">
+    <Box minH="100vh" bg={C.bg}>
 
       <style>{`
         @keyframes slideUp {
@@ -158,9 +165,11 @@ const LeaderBoard = () => {
         <Flex align="center" justify="center" gap="10px" mb="0.3rem"
           style={{ animation: "slideUp 0.4s ease both" }}>
           <FaTrophy color="#ef9f27" size={22} />
-          <Text fontFamily="'Sora',sans-serif" fontSize={{ base: "1.5rem", md: "1.8rem" }}
-            fontWeight={800} color={C.text} letterSpacing="-0.5px">
-            Leaderboard
+          <Text 
+            fontSize={{ base: "1.5rem", md: "1.8rem" }}
+            fontWeight={800} color={C.text} letterSpacing="-0.5px"
+          >
+            Hall of Fame
           </Text>
         </Flex>
         <Text fontSize="0.85rem" color={C.muted} textAlign="center" mb="1.8rem"
@@ -176,17 +185,33 @@ const LeaderBoard = () => {
           <>
             {/* Stats */}
             <SimpleGrid columns={{ base: 2, md: 4 }} gap="12px" mb="1.8rem">
-              <StatCard label="DataErians" value={data.length} delay="0.05s" />
-              <StatCard label="Top XP Earned" value={topCorrect} delay="0.10s" />
-              <StatCard label="Your XP" value={yourXP} delay="0.15s" />
-              <StatCard label="Your Rank" value={myRank ? `#${myRank}` : "—"} delay="0.20s" />
+              <StatCard 
+                label="DataErians" 
+                value={data.length} 
+                icon={<FaUsers size={13} />} delay="0.05s"
+              />
+              <StatCard 
+                label="Top XP Earned"       
+                value={topCorrect}                
+                icon={<FaTrophy size={12} />} delay="0.10s" 
+              />
+              <StatCard 
+                label="Your XP"      
+                value={yourXP}                    
+                icon={<FaBoltLightning size={12} />} delay="0.15s" 
+              />
+              <StatCard 
+                label="Your Rank"    
+                value={myRank ? `#${myRank}` : "—"} 
+                icon={<FaRankingStar size={12} />} delay="0.20s" 
+              />
             </SimpleGrid>
 
             {/* Topic tabs */}
             <Box mb="1.2rem" style={{ animation: "slideUp 0.4s ease 0.1s both" }}>
               <Text fontSize="0.72rem" fontWeight={700} color={C.muted}
                 letterSpacing="0.06em" textTransform="uppercase"
-                fontFamily="'Sora',sans-serif" mb="0.6rem">
+                mb="0.6rem">
                 Filter by Data Skill
               </Text>
               <Flex gap="8px" overflowX="auto" pb="4px" className="topic-scroll">
@@ -214,7 +239,7 @@ const LeaderBoard = () => {
                 style={{ animation: "slideUp 0.4s ease 0.15s both" }}>
                 <Text fontSize="0.72rem" fontWeight={700} color={C.muted}
                   letterSpacing="0.08em" textTransform="uppercase"
-                  fontFamily="'Sora',sans-serif" textAlign="center" mb="1.5rem">
+                   textAlign="center" mb="1.5rem">
                   Top 3 — <span style={{ color: "#3b6ef0" }}>
                     {activeTopic === "overall" ? "Overall" : activeTopic}
                   </span>
@@ -311,7 +336,7 @@ const LeaderBoard = () => {
 
                       {/* ✅ XP column */}
                       <Text w="80px" textAlign="right" fontSize="0.88rem"
-                        fontWeight={700} color={C.accent} fontFamily="'Sora',sans-serif">
+                        fontWeight={700} color={C.accent} >
                         {u.totalCorrect} XP
                       </Text>
 
