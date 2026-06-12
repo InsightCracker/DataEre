@@ -2,14 +2,21 @@ import { Box } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import {
-  FaHome,
-  FaQuestionCircle,
+  FaHouse,
+  FaBookOpen,
   FaTrophy,
-  FaFilePdf,
-  FaChartBar,
-  FaSignOutAlt,
-} from "react-icons/fa";
+  FaChartColumn,
+  FaRightFromBracket,
+  FaGauge,
+} from "react-icons/fa6";
 import "../style/sidebar.css";
+
+const navLinks = [
+  { label: "Dashboard",     icon: FaGauge,      path: "/users/profile" },
+  { label: "Learning Lab",  icon: FaBookOpen,   path: "/quiz/topics"   },
+  { label: "Hall of Fame",  icon: FaTrophy,     path: "/board"         },
+  { label: "Insight Studio",icon: FaChartColumn,path: "/coming-soon"   },
+];
 
 const Sidebar = () => {
   const navigate  = useNavigate();
@@ -21,21 +28,12 @@ const Sidebar = () => {
     navigate("/users/login");
   };
 
-  const navLinks = [
-    { label: "Dashboard", icon: FaHome, path: "/users/profile" },
-    { label: "Learning Lab", icon: FaQuestionCircle, path: "/quiz/topics" },
-    { label: "Leaderboard",  icon: FaTrophy, path: "/board" },
-    { label: "PDF Converter", icon: FaFilePdf, path: "/coming-soon" },
-    { label: "Reports", icon: FaChartBar, path: "/coming-soon" },
-  ];
-
   const avatarLetter = firstName
     ? firstName[0].toUpperCase()
     : email
     ? email[0].toUpperCase()
     : "U";
 
-  
   const displayName = firstName
     ? `${firstName}${lastName ? " " + lastName : ""}`
     : "Welcome!";
@@ -43,34 +41,40 @@ const Sidebar = () => {
   return (
     <Box className="sidebar">
 
-      {/* User Profile Section */}
+      {/* ── Brand ── */}
+      <div className="sidebar-brand">
+        <span className="sidebar-brand-logo">D</span>
+        <span className="sidebar-brand-name">DataEre</span>
+      </div>
+
+      {/* ── User card ── */}
       <div className="sidebar-profile">
-        <div className="sidebar-avatar">
-          {avatarLetter}
-        </div>
+        <div className="sidebar-avatar">{avatarLetter}</div>
         <div className="sidebar-user-info">
           <p className="sidebar-user-name">{displayName}</p>
           <p className="sidebar-user-email">{email}</p>
         </div>
       </div>
 
-      {/* Nav Links Section */}
+      {/* ── Nav ── */}
       <nav className="sidebar-nav">
+        <p className="sidebar-nav-label">Menu</p>
         <ul>
           {navLinks.map((link, index) => {
-            const Icon = link.icon;
+            const Icon     = link.icon;
+            const isActive = location.pathname === link.path;
             return (
               <li key={index}>
                 <a
                   href={link.path}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate(link.path);
-                  }}
-                  className={`nav-link ${location.pathname === link.path ? "active" : ""}`}
+                  onClick={(e) => { e.preventDefault(); navigate(link.path); }}
+                  className={`nav-link${isActive ? " active" : ""}`}
                 >
-                  <Icon className="nav-icon" />
-                  <span>{link.label}</span>
+                  <span className="nav-link-icon-wrap">
+                    <Icon size={15} />
+                  </span>
+                  <span className="nav-link-label">{link.label}</span>
+                  {isActive && <span className="nav-link-pip" />}
                 </a>
               </li>
             );
@@ -78,10 +82,12 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      {/* Logout Section */}
+      {/* ── Logout ── */}
       <div className="sidebar-logout">
         <button onClick={handleLogout} className="logout-btn">
-          <FaSignOutAlt className="logout-icon" />
+          <span className="logout-icon-wrap">
+            <FaRightFromBracket size={14} />
+          </span>
           <span>Logout</span>
         </button>
       </div>
