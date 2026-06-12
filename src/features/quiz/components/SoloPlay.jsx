@@ -66,7 +66,7 @@ function parseQuestionParts(text = "") {
   for (const line of lines) {
     const t = line.trim();
     const isPipeRow    = /^\|.+\|$/.test(t);
-    const isSeparator  = /^\|[\s|:-]+\|$/.test(t);
+    const isSeparator  = /^\|[\s|:\-]+\|$/.test(t);
     const isAsciiBorder = /^\+[-+]+\+$/.test(t);
 
     if (isPipeRow || isSeparator || isAsciiBorder) {
@@ -98,7 +98,7 @@ function TableDisplay({ raw }) {
 
   if (rows.length === 0) return null;
 
-  const isSepRow = (r) => r.every((c) => /^[-:]+$/.test(c));
+  const isSepRow = (r) => r.every((c) => /^[-:\s]*$/.test(c) && c.includes("-"));
   const header   = rows[0];
   const body     = rows.slice(1).filter((r) => !isSepRow(r));
 
@@ -186,6 +186,12 @@ function CodeBlock({ raw }) {
 function QuestionBody({ question, description }) {
   const { prose, table, codeBlock } = parseQuestionParts(question);
 
+  const descHasTable = description && /\|.+\|/.test(description);
+  const { 
+    prose: descProse, 
+    table: descTable 
+  } = descHasTable ? parseQuestionParts(description) : { prose: description, table: null };
+
   return (
     <>
       {/* Main prose */}
@@ -217,6 +223,13 @@ function QuestionBody({ question, description }) {
           lineHeight={1.5}
         >
           💡 {description}
+        </Text>
+      )}
+
+      {/* Clean plain-text portion if description had a table mixed in */}
+      {descHasTable && descProse && (
+        <Text fontSize="12px" color="#64748b" mt={2} fontStyle="italic" lineHeight={1.5}>
+          💡 {descProse}
         </Text>
       )}
     </>
@@ -424,7 +437,7 @@ const SoloPlay = () => {
           {/* Question text — prose + table + code separated */}
           <QuestionBody
             question={q.question}
-            description={q.description}
+            // description={q.description}
           />
         </Box>
 
@@ -480,7 +493,7 @@ const SoloPlay = () => {
                 color={chosenIsCorrect ? "#065f46" : "#991b1b"}
               >
                 {chosenIsCorrect
-                  ? "You earned +1 point for this question."
+                  ? "You earned +1 XP for this question."
                   : "Review this topic to strengthen your understanding."}
               </Text>
               {/* Explanation from the question data */}
