@@ -1,11 +1,18 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaHome, FaQuestionCircle, FaTrophy, FaFilePdf, FaChartBar, FaSignOutAlt } from "react-icons/fa";
+import { FaHouse, FaBookOpen, FaTrophy, FaChartColumn, FaRightFromBracket } from "react-icons/fa6";
 import { useAuth } from "./AuthContext";
 import "../style/bottomnav.css";
 
+const navLinks = [
+  { label: "Home",         icon: FaHouse,          path: "/users/profile" },
+  { label: "Learn",        icon: FaBookOpen,        path: "/quiz/topics"   },
+  { label: "Hall of Fame", icon: FaTrophy,          path: "/board"         },
+  { label: "Insight Studio",      icon: FaChartColumn,     path: "/coming-soon"   },
+];
+
 const BottomNav = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate   = useNavigate();
+  const location   = useLocation();
   const { logout } = useAuth();
 
   const handleLogout = () => {
@@ -13,33 +20,31 @@ const BottomNav = () => {
     navigate("/users/login");
   };
 
-  const navLinks = [
-    { label: "Home", icon: FaHome, path: "/users/profile" },
-    { label: "Learning Lab", icon: FaQuestionCircle, path: "/quiz/topics" },
-    { label: "Board", icon: FaTrophy, path: "/board" },
-    { label: "PDF", icon: FaFilePdf, path: "/coming-soon" },
-    { label: "Reports", icon: FaChartBar, path: "/coming-soon" },
-  ];
-
   return (
     <nav className="bottom-nav">
       {navLinks.map((link, index) => {
-        const Icon = link.icon;
+        const Icon     = link.icon;
         const isActive = location.pathname === link.path;
         return (
           <button
             key={index}
-            className={`bottom-nav-item ${isActive ? "active" : ""}`}
+            className={`bottom-nav-item${isActive ? " active" : ""}`}
             onClick={() => navigate(link.path)}
           >
-            <Icon className="bottom-nav-icon" />
-            <span>{link.label}</span>
+            <span className="bottom-nav-icon-wrap">
+              <Icon size={18} />
+            </span>
+            <span className="bottom-nav-label">{link.label}</span>
+            {isActive && <span className="bottom-nav-dot" />}
           </button>
         );
       })}
-      <button className="bottom-nav-item logout" onClick={handleLogout}>
-        <FaSignOutAlt className="bottom-nav-icon" />
-        <span>Logout</span>
+
+      <button className="bottom-nav-item bottom-nav-logout" onClick={handleLogout}>
+        <span className="bottom-nav-icon-wrap">
+          <FaRightFromBracket size={18} />
+        </span>
+        <span className="bottom-nav-label">Logout</span>
       </button>
     </nav>
   );
