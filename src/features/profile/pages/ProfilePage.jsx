@@ -18,7 +18,8 @@ import { getMyScores, getLeaderboard, updateProfile, deleteAccount, getMe } from
 import {
   FaAward, FaBullseye, FaLaptopFile,
   FaChartColumn, FaClock, FaListCheck, FaShield,
-  FaBell, FaLock, FaTrash, FaPen, FaGear, FaFire, FaBoltLightning
+  FaBell, FaLock, FaTrash, FaPen, FaGear, FaFire, 
+  FaBoltLightning, FaArrowTrendUp, FaArrowTrendDown
 } from "react-icons/fa6";
 import { FaTrophy } from "react-icons/fa";
 
@@ -47,17 +48,24 @@ const computeBadges = (stats, scores, streak) => {
   const add = (id, label, icon, desc, condition) =>
     badges.push({ id, label, icon, desc, earned: !!condition });
 
-  add("first",    "DataEre Rookie",     "🎯", "Completed your first session", stats.total >= 1);
-  add("tenner",   "DataEre Starter",   "📚", "Completed 10 sessions",             stats.total >= 10);
-  add("fifty",    "DataEre Master",    "🏅", "Completed 50 sessions",             stats.total >= 50);
-  add("ace",      "High Achiever",  "⭐", "Maintained 80%+ average",          stats.avgScore >= 80);
-  add("perfect",  "Perfectionist",  "💯", "Scored 100% on a quiz",            stats.bestScore === 100);
-  add("sql",      "SQL Starter",    "🗄️", "Completed an SQL quiz",            topics.some(t => t?.toLowerCase().includes("sql")));
-  add("streak3",  "On Fire",        "🔥", "3-day learning streak",            streak >= 3);
-  add("streak7",  "Week Warrior",   "⚡", "7-day learning streak",            streak >= 7);
-  add("streak10", "Streak Master",  "🏆", "10-day unbroken streak",           streak >= 10);
-  add("xp50",     "XP Collector",   "💎", "Earned 50+ total XP",          stats.totalCorrect >= 50);
-  add("xp200",    "XP Hoarder",  "👑", "Earned 200+ total XP",         stats.totalCorrect >= 200);
+  add("first", "DataEre Rookie", "🎯", "Completed your first session", stats.total >= 1);
+  add("tenner", "DataEre Starter", "📚", "Completed 10 sessions", stats.total >= 10);
+  add("fifty", "DataEre Master", "🏅", "Completed 50 sessions", stats.total >= 50);
+  add("hundred", "Century CLub",  "⭐", "Completed 100 sessions", stats.avgScore >= 100);
+  add("twohundred", "Data Veteran", "🎖️", "Completed 200 sessions", stats.total >= 200);
+  add("fivehundred", "Data Legend", "👑", "Completed 500 sessions", stats.total >= 500);
+  add("ace", "High Achiever",  "⭐", "Maintained 80%+ average", stats.avgScore >= 80);
+  add("sharp", "Sharp Shooter", "🎯", "Achieved 90%+ average", stats.avgScore >= 90);
+  add("genius", "Data Genius", "🧠", "Achieved 95%+ average", stats.avgScore >= 95);
+  add("excel", "Excel Starter", "🗄️", "Completed an Excel session", topics.some(t => t?.toLowerCase().includes("excel")));
+  add("perfect",  "Perfectionist",  "💯", "Scored 100% on a session", stats.bestScore === 100);
+  add("sql", "SQL Starter", "🗄️", "Completed a SQL session", topics.some(t => t?.toLowerCase().includes("sql")));
+  add("streak3", "On Fire", "🔥", "3-day learning streak", streak >= 3);
+  add("streak7", "Week Warrior", "⚡", "7-day learning streak", streak >= 7);
+  add("streak10", "Streak Master", "🏆", "10-day unbroken streak", streak >= 10);
+  add("streak30", "Consistency King", "📅", "30-day learning streak", streak >= 30);
+  add("xp50", "XP Collector",   "💎", "Earned 50+ total XP", stats.totalCorrect >= 50);
+  add("xp200", "XP Hoarder",  "👑", "Earned 200+ total XP", stats.totalCorrect >= 200);
 
   return badges;
 };
@@ -121,12 +129,12 @@ const ProfilePage = () => {
     });
   }, []);
 
-  // Fetch leaderboard top 5
+  // Fetch leaderboard top 3
   useEffect(() => {
     getLeaderboard().then((res) => {
       if (res.success) {
         const sorted = [...res.data].sort((a, b) => b.totalCorrect - a.totalCorrect);
-        setBoard(sorted.slice(0, 5));
+        setBoard(sorted.slice(0, 3));
       }
     });
   }, []);
@@ -223,8 +231,6 @@ const ProfilePage = () => {
       position="relative" overflow="hidden"
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@700;800&display=swap');
-
         @keyframes orbDrift1  { 0%,100%{transform:translate(0,0)}   50%{transform:translate(30px,20px)} }
         @keyframes orbDrift2  { 0%,100%{transform:translate(0,0)}   50%{transform:translate(-20px,-30px)} }
         @keyframes orbDrift3  { 0%,100%{transform:translate(0,0)}   50%{transform:translate(15px,-20px)} }
@@ -279,7 +285,7 @@ const ProfilePage = () => {
       </Box>
 
       {/* Title */}
-      <Text fontFamily="'Sora',sans-serif" fontSize="1.5rem" fontWeight={800}
+      <Text fontSize="1.5rem" fontWeight={800}
         color="#111827" letterSpacing="-0.5px" mb="4px"
         style={{ animation: "fadeUp 0.5s ease both" }}>
         Hi 👋, {firstName}
@@ -289,14 +295,13 @@ const ProfilePage = () => {
         Loading your profile…
       </Text>
 
-      {/* Stat shimmer cards — mirrors the streak / XP / sessions row */}
       <Box
         display="flex" gap="12px" mb="20px" w="100%" maxW="480px" px="1rem"
         style={{ animation: "fadeUp 0.5s ease 0.16s both" }}
       >
         {[
-          { label: "Daily Streak",  w: "100%" },
-          { label: "Total XP",      w: "100%" },
+          { label: "Daily Streak", w: "100%" },
+          { label: "Total XP", w: "100%" },
         ].map((c, i) => (
           <Box key={i} className="pf-shimmer" flex="1" h="72px"
             borderRadius="14px" border="1px solid rgba(59,110,240,0.12)">
@@ -327,7 +332,6 @@ const ProfilePage = () => {
       <Box w="100%" maxW="480px" px="1rem" mb="28px"
         style={{ animation: "fadeUp 0.5s ease 0.28s both" }}>
         <Box display="flex" gap="12px">
-          {/* Daily challenge card */}
           <Box className="pf-shimmer" flex="1.3" h="110px"
             borderRadius="16px" border="1px solid rgba(59,110,240,0.12)" p="14px">
             <Box w="55%" h="11px" bg="rgba(59,110,240,0.09)" borderRadius="6px" mb="8px" />
@@ -467,58 +471,64 @@ const ProfilePage = () => {
               <div onClick={() => navigate("/coming-soon")} className="max-box-btn">Start Challenge</div>
               {/* <p className="footer_note">Only 23% of users completed yesterday's challenge.</p> */}
             </div>
-
+            
             <div className="third_box">
               <h2><FaChartColumn className="box_icon" /> Your Data Journey</h2>
-              <div className="third-inner">
-              <table style={{ 
-                width: "100%", 
-                borderCollapse: "separate", 
-                borderSpacing: 0,
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                overflow: "hidden"
-              }}>
-                <tbody>
-                  <tr>
-                    <td style={{ padding: "8px 12px", borderBottom: "1px solid #9baaf0", borderRight: "1px solid #9baaf0" }}>
-                      <p style={{ margin: 0 }}>
-                        Sessions Taken:{" "}
-                        <span style={{ textTransform: "capitalize", color: "#304ecf" }}>
-                          {String(stats.total).padStart(2, "0")}
-                        </span>
-                      </p>
-                    </td>
-                    <td style={{ padding: "8px 12px", borderBottom: "1px solid #9baaf0" }}>
-                      <p style={{ margin: 0 }}>
-                        Average Score:{" "}
-                        <span style={{ textTransform: "capitalize", color: "#304ecf" }}>
-                          {stats.avgScore}%
-                        </span>
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: "8px 12px", borderRight: "1px solid #9baaf0" }}>
-                      <p style={{ margin: 0 }}>
-                        Best Skill:{" "}
-                        <span style={{ textTransform: "capitalize", color: "green" }}>
-                          {bestSkill?.topic ?? "N/A"}
-                        </span>
-                      </p>
-                    </td>
-                    <td style={{ padding: "8px 12px" }}>
-                      <p style={{ margin: 0 }}>
-                        Weak Skill:{" "}
-                        <span style={{ textTransform: "capitalize", color: "red" }}>
-                          {worstSkill?.topic ?? "N/A"}
-                        </span>
-                      </p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-          </div>
+            
+              <div className="journey-grid">
+                <div className="journey-card">
+                  <div className="journey-card-label">
+                    <span className="journey-icon-wrap journey-icon-blue">
+                      <FaListCheck size={12} />
+                    </span>
+                    Sessions
+                  </div>
+                  <div className="journey-card-value journey-blue">
+                    {String(stats.total).padStart(2, "0")}
+                  </div>
+                  <div className="journey-card-sub">Sessions taken</div>
+                </div>
+            
+                <div className="journey-card">
+                  <div className="journey-card-label">
+                    <span className="journey-icon-wrap journey-icon-blue">
+                      <FaChartColumn size={12} />
+                    </span>
+                    Avg Score
+                  </div>
+                  <div className="journey-card-value journey-blue">
+                    {stats.avgScore}%
+                  </div>
+                  <div className="journey-card-sub">across all topics</div>
+                </div>
+            
+                <div className="journey-card">
+                  <div className="journey-card-label">
+                    <span className="journey-icon-wrap journey-icon-green">
+                      <FaArrowTrendUp size={12} />
+                    </span>
+                    Best Skill
+                  </div>
+                  <div className="journey-card-value journey-green">
+                    {bestSkill?.topic ?? "N/A"}
+                  </div>
+                  <div className="journey-card-sub">strongest topic</div>
+                </div>
+            
+                <div className="journey-card">
+                  <div className="journey-card-label">
+                    <span className="journey-icon-wrap journey-icon-red">
+                      <FaArrowTrendDown size={12} />
+                    </span>
+                    Weak Skill
+                  </div>
+                  <div className="journey-card-value journey-red">
+                    {worstSkill?.topic ?? "N/A"}
+                  </div>
+                  <div className="journey-card-sub">needs more practice</div>
+                </div>
+            
+              </div>
             </div>
 
             {/* Badges */}
@@ -552,45 +562,50 @@ const ProfilePage = () => {
           {/* ── Right ── */}
           <div className="max_box right-side-box">
 
-            {/* Leaderboard */}
-            <div className="leaderboard-header">
-              <span><FaTrophy className="box_icon" /></span>
-              <span>Top DataErians</span>
-            </div>
-            <div className="leaderboard-list">
-              {board.length === 0
-                ? [1,2,3,4,5].map((n) => (
-                    <div key={n} className="leaderboard-item" style={{ opacity:0.4 }}>
-                      <span className="leaderboard-rank">{n}</span>
-                      <span className="leaderboard-name">—</span>
-                      <span className="leaderboard-points">— XP</span>
-                    </div>
-                  ))
-                : board.map((u, i) => {
-                    const rank = i + 1;
-                    const you  = isYou(u);
-                    const rs   = RANK_STYLES[rank] ?? {};
-                    const rankClass = rank === 1 ? "gold" : rank === 2 ? "silver" : rank === 3 ? "bronze" : "";
-                    return (
-                      <div key={u._id} className="leaderboard-item"
-                        style={{ background: you ? "rgba(59,110,240,0.06)" : "transparent", borderRadius:"10px" }}>
-                        <span className={`leaderboard-rank ${rankClass}`} style={rs}>
-                          {MEDALS[rank] ?? rank}
-                        </span>
-                        <span className="leaderboard-name">
-                          {u.username}
-                          {you && <span style={{ marginLeft:"5px", fontSize:"0.7rem", color:"#3b6ef0", fontWeight:600 }}>(you)</span>}
-                        </span>
-                        <span className="leaderboard-points">
-                          {u.totalCorrect}<span style={{ fontSize:"0.7rem", color:"#9ca3af", marginLeft:"2px" }}>XP</span>
-                        </span>
+            <div style={{
+              background: "#fff", borderRadius: "16px",
+              border: "1px solid rgba(59,110,240,0.10)", padding: "18px 20px",
+            }}>
+              {/* Leaderboard */}
+              <div className="leaderboard-header">
+                <span><FaTrophy className="box_icon" /></span>
+                <span>Top DataErians</span>
+              </div>
+              <div className="leaderboard-list">
+                {board.length === 0
+                  ? [1,2,3,4,5].map((n) => (
+                      <div key={n} className="leaderboard-item" style={{ opacity:0.4 }}>
+                        <span className="leaderboard-rank">{n}</span>
+                        <span className="leaderboard-name">—</span>
+                        <span className="leaderboard-points">— XP</span>
                       </div>
-                    );
-                  })}
+                    ))
+                  : board.map((u, i) => {
+                      const rank = i + 1;
+                      const you  = isYou(u);
+                      const rs   = RANK_STYLES[rank] ?? {};
+                      const rankClass = rank === 1 ? "gold" : rank === 2 ? "silver" : rank === 3 ? "bronze" : "";
+                      return (
+                        <div key={u._id} className="leaderboard-item"
+                          style={{ background: you ? "rgba(59,110,240,0.06)" : "transparent", borderRadius:"10px" }}>
+                          <span className={`leaderboard-rank ${rankClass}`} style={rs}>
+                            {MEDALS[rank] ?? rank}
+                          </span>
+                          <span className="leaderboard-name">
+                            {u.username}
+                            {you && <span style={{ marginLeft:"5px", fontSize:"0.7rem", color:"#3b6ef0", fontWeight:600 }}>(you)</span>}
+                          </span>
+                          <span className="leaderboard-points">
+                            {u.totalCorrect}<span style={{ fontSize:"0.7rem", color:"#9ca3af", marginLeft:"2px" }}>XP</span>
+                          </span>
+                        </div>
+                      );
+                    })}
+              </div>
+              <p className="leaderboard-footer" onClick={() => navigate("/board")} style={{ cursor:"pointer" }}>
+                View Full Leaderboard
+              </p>
             </div>
-            <p className="leaderboard-footer" onClick={() => navigate("/board")} style={{ cursor:"pointer" }}>
-              View Full Leaderboard
-            </p>
 
             {/* Achievements */}
             <div style={{
@@ -603,7 +618,7 @@ const ProfilePage = () => {
               {badges.filter(b => b.earned).length === 0 ? (
                 <p style={{ fontSize:"0.8rem", color:"#9ca3af" }}>Staart a session to unlock achievements!</p>
               ) : (
-                badges.filter(b => b.earned).slice(0, 4).map((b) => (
+                badges.filter(b => b.earned).slice(0, 7).map((b) => (
                   <div key={b.id} style={{
                     display:"flex", alignItems:"center", gap:"10px",
                     padding:"8px 0", borderBottom:"1px solid rgba(59,110,240,0.07)",
@@ -630,7 +645,7 @@ const ProfilePage = () => {
       <Modal isOpen={isSettingsOpen} onClose={closeSettings} size="lg" scrollBehavior="inside">
         <ModalOverlay backdropFilter="blur(6px)" />
         <ModalContent borderRadius="20px" mx="1rem">
-          <ModalHeader fontFamily="'Sora',sans-serif" fontWeight={800} fontSize="1.1rem" pt="1.5rem">
+          <ModalHeader fontWeight={800} fontSize="1.1rem" pt="1.5rem">
             Settings
           </ModalHeader>
           <ModalCloseButton />
@@ -773,7 +788,7 @@ const ProfilePage = () => {
       <Modal isOpen={isDeleteOpen} onClose={closeDelete} size="sm" isCentered>
         <ModalOverlay backdropFilter="blur(6px)" />
         <ModalContent borderRadius="20px" mx="1rem">
-          <ModalHeader fontFamily="'Sora',sans-serif" fontWeight={800} color="#dc2626" fontSize="1rem">
+          <ModalHeader fontWeight={800} color="#dc2626" fontSize="1rem">
             Delete account?
           </ModalHeader>
           <ModalCloseButton />
