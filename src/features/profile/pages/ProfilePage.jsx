@@ -25,12 +25,13 @@ import { FaTrophy } from "react-icons/fa";
 
 // ─── Level config
 const LEVELS = [
-  { label: "Beginner Analyst",     minXP: 0,    maxXP: 100,  color: "#6b96f5", emoji: "🌱" },
-  { label: "Junior Analyst",       minXP: 100,  maxXP: 250,  color: "#3b6ef0", emoji: "📈" },
-  { label: "Intermediate Analyst", minXP: 250,  maxXP: 500,  color: "#f59e0b", emoji: "⚡" },
-  { label: "Senior Analyst",       minXP: 500,  maxXP: 1000, color: "#10b981", emoji: "🔥" },
-  { label: "Data Expert",          minXP: 1000, maxXP: 2000, color: "#8b5cf6", emoji: "💎" },
-  { label: "Master Analyst",       minXP: 2000, maxXP: 9999, color: "#ef4444", emoji: "👑" },
+  { label: "Data Intern", minXP: 0, maxXP: 100, color: "#6b96f5", emoji: "🧑‍💻" },
+  { label: "Data Trainee", minXP: 100, maxXP: 250, color: "#3b6ef0", emoji: "🌱" },
+  { label: "Beginner Analyst", minXP: 250, maxXP: 500,  color: "#f59e0b", emoji: "⚡" },
+  { label: "Junior Analyst", minXP: 500, maxXP: 1000, color: "#10b981", emoji: "📈" },
+  { label: "Senior Analyst", minXP: 1000, maxXP: 2000, color: "#8b5cf6", emoji: "🔥" },
+  { label: "Analytics Expert", minXP: 2000, maxXP: 5000, color: "#fc5ed4", emoji: "💎" },
+  { label: "DataEre Legend", minXP: 5000, maxXP: 9999, color: "#ef4444", emoji: "👑" },
 ];
 
 const getLevel = (xp) => {

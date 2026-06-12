@@ -13,17 +13,18 @@ const DIFFICULTY_LABELS = {
 const cache = new Map();
 let inflightRequest = null;
 
-// ── Difficulty specs (computational topics) ───────────────────────────────────
+// ── Difficulty specs (computational topics)
 const DIFFICULTY_SPEC = {
   Beginner: `
-- Single-table formulas: SUM, COUNT, AVERAGE, MIN, MAX, IF
 - One-step calculations with a small inline dataset
 - No nested formulas, no multi-table joins`,
+// - Single-table formulas: SUM, COUNT, AVERAGE, MIN, MAX, IF
 
   Intermediate: `
-- Multi-step formulas: SUMIF, COUNTIF, VLOOKUP, INDEX/MATCH, pivot logic
 - Two-step metric derivations using an inline dataset
 - Edge cases: blanks, duplicates, text vs number mismatch`,
+
+// - Multi-step formulas: SUMIF, COUNTIF, VLOOKUP, INDEX/MATCH, pivot logic
 
   Advanced: `
 - Nested formulas, array functions, window-style calculations
@@ -31,27 +32,59 @@ const DIFFICULTY_SPEC = {
 - Outlier detection, error handling (IFERROR, IFNA), performance trade-offs`,
 };
 
-// ── Tool constraint (one-liner per topic) ─────────────────────────────────────
+// ── Tool constraint (one-liner per topic) 
 function toolConstraint(topicLower) {
   if (topicLower.includes("excel"))
-    return "Use Excel formulas only (SUMIF, VLOOKUP, INDEX/MATCH, XLOOKUP, pivot tables). No SQL.";
-  if (topicLower.includes("sql"))
-    return "Use SQL syntax only (SELECT, JOIN, GROUP BY, window functions). No Excel formulas.";
-  if (topicLower.includes("power bi") || topicLower.includes("dax"))
-    return "Use DAX and Power Query M only. No SQL or Excel formulas.";
-  if (topicLower.includes("python") || topicLower.includes("pandas"))
-    return "Use Python/pandas syntax only. No SQL or Excel.";
-  if (topicLower.includes("tableau"))
-    return "Use Tableau calculated fields and LOD expressions only. No SQL or Excel.";
-  return `Use tools and syntax native to "${topicLower}" only. Do not mix tool vocabularies.`;
+    return `Use ONLY these real Excel functions: SUM, SUMIF, SUMIFS, COUNT, COUNTIF, COUNTIFS, AVERAGE, AVERAGEIF, AVERAGEIFS, MIN, MAX, IF, IFERROR, IFNA, VLOOKUP, HLOOKUP, XLOOKUP, INDEX, MATCH, RANK, ROUND, CONCATENATE, TEXT, AND, OR. 
+    NEVER invent function names (e.g. MAXIF, MINIF, AVGIF do not exist). 
+    To return a label/category based on a max/min value, you MUST use INDEX+MATCH (e.g. INDEX(Product, MATCH(MAX(Revenue), Revenue, 0))) — never a single-function shortcut.
+    No SQL.`;
+  // ... similar explicit whitelists for sql, dax, pandas, tableau
 }
 
-// ── Topic mode classifier ─────────────────────────────────────────────────────
-// "table"  → computational topics; pipe-delimited inline data is natural
-// "prose"  → conceptual/narrative topics; scenarios work better as plain text
-//
-// PROSE_TOPICS is checked first so that e.g. "data storytelling" doesn't fall
-// through to the TABLE_TOPICS "data" catch-all.
+const EXCEL_FUNCTIONS = [
+  "SUM","SUMIF","SUMIFS","COUNT","COUNTA","COUNTIF","COUNTIFS",
+  "AVERAGE","AVERAGEIF","AVERAGEIFS","MIN","MAX","IF","IFERROR","IFNA",
+  "VLOOKUP","HLOOKUP","XLOOKUP","INDEX","MATCH","RANK","ROUND","ROUNDUP","ROUNDDOWN",
+  "CONCATENATE","TEXT","AND","OR","NOT","TRIM","LEN","LEFT","RIGHT","MID",
+];
+
+const FUNCTION_WHITELISTS = {
+  excel: EXCEL_FUNCTIONS,
+  // sql: SQL_KEYWORDS, dax: DAX_FUNCTIONS, pandas: PANDAS_METHODS, etc.
+};
+
+function getCorrectAnswerText(q) {
+  const correctKey = Object.entries(q.correct_answers || {})
+    .find(([, v]) => v === "true" || v === true)?.[0];
+  if (!correctKey) return null;
+  const answerKey = correctKey.replace("_correct", ""); // "answer_a_correct" -> "answer_a"
+  return q.answers?.[answerKey] ?? null;
+}
+
+function usesOnlyWhitelistedFunctions(text, whitelist) {
+  // Find anything that looks like FUNCTIONNAME(
+  const calls = [...text.matchAll(/([A-Z][A-Z0-9]+)\s*\(/g)].map((m) => m[1]);
+  return calls.every((fn) => whitelist.includes(fn));
+}
+
+function validateFunctionUsage(questions, topicLower) {
+  const whitelistEntry = Object.entries(FUNCTION_WHITELISTS).find(([key]) =>
+    topicLower.includes(key)
+  );
+  if (!whitelistEntry) return questions; // no whitelist for this topic, skip
+
+  const [, whitelist] = whitelistEntry;
+  return questions.filter((q) => {
+    const correctText = getCorrectAnswerText(q);
+    if (!correctText) return true; // can't determine, don't block
+    const ok = usesOnlyWhitelistedFunctions(correctText, whitelist);
+    if (!ok) {
+      console.warn(`[groq] Rejected question — correct answer uses unrecognized function: "${correctText}"`);
+    }
+    return ok;
+  });
+}
 
 const PROSE_TOPICS = [
   // Version control & dev tools
@@ -108,7 +141,7 @@ function topicMode(topicLower) {
   return "prose";
 }
 
-// ── Prompt builder ────────────────────────────────────────────────────────────
+// ── Prompt builder
 function buildPrompt({
   category,
   topicLower,
@@ -121,7 +154,7 @@ function buildPrompt({
   const difficultyLabel = DIFFICULTY_LABELS[difficulty] ?? "Beginner";
   const prevQList =
     previousQuestions?.length > 0
-      ? previousQuestions.slice(-5).join("; ")
+      ? previousQuestions.slice(-10).join("; ")
       : "none";
   const topic = category?.trim() || "Data Analytics";
   const mode  = topicMode(topicLower);
@@ -171,9 +204,9 @@ EXAMPLE "description" field value:
 "Tests whether the participant can apply AVERAGEIF to filter by category."
 
 QUESTION TYPES — generate exactly:
-- 3 x practical: formula/syntax task, table in question field
-- 2 x scenario: business metric derivation, table in question field
-- 1 x calculation: numeric step-by-step derivation, table in question field
+- 4 x practical: formula/syntax task, table in question field
+- 3 x scenario: business metric derivation, table in question field
+- 2 x calculation: numeric step-by-step derivation, table in question field
 - 1 x conceptual: trade-off judgment, no table needed
 
 RULES:
@@ -188,6 +221,7 @@ RULES:
 - Performance note: ${perfNote}
 - Weakness to target: ${userWeakness || "balanced coverage"}
 - Objective: ${learningObjective || `Practical proficiency in ${topic}`}
+- Generate only assessment-quality questions where exactly one answer is correct and all distractors are plausible but definitively incorrect.
 
 OUTPUT — return a JSON array of exactly ${QUESTIONS_PER_QUIZ} objects using this schema:
 {"id":1,"question":"stem\\n| Col | Col |\\n|-----|-----|\\n| val | val |","description":"plain text only","question_type":"practical|scenario|calculation|conceptual","answers":{"answer_a":"","answer_b":"","answer_c":"","answer_d":""},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"false","answer_b_correct":"true","answer_c_correct":"false","answer_d_correct":"false"},"explanation":"Why correct. Why others fail.","tip":"short mnemonic","learning_objective":"skill tested","tags":["${topic.toLowerCase()}"],"category":"${topic}","difficulty":"${difficultyLabel}"}
@@ -256,12 +290,21 @@ OUTPUT — return a JSON array of exactly ${QUESTIONS_PER_QUIZ} objects using th
 Return ONLY the JSON array. No markdown. No fences. No commentary.`.trim();
 }
 
-// ── Sanitize raw control characters inside JSON string literals ───────────────
-// LLMs sometimes emit literal newlines / tabs / carriage-returns inside string
-// values instead of the escaped sequences (\n \t \r) required by the JSON spec.
-// This walks the text character-by-character, tracking whether we're inside a
-// string, and replaces any bare control character (U+0000-U+001F) with its
-// safe JSON escape equivalent.
+function dedupeQuestions(questions) {
+  const seen = new Set();
+  return questions.filter((q) => {
+    const normQuestion = q.question
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .replace(/\d+/g, "#");
+    const key = `${normQuestion}__${(q.learning_objective || "").toLowerCase().trim()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function sanitizeJSON(text) {
   let inString = false;
   let escaped  = false;
@@ -320,14 +363,41 @@ function recoverPartialJSON(raw) {
   const startIdx = raw.indexOf("[");
   if (startIdx === -1) throw new Error("No JSON array start found in Groq response.");
 
-  const lastBrace = raw.lastIndexOf("}");
-  if (lastBrace === -1) throw new Error("No complete JSON object found in Groq response.");
+  const sliced = sanitizeJSON(raw.slice(startIdx));
 
-  const trimmed = raw.slice(startIdx, lastBrace + 1) + "]";
-  return JSON.parse(sanitizeJSON(trimmed));
+  // Walk the string tracking bracket/brace depth (outside of strings)
+  let depth = 0;
+  let inStr = false;
+  let esc = false;
+  let lastGoodEnd = -1;
+
+  for (let i = 0; i < sliced.length; i++) {
+    const ch = sliced[i];
+    if (esc) { esc = false; continue; }
+    if (ch === "\\" && inStr) { esc = true; continue; }
+    if (ch === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+
+    if (ch === "[" || ch === "{") depth++;
+    if (ch === "]" || ch === "}") {
+      depth--;
+      if (depth === 0 && ch === "]") {
+        // Found a clean, fully-closed array — try this first
+        try {
+          return JSON.parse(sliced.slice(0, i + 1));
+        } catch { /* fall through to truncation recovery below */ }
+      }
+      if (ch === "}") lastGoodEnd = i; // remember last complete object
+    }
+  }
+
+  // No clean closing ']' found — truncate to last complete object + close array
+  if (lastGoodEnd === -1) throw new Error("No complete JSON object found in Groq response.");
+  const truncated = sliced.slice(0, lastGoodEnd + 1) + "]";
+  return JSON.parse(truncated);
 }
 
-// ── Fetch ─────────────────────────────────────────────────────────────────────
+// ── Fetch
 export async function fetchQuestionsFromGroq({
   category = "",
   difficulty = "Beginner",
@@ -341,7 +411,7 @@ export async function fetchQuestionsFromGroq({
   const topicLower = topic.toLowerCase();
   const cacheKey   = `${topic}__${difficulty}__${performance}__${userWeakness}`;
 
-  if (cache.has(cacheKey)) return cache.get(cacheKey);
+  // if (cache.has(cacheKey)) return cache.get(cacheKey);
   if (inflightRequest?.key === cacheKey) return inflightRequest.promise;
 
   const prompt = buildPrompt({
@@ -368,22 +438,22 @@ export async function fetchQuestionsFromGroq({
         body: JSON.stringify({
           // llama-3.3-70b-versatile supports up to 32 768 output tokens,
           // giving the model room to complete all 7 questions cleanly.
-          model: "llama-3.3-70b-versatile",
+          model: "llama-3.1-8b-instant",
           temperature: 0.5,
-          max_tokens: 8000,
+          max_tokens: 4000,
           messages: [
             {
               role: "system",
               content: `You are a practical quiz generator for DataEre.
-Rules:
-1. Return ONLY a valid JSON array of exactly ${QUESTIONS_PER_QUIZ} objects — no markdown, no fences
-2. For computational topics: every question stem must include a pipe-delimited inline table
-3. For conceptual topics: every question stem must be a realistic prose scenario — NO tables, NO pipe characters
-4. NEVER include the correct formula or answer inside the question stem
-5. Every explanation must show a step-by-step worked solution
-6. Distractors must be specific named errors or plausible but wrong choices — not random noise
-7. Only generate questions about the topic specified by the user
-8. The "description" field is plain text only — no pipes, no markdown, no tables`,
+              Rules:
+              1. Return ONLY a valid JSON array of exactly ${QUESTIONS_PER_QUIZ} objects — no markdown, no fences
+              2. For computational topics: every question stem must include a pipe-delimited inline table
+              3. For conceptual topics: every question stem must be a realistic prose scenario — NO tables, NO pipe characters
+              4. NEVER include the correct formula or answer inside the question stem
+              5. Every explanation must show a step-by-step worked solution
+              6. Distractors must be specific named errors or plausible but wrong choices — not random noise
+              7. Only generate questions about the topic specified by the user
+              8. The "description" field is plain text only — no pipes, no markdown, no tables`,
             },
             { role: "user", content: prompt },
           ],
@@ -401,17 +471,10 @@ Rules:
       const data = await response.json();
       const raw  = data.choices?.[0]?.message?.content ?? "[]";
 
-      // Strip markdown fences then sanitize bare control characters that LLMs
-      // sometimes emit inside JSON string values (e.g. literal newlines inside
-      // pipe-table rows). Raw control chars are illegal in JSON strings.
       const cleaned = sanitizeJSON(
         raw.replace(/^```(?:json)?|```$/gm, "").trim()
       );
 
-      // ── Two-stage JSON recovery ─────────────────────────────────────────
-      // Stage 1: clean parse of the full sanitized response.
-      // Stage 2: if still broken (truncated array), slice from '[' to the last
-      //          complete '}' and close the array.
       let questions;
       try {
         questions = JSON.parse(cleaned);
@@ -431,7 +494,7 @@ Rules:
       if (!Array.isArray(questions))
         throw new Error("Groq did not return a JSON array.");
 
-      // ── Tool validation: strip questions with wrong-tool syntax ──────────
+      // ── Tool validation: strip questions with wrong-tool syntax
       const TOOL_RULES = {
         excel: (q) =>
           !/(SELECT\s+[\w\*]|FROM\s+\w+\s+(WHERE|JOIN|GROUP|ORDER|LIMIT)|JOIN\s+\w+\s+ON|GROUP\s+BY\s+\w|INNER\s+JOIN|LEFT\s+JOIN)/i.test(q.question),
@@ -464,7 +527,31 @@ Rules:
           throw new Error(`All questions failed tool validation for "${topic}". Try regenerating.`);
       }
 
-      cache.set(cacheKey, questions);
+      if (matchedRule) {
+        const [, validate] = matchedRule;
+        const before  = questions.length;
+        questions     = questions.filter(validate);
+        const removed = before - questions.length;
+        if (removed > 0)
+          console.warn(`[groq] Removed ${removed} question(s) with wrong tool syntax for "${topic}"`);
+        if (questions.length === 0)
+          throw new Error(`All questions failed tool validation for "${topic}". Try regenerating.`);
+      }
+
+      // ── NEW: reject questions with non-existent functions in correct answer
+      questions = validateFunctionUsage(questions, topicLower);
+
+      // ── NEW: dedup duplicate/near-duplicate questions
+      questions = dedupeQuestions(questions);
+
+      if (questions.length < QUESTIONS_PER_QUIZ) {
+        console.warn(
+          `[groq] ${QUESTIONS_PER_QUIZ - questions.length} duplicate(s) removed — proceeding with ${questions.length} questions.`
+        );
+        // Optional: trigger the follow-up "fill" request here (see previous message)
+      }
+
+      // cache.set(cacheKey, questions);
       return questions;
     } finally {
       inflightRequest = null;
@@ -475,7 +562,7 @@ Rules:
   return promise;
 }
 
-// ── Cache utils ───────────────────────────────────────────────────────────────
+// ── Cache utils
 export function clearQuestionCache({
   category     = "",
   difficulty   = "Beginner",
