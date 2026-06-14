@@ -1,17 +1,22 @@
 // VsBotPlay.jsx
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { QuizContext } from "../../../util/Contexts";
-
 import {
-  Box, Flex, VStack, Text, Badge, Button
+  Box,
+  Flex,
+  VStack,
+  Text,
+  Badge,
+  Button,
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { FaRobot, FaUser } from "react-icons/fa6";
+import { QuizContext } from "../../../util/Contexts";
+import { saveScore } from "../../../util/api";
 
-// ── Animations 
+// ── Animations ────────────────────────────────────────────────────────────────
 const slideUp = keyframes`
   from { opacity:0; transform:translateY(30px) scale(0.97); }
   to   { opacity:1; transform:translateY(0)    scale(1);    }
@@ -25,35 +30,222 @@ const feedbackIn = keyframes`
   to   { opacity:1; transform:translateY(0)    scale(1);    }
 `;
 const correctPop = keyframes`
-  0%  { transform:translateX(6px) scale(1);    }
-  50% { transform:translateX(6px) scale(1.03); }
-  100%{ transform:translateX(6px) scale(1);    }
+  0%   { transform:translateX(6px) scale(1);    }
+  50%  { transform:translateX(6px) scale(1.03); }
+  100% { transform:translateX(6px) scale(1);    }
 `;
 const shakeAnim = keyframes`
-  0%,100%{ transform:translateX(6px); }
-  20%    { transform:translateX(0);   }
-  40%    { transform:translateX(10px);}
-  60%    { transform:translateX(2px); }
-  80%    { transform:translateX(8px); }
+  0%,100% { transform:translateX(6px); }
+  20%     { transform:translateX(0);   }
+  40%     { transform:translateX(10px);}
+  60%     { transform:translateX(2px); }
+  80%     { transform:translateX(8px); }
 `;
 const botThink = keyframes`
   0%,100% { opacity:0.3; transform:scale(0.85); }
   50%     { opacity:1;   transform:scale(1.1);  }
 `;
 
-const LETTERS = ["A", "B", "C", "D"];
+// ── Constants ─────────────────────────────────────────────────────────────────
+const OPTION_KEYS = ["A", "B", "C", "D"];
 
 const difficultyConfig = {
-  Beginner:     { bg:"#ecfdf5", color:"#059669" },
-  Intermediate: { bg:"#fef9ee", color:"#b45309" },
-  Advanced:     { bg:"#fef2f2", color:"#dc2626" },
+  beginner:     { bg: "#ecfdf5", color: "#059669" },
+  intermediate: { bg: "#fef9ee", color: "#b45309" },
+  advanced:     { bg: "#fef2f2", color: "#dc2626" },
 };
 
-// ── BotStatusBar 
-const BotStatusBar = ({ botAnswer, correctKey, answerKeys, answerValues, revealed }) => {
+// ── Question parser ───────────────────────────────────────────────────────────
+function parseQuestionParts(text = "") {
+  if (!text) return { prose: "", table: null, codeBlock: null };
+
+  // Extract fenced code blocks first (```...```)
+  const codeBlockMatch = text.match(/```[\s\S]*?```/);
+  const withoutCode = codeBlockMatch
+    ? text.replace(codeBlockMatch[0], "").trim()
+    : text;
+
+  const lines = withoutCode.split("\n");
+  const tableLines = [];
+  const proseLines = [];
+
+  for (const line of lines) {
+    const t = line.trim();
+    const isPipeRow    = /^\|.+\|$/.test(t);
+    const isSeparator  = /^\|[\s|:\-]+\|$/.test(t);
+    const isAsciiBorder = /^\+[-+]+\+$/.test(t);
+
+    if (isPipeRow || isSeparator || isAsciiBorder) {
+      tableLines.push(line);
+    } else {
+      proseLines.push(line);
+    }
+  }
+
+  return {
+    prose:     proseLines.join("\n").trim(),
+    table:     tableLines.length >= 2 ? tableLines.join("\n").trim() : null,
+    codeBlock: codeBlockMatch ? codeBlockMatch[0] : null,
+  };
+}
+
+// ── Table renderer ────────────────────────────────────────────────────────────
+function TableDisplay({ raw }) {
+  const lines = raw
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l && !/^\+[-+]+\+$/.test(l)); // drop ASCII border lines
+
+  const rows = lines.map((l) =>
+    l.replace(/^\||\|$/g, "")
+     .split("|")
+     .map((c) => c.trim())
+  );
+
+  if (rows.length === 0) return null;
+
+  const isSepRow = (r) => r.every((c) => /^[-:\s]*$/.test(c) && c.includes("-"));
+  const header   = rows[0];
+  const body     = rows.slice(1).filter((r) => !isSepRow(r));
+
+  return (
+    <Box
+      overflowX="auto"
+      my={4}
+      borderRadius="12px"
+      border="1.5px solid #c7d2fe"
+      fontSize="13px"
+    >
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            {header.map((cell, i) => (
+              <th
+                key={i}
+                style={{
+                  padding: "9px 16px",
+                  textAlign: "left",
+                  background: "#eef2ff",
+                  color: "#3451b2",
+                  fontWeight: 700,
+                  fontSize: "11px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                  borderBottom: "2px solid #c7d2fe",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {cell}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {body.map((row, ri) => (
+            <tr key={ri} style={{ background: ri % 2 === 0 ? "#ffffff" : "#f8f9ff" }}>
+              {row.map((cell, ci) => (
+                <td
+                  key={ci}
+                  style={{
+                    padding: "8px 16px",
+                    borderBottom: "1px solid #e8ecff",
+                    color: "#1e293b",
+                    fontFamily: "monospace",
+                    fontSize: "13px",
+                  }}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Box>
+  );
+}
+
+// ── Code block renderer ───────────────────────────────────────────────────────
+function CodeBlock({ raw }) {
+  const inner = raw.replace(/^```[a-z]*\n?/, "").replace(/\n?```$/, "").trim();
+  return (
+    <Box
+      as="pre"
+      my={4}
+      p="16px 20px"
+      borderRadius="12px"
+      bg="#0f172a"
+      color="#e2e8f0"
+      fontSize="13px"
+      fontFamily="'Fira Code', 'Cascadia Code', monospace"
+      overflowX="auto"
+      lineHeight={1.75}
+      whiteSpace="pre"
+      borderLeft="3px solid #4263eb"
+    >
+      {inner}
+    </Box>
+  );
+}
+
+// ── Question body (prose + table + code) ──────────────────────────────────────
+function QuestionBody({ question, description }) {
+  const { prose, table, codeBlock } = parseQuestionParts(question);
+
+  const descHasTable = description && /\|.+\|/.test(description);
+  const {
+    prose: descProse,
+    table: descTable
+  } = descHasTable ? parseQuestionParts(description) : { prose: description, table: null };
+
+  return (
+    <>
+      {/* Main prose */}
+      {prose && (
+        <Text
+          fontWeight={600}
+          fontSize={{ base: "15px", md: "17px" }}
+          color="#0f1b35"
+          lineHeight={1.7}
+          mb={table || codeBlock ? 2 : 0}
+        >
+          {prose}
+        </Text>
+      )}
+
+      {/* Inline dataset table */}
+      {table && <TableDisplay raw={table} />}
+
+      {/* SQL / formula / code block */}
+      {codeBlock && <CodeBlock raw={codeBlock} />}
+
+      {/* Description / context line */}
+      {description && (
+        <Text
+          fontSize="12px"
+          color="#64748b"
+          mt={2}
+          fontStyle="italic"
+          lineHeight={1.5}
+        >
+          💡 {description}
+        </Text>
+      )}
+
+      {/* Clean plain-text portion if description had a table mixed in */}
+      {descHasTable && descProse && (
+        <Text fontSize="12px" color="#64748b" mt={2} fontStyle="italic" lineHeight={1.5}>
+          💡 {descProse}
+        </Text>
+      )}
+    </>
+  );
+}
+
+// ── Bot status bar ────────────────────────────────────────────────────────────
+const BotStatusBar = ({ botAnswer, correctKey, getOptionText, revealed }) => {
   const botCorrect = botAnswer === correctKey;
-  const botIdx     = answerKeys.indexOf(botAnswer);
-  const botText    = botIdx >= 0 ? answerValues[botIdx] : "";
+  const botText    = botAnswer ? getOptionText(botAnswer) : "";
 
   return (
     <Flex
@@ -92,7 +284,7 @@ const BotStatusBar = ({ botAnswer, correctKey, answerKeys, answerValues, reveale
         {!revealed ? (
           /* thinking dots */
           <Flex align="center" gap="5px" h="20px">
-            {[0,1,2].map(i => (
+            {[0, 1, 2].map((i) => (
               <Box key={i} w="7px" h="7px" borderRadius="full" bg="#4263eb"
                 animation={`${botThink} 1s ease ${i * 0.2}s infinite`} />
             ))}
@@ -100,7 +292,7 @@ const BotStatusBar = ({ botAnswer, correctKey, answerKeys, answerValues, reveale
         ) : (
           <Text fontSize="14px" fontWeight={600}
             color={botCorrect ? "#065f46" : "#991b1b"}>
-            {LETTERS[botIdx] ?? "?"}.&nbsp;{botText}
+            {botAnswer}.&nbsp;{botText}
             &nbsp;{botCorrect ? "✅" : "❌"}
           </Text>
         )}
@@ -113,31 +305,24 @@ const BotStatusBar = ({ botAnswer, correctKey, answerKeys, answerValues, reveale
   );
 };
 
-// ── OptionButton 
+// ── Option button ─────────────────────────────────────────────────────────────
 const OptionButton = ({
-  label, text, index, userAnswer, botAnswer, correctKey, answerKey,
+  label, text, index,
+  isUserPick, isBotPick, isCorrect, isUserWrong,
   revealed, onSelect,
 }) => {
-  const isUserPick   = userAnswer === answerKey;
-  const isBotPick    = revealed && botAnswer === answerKey;
-  const isCorrect    = revealed && answerKey === correctKey;
-  const isUserWrong  = revealed && isUserPick && answerKey !== correctKey;
-
   const borderColor = isCorrect   ? "#10b981"
-                    : isUserWrong ? "#ef4444"
-                    : isUserPick  ? "#4263eb"
-                    : "#e2e8f0";
-
+    : isUserWrong ? "#ef4444"
+    : isUserPick  ? "#4263eb"
+    : "#e2e8f0";
   const bg = isCorrect   ? "#ecfdf5"
-           : isUserWrong ? "#fef2f2"
-           : isUserPick  ? "#eef2ff"
-           : "white";
-
-  const letterBg    = isCorrect   ? "#10b981"
-                    : isUserWrong ? "#ef4444"
-                    : isUserPick  ? "#4263eb"
-                    : "#f1f5f9";
-
+    : isUserWrong ? "#fef2f2"
+    : isUserPick  ? "#eef2ff"
+    : "white";
+  const letterBg = isCorrect   ? "#10b981"
+    : isUserWrong ? "#ef4444"
+    : isUserPick  ? "#4263eb"
+    : "#f1f5f9";
   const letterColor = (isCorrect || isUserWrong || isUserPick) ? "white" : "#64748b";
 
   const animation = isCorrect
@@ -149,24 +334,27 @@ const OptionButton = ({
   return (
     <Flex
       as="button"
-      align="center" gap={4}
-      w="100%" textAlign="left"
+      align="center"
+      gap={4}
+      w="100%"
       bg={bg}
-      border="1.5px solid" borderColor={borderColor}
-      borderRadius="14px" p="14px 18px"
+      border="1.5px solid"
+      borderColor={borderColor}
+      borderRadius="14px"
+      p="14px 18px"
+      textAlign="left"
       cursor={revealed ? "default" : "pointer"}
-      onClick={() => !revealed && onSelect(answerKey)}
+      onClick={() => !revealed && onSelect()}
       animation={animation}
       transition="all 0.22s cubic-bezier(0.34,1.3,0.64,1)"
       transform={(isCorrect || isUserWrong || isUserPick) ? "translateX(6px)" : "none"}
       boxShadow={(isUserPick || isCorrect) ? "0 4px 16px rgba(66,99,235,0.12)" : "none"}
       _hover={!revealed ? {
-        borderColor:"#4263eb",
-        transform:"translateX(6px)",
-        boxShadow:"0 4px 16px rgba(66,99,235,0.12)",
+        borderColor: "#4263eb",
+        transform: "translateX(6px)",
+        boxShadow: "0 4px 16px rgba(66,99,235,0.12)",
       } : {}}
     >
-      {/* Letter badge */}
       <Flex
         w="36px" h="36px" borderRadius="full" flexShrink={0}
         align="center" justify="center"
@@ -176,14 +364,16 @@ const OptionButton = ({
       >
         {label}
       </Flex>
-
-      <Text fontSize="15px" fontWeight={500} color="#1e293b"
-        flex={1} lineHeight={1.4} textTransform="capitalize">
+      <Text
+        fontSize="15px" fontWeight={500}
+        color="#1e293b" flex={1}
+        lineHeight={1.4} textTransform="capitalize"
+      >
         {text}
       </Text>
 
       {/* Badges: You / Bot */}
-      <Flex gap={1} flexShrink={0}>
+      <Flex gap={1} flexShrink={0} ml="auto" align="center">
         {isUserPick && (
           <Badge bg="#4263eb" color="white" borderRadius="20px"
             px={2} py="2px" fontSize="10px" fontWeight={700}>
@@ -199,140 +389,188 @@ const OptionButton = ({
           </Badge>
         )}
         {(isCorrect || isUserWrong) && (
-          <Text fontSize="16px" ml={1}>{isCorrect ? "✅" : "❌"}</Text>
+          <Text fontSize="18px" ml={1}>{isCorrect ? "✅" : "❌"}</Text>
         )}
       </Flex>
     </Flex>
   );
 };
 
-// ── VsBotPlay 
+// ── Main component ────────────────────────────────────────────────────────────
 const VsBotPlay = () => {
   const navigate = useNavigate();
 
   const {
+    score, setScore,
     currQuestion, setCurrQuestion,
-    setBotScore,
     questions,
-    setScore,
+    wrongAnswer, setWrongAnswer,
+    setBotScore,
     difficulty,
   } = useContext(QuizContext);
 
-  const [userAnswer, setUserAnswer] = useState(null);
-  const [botAnswer,  setBotAnswer]  = useState(null);
-  const [revealed,   setRevealed]   = useState(false);
-  const [animKey,    setAnimKey]    = useState(0);
+  const [userAnswerKey, setUserAnswerKey] = useState("");
+  const [botAnswerKey,  setBotAnswerKey]  = useState("");
+  const [revealed,      setRevealed]      = useState(false);
+  const [animKey,       setAnimKey]       = useState(0);
 
-  const q           = questions[currQuestion];
-  const answerKeys  = Object.keys(q?.answers || {});
-  const answerValues = answerKeys.map((k) => q.answers[k]);
+  useEffect(() => {
+    localStorage.removeItem("vsBotQuizCompleted");
+  }, []);
 
-  const correctKey = Object.keys(q?.correct_answers || {})
-    .find((k) => q.correct_answers[k] === "true")
-    ?.replace("_correct", "");
+  const q = questions[currQuestion];
 
-  const diff    = difficultyConfig[difficulty] ?? difficultyConfig.Beginner;
-  const isLast  = currQuestion === questions.length - 1;
+  const getOptionText   = (key) => q.answers?.[`answer_${key.toLowerCase()}`] ?? "";
+  const isOptionCorrect = (key) =>
+    (q.correct_answers?.[`answer_${key.toLowerCase()}_correct`] ?? "false") === "true";
 
-  // ── Bot logic ──
+  const correctKey = OPTION_KEYS.find((key) => isOptionCorrect(key));
+
+  const userCorrect = userAnswerKey ? isOptionCorrect(userAnswerKey) : false;
+
+  // ── Bot logic ──────────────────────────────────────────────────────────────
   const getSmartBotAnswer = () => {
-    const chance = Math.random();
-    const thresh = difficulty === "Beginner" ? 0.5
-                 : difficulty === "Advanced" ? 0.85 : 0.7;
-    if (chance < thresh) return correctKey;
-    const wrong = answerKeys.filter((k) => k !== correctKey);
-    return wrong[Math.floor(Math.random() * wrong.length)];
+    const diffLower = difficulty?.toLowerCase();
+    const thresh = diffLower === "beginner" ? 0.5
+                 : diffLower === "advanced" ? 0.85 : 0.7;
+
+    if (Math.random() < thresh) return correctKey;
+
+    const wrongKeys = OPTION_KEYS.filter(
+      (key) => getOptionText(key) && key !== correctKey
+    );
+    return wrongKeys[Math.floor(Math.random() * wrongKeys.length)] ?? correctKey;
   };
 
   const handleUserSelect = (key) => {
     if (revealed) return;
-    setUserAnswer(key);
-    setBotAnswer(getSmartBotAnswer());
+    setUserAnswerKey(key);
+    setBotAnswerKey(getSmartBotAnswer());
     setRevealed(true);
   };
 
-  // ── Navigation ──
-  const advance = () => {
-    if (userAnswer === correctKey) setScore((p) => p + 1);
-    if (botAnswer  === correctKey) setBotScore((p) => p + 1);
-    setCurrQuestion(currQuestion + 1);
-    setUserAnswer(null); setBotAnswer(null); setRevealed(false);
-    setAnimKey((k) => k + 1);
-  };
+  // ── Navigation helpers ─────────────────────────────────────────────────────
+  function advance() {
+    if (userCorrect) setScore(score + 1);
+    else setWrongAnswer(wrongAnswer + 1);
 
-  const finishQuiz = () => {
-    if (userAnswer === correctKey) setScore((p) => p + 1);
-    if (botAnswer  === correctKey) setBotScore((p) => p + 1);
+    if (botAnswerKey === correctKey) setBotScore((p) => p + 1);
+
+    setUserAnswerKey("");
+    setBotAnswerKey("");
+    setRevealed(false);
+    setAnimKey((k) => k + 1);
+    setCurrQuestion(currQuestion + 1);
+  }
+
+  const finishQuiz = async () => {
+    const finalScore = userCorrect ? score + 1 : score;
+    const finalWrong = userCorrect ? wrongAnswer : wrongAnswer + 1;
+
+    if (userCorrect) setScore(finalScore);
+    else setWrongAnswer(finalWrong);
+
+    if (botAnswerKey === correctKey) setBotScore((p) => p + 1);
+
+    try {
+      await saveScore({
+        topic:   q.topic ?? q.category ?? "General",
+        score:   finalScore,
+        total:   questions.length,
+        wrong:   finalWrong,
+        skipped: 0,
+        mode:    "vsbot",
+      });
+    } catch (err) {
+      console.error("Failed to save score:", err);
+    }
+
+    localStorage.setItem("vsBotQuizCompleted", "true");
+    setUserAnswerKey("");
+    setBotAnswerKey("");
     setCurrQuestion(0);
     navigate("/quiz/results?mode=vsbot");
   };
 
-  const userCorrect = revealed && userAnswer === correctKey;
-  const userWrong   = revealed && userAnswer !== correctKey;
+  const isLast = currQuestion === questions.length - 1;
+  const diff   = difficultyConfig[difficulty?.toLowerCase()] ?? difficultyConfig.beginner;
 
   return (
-    <Box minH="calc(100vh - 56px)" bg="#eef0f7">
+    <Box className="quiz-container">
       <Flex
         key={animKey}
         flexDir="column"
         align="center"
         justify="center"
-        p={{ base:5, md:8 }}
+        p={{ base: 5, md: 8 }}
         gap={6}
+        overflowY="auto"
         minH="calc(100vh - 56px - 72px)"
       >
-
         {/* ── Question card ── */}
         <Box
-          bg="white" borderRadius="20px"
-          p={{ base:"22px 18px", md:"32px 36px" }}
+          bg="white"
+          borderRadius="20px"
+          p={{ base: "22px 18px", md: "32px 36px" }}
           maxW="680px" w="100%"
           boxShadow="0 4px 24px rgba(15,27,53,0.08)"
           animation={`${slideUp} 0.45s cubic-bezier(0.34,1.3,0.64,1) both`}
         >
-          <Flex align="center" justify="space-between" mb={5} flexWrap="wrap" gap={2}>
-            <Badge bg="#eef2ff" color="#4263eb" px={3} py={1}
-              borderRadius="20px" fontSize="11px" fontWeight={700}
-              textTransform="uppercase" letterSpacing="0.06em">
+          {/* Badges */}
+          <Flex align="center" justify="space-between" mb={4} flexWrap="wrap" gap={2}>
+            <Badge
+              bg="#eef2ff" color="#4263eb"
+              px={3} py={1} borderRadius="20px"
+              fontSize="11px" fontWeight={700}
+              textTransform="uppercase" letterSpacing="0.06em"
+            >
               🤖 VS Bot
             </Badge>
-            <Badge bg={diff.bg} color={diff.color} px={3} py={1}
-              borderRadius="20px" fontSize="11px" fontWeight={700}
-              textTransform="uppercase" letterSpacing="0.06em">
+            <Badge
+              bg={diff.bg} color={diff.color}
+              px={3} py={1} borderRadius="20px"
+              fontSize="11px" fontWeight={700}
+              textTransform="uppercase" letterSpacing="0.06em"
+            >
               {difficulty ?? "Beginner"}
             </Badge>
           </Flex>
-          <Text fontWeight={600} fontSize={{ base:"15px", md:"17px" }}
-            color="#0f1b35" lineHeight={1.65}>
-            {q.question}
-          </Text>
+
+          {/* Question text — prose + table + code separated */}
+          <QuestionBody
+            question={q.question}
+            // description={q.description}
+          />
         </Box>
 
         {/* ── Options ── */}
         <VStack spacing={3} maxW="680px" w="100%">
-          {answerKeys.map((key, i) => (
-            <OptionButton
-              key={key}
-              label={LETTERS[i]}
-              text={answerValues[i]}
-              index={i}
-              answerKey={key}
-              userAnswer={userAnswer}
-              botAnswer={botAnswer}
-              correctKey={correctKey}
-              revealed={revealed}
-              onSelect={handleUserSelect}
-            />
-          ))}
+          {OPTION_KEYS.map((key, i) => {
+            const text = getOptionText(key);
+            if (!text) return null;
+            return (
+              <OptionButton
+                key={key}
+                label={key}
+                text={text}
+                index={i}
+                isUserPick={userAnswerKey === key}
+                isBotPick={revealed && botAnswerKey === key}
+                isCorrect={revealed && isOptionCorrect(key)}
+                isUserWrong={revealed && userAnswerKey === key && !isOptionCorrect(key)}
+                revealed={revealed}
+                onSelect={() => handleUserSelect(key)}
+              />
+            );
+          })}
         </VStack>
 
         {/* ── Bot status bar ── */}
-        {userAnswer && (
+        {userAnswerKey && (
           <BotStatusBar
-            botAnswer={botAnswer}
+            botAnswer={botAnswerKey}
             correctKey={correctKey}
-            answerKeys={answerKeys}
-            answerValues={answerValues}
+            getOptionText={getOptionText}
             revealed={revealed}
           />
         )}
@@ -342,69 +580,113 @@ const VsBotPlay = () => {
           <Flex
             maxW="680px" w="100%"
             borderRadius="14px" p="14px 20px"
-            align="center" gap={3}
+            align="flex-start" gap={3}
             bg={userCorrect ? "#ecfdf5" : "#fef2f2"}
             border="1.5px solid"
             borderColor={userCorrect ? "#6ee7b7" : "#fca5a5"}
             animation={`${feedbackIn} 0.35s cubic-bezier(0.34,1.56,0.64,1) both`}
           >
-            <Text fontSize="20px" flexShrink={0}>{userCorrect ? "🎉" : "📖"}</Text>
-            <Box flex={1}>
-              <Text fontSize="14px" fontWeight={600}
-                color={userCorrect ? "#065f46" : "#991b1b"}>
+            <Text fontSize="20px" flexShrink={0} mt="1px">
+              {userCorrect ? "🎉" : "📖"}
+            </Text>
+            <Box>
+              <Text
+                fontSize="14px" fontWeight={600}
+                color={userCorrect ? "#065f46" : "#991b1b"}
+              >
                 {userCorrect
                   ? "Great answer! You got it right."
                   : "Not quite — check the correct answer highlighted above."}
               </Text>
-              <Text fontSize="12px" mt={1} opacity={0.75}
-                color={userCorrect ? "#065f46" : "#991b1b"}>
+              <Text
+                fontSize="12px" mt={1} opacity={0.75}
+                color={userCorrect ? "#065f46" : "#991b1b"}
+              >
                 {userCorrect
-                  ? userAnswer === botAnswer
+                  ? userAnswerKey === botAnswerKey
                     ? "You and the bot both got this one. 🤝"
                     : "You outsmarted the bot! 🎯"
-                  : botAnswer === correctKey
+                  : botAnswerKey === correctKey
                     ? "The bot got this one right. Keep going! 💪"
                     : "Both you and the bot missed this one."}
               </Text>
+              {/* Explanation from the question data */}
+              {q.explanation && (
+                <Text
+                  fontSize="13px" mt={3}
+                  color={userCorrect ? "#065f46" : "#7f1d1d"}
+                  lineHeight={1.6}
+                  borderTop="1px solid"
+                  borderColor={userCorrect ? "#a7f3d0" : "#fecaca"}
+                  pt={3}
+                >
+                  {q.explanation}
+                </Text>
+              )}
+              {/* Tip */}
+              {q.tip && (
+                <Flex
+                  align="center" gap={2} mt={3}
+                  p="8px 12px"
+                  borderRadius="8px"
+                  bg={userCorrect ? "#d1fae5" : "#fee2e2"}
+                >
+                  <Text fontSize="13px">💡</Text>
+                  <Text
+                    fontSize="12px" fontWeight={500}
+                    color={userCorrect ? "#065f46" : "#991b1b"}
+                  >
+                    {q.tip}
+                  </Text>
+                </Flex>
+              )}
             </Box>
           </Flex>
         )}
       </Flex>
 
-      {/* ── Bottom nav bar ── */}
+      {/* ── Bottom nav ── */}
       <Flex
-        bg="#0f1b35" px={{ base:4, md:7 }} py={4}
-        align="center" justify="center" gap={4}
-        position="sticky" bottom={0}
+        bg="#0f1b35"
+        px={{ base: 4, md: 7 }}
+        py={4}
+        align="center"
+        justify="center"
+        gap={4}
+        flexShrink={0}
+        position="sticky"
+        bottom={0}
       >
         {isLast ? (
           <Button
-            onClick={finishQuiz}
             rightIcon={<FaRegCheckCircle />}
+            onClick={finishQuiz}
+            isDisabled={!revealed}
             bgGradient="linear(to-r,#10b981,#059669)"
-            color="white" borderRadius="10px" px={8} py={6}
+            color="white"
+            borderRadius="10px" px={8} py={6}
             fontWeight={600} fontSize="14px"
             boxShadow="0 4px 14px rgba(16,185,129,0.4)"
-            isDisabled={!revealed}
-            _hover={{ boxShadow:"0 8px 22px rgba(16,185,129,0.55)", transform:"translateY(-3px)" }}
-            _active={{ transform:"scale(0.96)" }}
-            _disabled={{ opacity:0.4, cursor:"not-allowed", transform:"none" }}
+            _hover={{ boxShadow: "0 8px 22px rgba(16,185,129,0.55)", transform: "translateY(-3px)" }}
+            _active={{ transform: "scale(0.96)" }}
+            _disabled={{ opacity: 0.4, cursor: "not-allowed", transform: "none" }}
             transition="all 0.22s"
           >
             Finish
           </Button>
         ) : (
           <Button
-            onClick={advance}
             rightIcon={<ArrowRightIcon />}
+            onClick={advance}
+            isDisabled={!revealed}
             bgGradient="linear(to-r,#4263eb,#3b5bdb)"
-            color="white" borderRadius="10px" px={8} py={6}
+            color="white"
+            borderRadius="10px" px={8} py={6}
             fontWeight={600} fontSize="14px"
             boxShadow="0 4px 14px rgba(66,99,235,0.4)"
-            isDisabled={!revealed}
-            _hover={{ boxShadow:"0 8px 22px rgba(66,99,235,0.55)", transform:"translateY(-3px)" }}
-            _active={{ transform:"scale(0.96)" }}
-            _disabled={{ opacity:0.4, cursor:"not-allowed", transform:"none" }}
+            _hover={{ boxShadow: "0 8px 22px rgba(66,99,235,0.55)", transform: "translateY(-3px)" }}
+            _active={{ transform: "scale(0.96)" }}
+            _disabled={{ opacity: 0.4, cursor: "not-allowed", transform: "none" }}
             transition="all 0.22s"
           >
             Next

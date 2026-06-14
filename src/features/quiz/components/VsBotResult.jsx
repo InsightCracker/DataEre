@@ -1,14 +1,19 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../../../util/Contexts";
+import { keyframes } from "@emotion/react";
+
 import {
   Box, Flex, Text, Button, SimpleGrid
 } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
+
 import {
   FaShareNodes, FaHouse, FaTrophy,
   FaRobot, FaUserAstronaut, FaHandshake, FaSpinner,
 } from "react-icons/fa6";
+
+import Sidebar from "../../../util/Sidebar";
+import BottomNav from "../../../util/BottomNav";
 import QuizShareCard from "./QuizShareCard";
 
 // ── Animations 
@@ -23,7 +28,7 @@ const slideUp = keyframes`
 `;
 
 const crownBounce = keyframes`
-  0%,100% { transform:translateY(0)    rotate(0deg); }
+  0%, 100% { transform:translateY(0)    rotate(0deg); }
   30%     { transform:translateY(-8px) rotate(-6deg); }
   60%     { transform:translateY(-4px) rotate(4deg);  }
 `;
@@ -63,7 +68,7 @@ const ActionButton = ({ icon, label, onClick, gradient, delay = "0s" }) => (
   </Button>
 );
 
-const MultiEnd = () => {
+const VsBotResult = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
@@ -92,7 +97,7 @@ const MultiEnd = () => {
       label:"Bot Won!",  color:"#ef4444", bg:"#fef2f2", sub:"The bot got you this time. Try again!" 
     }
     : { emoji:"🤝", icon:<FaHandshake />,      
-      label:"It's a Tie!", color:"#f59e0b", bg:"#fef9ee", sub:"Neck and neck — a perfect draw!" 
+      label:"It's a Tie!", color:"#f59e0b", bg:"#fef9ee", sub:"Neck and neck - a perfect draw!" 
     };
 
   const retryQuiz = () => {
@@ -113,7 +118,17 @@ const MultiEnd = () => {
   };
 
   return (
-    <Flex minH="100vh" bg="#eef0f7" align="center" justify="center" p={{ base:5, md:8 }}>
+    <Box 
+      minH="100vh"
+      bg="#eef0f7"
+      align="center"
+      justify="spac"
+      p={{ base:5, md: 0}}
+      pt={{ base: 5, md: 8 }}
+      pb={{ base: "5rem", lg: 0}}
+    >
+      <Sidebar />
+
       <Box
         bg="white" borderRadius="24px"
         p={{ base:"28px 20px", md:"40px 48px" }}
@@ -206,7 +221,7 @@ const MultiEnd = () => {
         {/* ── Actions ── */}
         <Flex flexDir="column" gap={3}>
           <ActionButton icon={<FaSpinner />} label="Retake Session" onClick={retryQuiz}        gradient="linear(to-r,#4263eb,#3b5bdb)" delay="0.05s" />
-          <ActionButton icon={<FaHouse />} label="Back to Dashboard" onClick={tryAnotherQuiz} delay="0.2s" />
+          <ActionButton icon={<FaHouse />} label="Take on New Challenge" onClick={tryAnotherQuiz} delay="0.2s" />
           <ActionButton icon={<FaTrophy />} label="View Leaderboard" onClick={() => navigate("/board")} delay="0.1s" />
           <ActionButton icon={<FaShareNodes />} label="Share Score" onClick={() => setShow(true)} delay="0.15s" />
         </Flex>
@@ -217,8 +232,10 @@ const MultiEnd = () => {
         isOpen={show} 
         onClose={() => setShow(false)} 
       />
-    </Flex>
+
+      <BottomNav />
+    </Box>
   );
 };
 
-export default MultiEnd;
+export default VsBotResult;

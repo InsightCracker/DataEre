@@ -1,9 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { QuizContext } from "../../../util/Contexts";
-import { TimerContext } from "../../../util/TimerProvider";
-import BottomNav from "../../../util/BottomNav";
-import Sidebar from "../../../util/Sidebar";
+import { keyframes } from "@emotion/react";
 
 import {
   Box, 
@@ -12,8 +9,6 @@ import {
   Button, 
   SimpleGrid
 } from "@chakra-ui/react";
-
-import { keyframes } from "@emotion/react";
 
 import {
   FaCircleCheck, 
@@ -24,6 +19,10 @@ import {
   FaTrophy,
 } from "react-icons/fa6";
 
+import { QuizContext } from "../../../util/Contexts";
+import { TimerContext } from "../../../util/TimerProvider";
+import BottomNav from "../../../util/BottomNav";
+import Sidebar from "../../../util/Sidebar";
 import QuizShareCard from "./QuizShareCard";
 
 // ── Animations 
@@ -118,12 +117,13 @@ const SoloResult = () => {
   };
 
   return (
-    <Flex
+    <Box
       minH="100vh"
       bg="#eef0f7"
       align="center"
-      justify="center"
-      p={{ base: 5, md: 8 }}
+      justify="spac"
+      p={{ base:5, md: 0}}
+      pt={{ base: 5, md: 8 }}
       pb={{ base: "5rem", lg: 0}}
     >
       <Sidebar />
@@ -206,7 +206,7 @@ const SoloResult = () => {
           />
           <ActionButton
             icon={<FaHouse />}
-            label="Back to Dashboard"
+            label="Take on New Challenge"
             onClick={tryAnotherQuiz}
             delay="0.15s"
           />
@@ -232,7 +232,7 @@ const SoloResult = () => {
       />
 
       <BottomNav />
-    </Flex>
+    </Box>
   );
 };
 
