@@ -1,10 +1,12 @@
 import {
   Box, 
   Text, Input, InputGroup, useToast,
-  InputLeftElement, InputRightElement, IconButton, Spinner, Flex,
+  InputLeftElement, InputRightElement, IconButton, Spinner, Flex, SimpleGrid,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { LuUser, LuLock } from "react-icons/lu";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { showToast } from "../../../util/toastUtil";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +41,9 @@ const inputSx = {
   },
 };
 
+// Base URL for backend OAuth redirect endpoints.
+const API_BASE = import.meta.env?.VITE_API_URL || "/api";
+
 const Orbs = () => (
   <>
     <Box position="absolute" top="-80px" left="-80px" w="360px" h="360px" borderRadius="full"
@@ -62,11 +67,40 @@ const GridBg = () => (
     }} />
 );
 
+// Reusable social login button (Google, GitHub, etc.)
+const SocialButton = ({ icon, label, onClick, loading }) => (
+  <Box as="button" type="button" onClick={onClick} disabled={loading}
+    sx={{
+      width: "100%",
+      display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+      py: "11px", borderRadius: "12px",
+      bg: "#fff",
+      border: `1px solid ${C.border}`,
+      color: C.text,
+      fontWeight: 600, fontSize: "0.9rem",
+      fontFamily: "'DM Sans', sans-serif",
+      cursor: loading ? "not-allowed" : "pointer",
+      opacity: loading ? 0.6 : 1,
+      transition: "all 0.2s ease",
+      _hover: !loading && {
+        borderColor: "rgba(59,110,240,0.40)",
+        bg: "#f8faff",
+        transform: "translateY(-1px)",
+        boxShadow: "0 4px 14px rgba(59,110,240,0.10)",
+      },
+      _active: { transform: "translateY(0)" },
+    }}>
+    {icon}
+    <Text as="span">{label}</Text>
+  </Box>
+);
+
 const LoginPage = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword]     = useState("");
   const [show, setShow]             = useState(false);
   const [loading, setLoading]       = useState(false);
+  const [socialLoading, setSocialLoading] = useState(null); // "google" | "github" | null
   const [mounted, setMounted]       = useState(false);
 
   const { login } = useAuth();
@@ -94,6 +128,21 @@ const LoginPage = () => {
       showToast(toast, "error", "Unable to login. Check your connection and try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Redirects the browser to the backend's OAuth entry point for the given
+  // provider. Works for both new signups and returning users — the backend
+  // finds-or-creates the account, so this doubles as "login with Google/GitHub".
+  const socialLoginHandler = (provider) => {
+    setSocialLoading(provider);
+    try {
+      const redirectTo = `${window.location.origin}/users/oauth/callback`;
+      window.location.href =
+        `${API_BASE}/auth/${provider}?redirect=${encodeURIComponent(redirectTo)}`;
+    } catch {
+      showToast(toast, "error", "Unable to start login. Please try again.");
+      setSocialLoading(null);
     }
   };
 
@@ -187,9 +236,32 @@ const LoginPage = () => {
             fontWeight={800} color={C.text} letterSpacing="-0.5px" mb="0.3rem">
             Log in to DataEre
           </Text>
-          <Text fontSize="0.88rem" color={C.muted} mb="1.8rem" lineHeight={1.6}>
+          <Text fontSize="0.88rem" color={C.muted} mb="1.4rem" lineHeight={1.6}>
             Continue your data learning journey
           </Text>
+
+          {/* Social login options */}
+          <SimpleGrid columns={{ base: 1, sm: 2 }} spacing="0.7rem" mb="1.4rem" style={anim(100)}>
+            <SocialButton
+              icon={<FcGoogle size={18} />}
+              label="Google"
+              loading={socialLoading === "google"}
+              onClick={() => socialLoginHandler("google")}
+            />
+            <SocialButton
+              icon={<FaGithub size={18} color={C.text} />}
+              label="GitHub"
+              loading={socialLoading === "github"}
+              onClick={() => socialLoginHandler("github")}
+            />
+          </SimpleGrid>
+
+          {/* Divider */}
+          <Flex align="center" gap="0.8rem" mb="1.4rem" style={anim(120)}>
+            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
+            <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or log in with email</Text>
+            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
+          </Flex>
 
           {/* Email or Username */}
           <Box mb="1.1rem" style={anim(160)}>
@@ -272,15 +344,8 @@ const LoginPage = () => {
             {loading ? <Spinner size="sm" color="white" /> : "Log In"}
           </Box>
 
-          {/* Divider */}
-          <Flex align="center" gap="0.8rem" my="1.4rem" style={anim(340)}>
-            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
-            <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or</Text>
-            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
-          </Flex>
-
           {/* Sign up nudge */}
-          <Box textAlign="center" style={anim(380)}>
+          <Box textAlign="center" mt="1.4rem" style={anim(380)}>
             <Text fontSize="0.875rem" color={C.muted}>
               New to DataEre?{" "}
               <Text as="a" href="/users/signup" color={C.accent} fontWeight={700}

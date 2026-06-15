@@ -51,10 +51,7 @@ const inputSx = {
   },
 };
 
-// Base URL for backend OAuth redirect endpoints.
-// e.g. GET ${API_BASE}/auth/google -> redirects to Google consent screen
-//      GET ${API_BASE}/auth/github -> redirects to GitHub consent screen
-const API_BASE = import.meta.env?.VITE_API_URL || "/api"
+const API_BASE_URL = import.meta.env?.VITE_API_URL || "/api"
 
 const Orbs = () => (
   <>
@@ -175,18 +172,15 @@ const SignupPage = () => {
     }
   };
 
-  // Redirects the browser to the backend's OAuth entry point for the given
-  // provider. The backend handles the OAuth handshake and, on success,
-  // redirects back to the app (e.g. /users/oauth/callback) with a session
-  // token that AuthContext can pick up.
+  
   const socialSignupHandler = (provider) => {
   setSocialLoading(provider);
   try {
     const redirectTo = `${window.location.origin}/users/oauth/callback`;
-    const url = `${API_BASE}/auth/${provider}?redirect=${encodeURIComponent(redirectTo)}`;
+    const url = `${API_BASE_URL}/auth/${provider}?redirect=${encodeURIComponent(redirectTo)}`;
     window.location.href = url;
   } catch {
-    showToast(toast, "error", "Unable to start sign up. Please try again.");
+    showToast(toast, "error", "Unable to sign up. Please try again.");
     setSocialLoading(null);
   }
 };
