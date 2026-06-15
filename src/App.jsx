@@ -6,7 +6,7 @@ import { ChakraProvider, Box } from '@chakra-ui/react';
 // Quiz Pages
 import LandingPage from "./features/landing/pages/LandingPage";
 import LoginPage from "./features/auth/pages/LoginPage";
-import SignupPage from './features/auth/pages/SIgnupPage';
+import SignupPage from './features/auth/pages/SignupPage';
 import OAuthCallback from './features/auth/pages/OAuthCallback';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
@@ -63,7 +63,6 @@ function App() {
   const [learningObjective, setLearningObjective] = useState("");
 
   // Derive performance level from score automatically
-  // Call this after a quiz session ends to update the next session's difficulty
   const updatePerformance = useCallback((totalQuestions, correctAnswers) => {
     const ratio = correctAnswers / totalQuestions;
     if (ratio >= 0.8) setPerformance("high");
