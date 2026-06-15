@@ -38,6 +38,15 @@ export const forgotPassword = (email) =>
 export const resetPassword = (token, password) =>
   request(`/auth/reset-password/${token}`, "POST", { password });
 
+export const fetchCurrentUser = async (token) => {
+  const res = await fetch(`${API_BASE_URL}/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.message || "Failed to fetch user");
+  return data.user;
+};
+
 // ─── SCORES 
 export const saveScore = ({ topic, score, total, wrong, skipped, mode }) =>
   request("/scores", "POST", { topic, score, total, wrong, skipped, mode });
