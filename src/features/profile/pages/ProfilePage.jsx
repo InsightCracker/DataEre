@@ -487,7 +487,7 @@ const ProfilePage = () => {
                   <div className="journey-card-value journey-blue">
                     {String(stats.total).padStart(2, "0")}
                   </div>
-                  <div className="journey-card-sub">Sessions taken</div>
+                  <div className="journey-card-sub">sessions taken</div>
                 </div>
             
                 <div className="journey-card">

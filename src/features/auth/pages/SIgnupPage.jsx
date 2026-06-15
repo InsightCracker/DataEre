@@ -118,7 +118,7 @@ const SocialButton = ({ icon, label, onClick, loading }) => (
 const SignupPage = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [socialLoading, setSocialLoading] = useState(null); // "google" | "github" | null
+  const [socialLoading, setSocialLoading] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName,  setLastName]  = useState("");

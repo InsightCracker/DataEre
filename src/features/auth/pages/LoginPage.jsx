@@ -131,9 +131,6 @@ const LoginPage = () => {
     }
   };
 
-  // Redirects the browser to the backend's OAuth entry point for the given
-  // provider. Works for both new signups and returning users — the backend
-  // finds-or-creates the account, so this doubles as "login with Google/GitHub".
   const socialLoginHandler = (provider) => {
     setSocialLoading(provider);
     try {
@@ -146,7 +143,6 @@ const LoginPage = () => {
     }
   };
 
-  // Allow Enter key to submit
   const handleKeyDown = (e) => {
     if (e.key === "Enter") login_handler();
   };
@@ -276,8 +272,8 @@ const LoginPage = () => {
               <Input
                 value={identifier}
                 variant="outline"
-                type="text"
-                placeholder="you@example.com or johndoe"
+                type="email"
+                placeholder="you@example.com"
                 onChange={(e) => setIdentifier(e.target.value)}
                 onKeyDown={handleKeyDown}
                 sx={inputSx}
