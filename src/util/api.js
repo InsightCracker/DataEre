@@ -39,7 +39,7 @@ export const resetPassword = (token, password) =>
   request(`/auth/reset-password/${token}`, "POST", { password });
 
 export const fetchCurrentUser = async (token) => {
-  const res = await fetch(`${API_BASE_URL}/auth/me`, {
+  const res = await fetch(`${BASE_URL}/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   const data = await res.json();
