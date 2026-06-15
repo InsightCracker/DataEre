@@ -14,6 +14,8 @@ import {
 
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { LuMail, LuLock, LuUser } from "react-icons/lu";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -49,6 +51,11 @@ const inputSx = {
   },
 };
 
+// Base URL for backend OAuth redirect endpoints.
+// e.g. GET ${API_BASE}/auth/google -> redirects to Google consent screen
+//      GET ${API_BASE}/auth/github -> redirects to GitHub consent screen
+const API_BASE = import.meta.env?.VITE_API_URL || "/api"
+
 const Orbs = () => (
   <>
     <Box position="absolute" top="-100px" right="-80px" w="400px" h="400px" borderRadius="full"
@@ -83,9 +90,38 @@ const ProgressDots = ({ step, total }) => (
   </Flex>
 );
 
+// Reusable social sign-up button (Google, GitHub, etc.)
+const SocialButton = ({ icon, label, onClick, loading }) => (
+  <Box as="button" type="button" onClick={onClick} disabled={loading}
+    sx={{
+      width: "100%",
+      display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+      py: "11px", borderRadius: "12px",
+      bg: "#fff",
+      border: `1px solid ${C.border}`,
+      color: C.text,
+      fontWeight: 600, fontSize: "0.9rem",
+      fontFamily: "'DM Sans', sans-serif",
+      cursor: loading ? "not-allowed" : "pointer",
+      opacity: loading ? 0.6 : 1,
+      transition: "all 0.2s ease",
+      _hover: !loading && {
+        borderColor: "rgba(59,110,240,0.40)",
+        bg: "#f8faff",
+        transform: "translateY(-1px)",
+        boxShadow: "0 4px 14px rgba(59,110,240,0.10)",
+      },
+      _active: { transform: "translateY(0)" },
+    }}>
+    {icon}
+    <Text as="span">{label}</Text>
+  </Box>
+);
+
 const SignupPage = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState(null); // "google" | "github" | null
   const [mounted, setMounted] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName,  setLastName]  = useState("");
@@ -138,6 +174,22 @@ const SignupPage = () => {
       setLoading(false);
     }
   };
+
+  // Redirects the browser to the backend's OAuth entry point for the given
+  // provider. The backend handles the OAuth handshake and, on success,
+  // redirects back to the app (e.g. /users/oauth/callback) with a session
+  // token that AuthContext can pick up.
+  const socialSignupHandler = (provider) => {
+  setSocialLoading(provider);
+  try {
+    const redirectTo = `${window.location.origin}/users/oauth/callback`;
+    const url = `${API_BASE}/auth/${provider}?redirect=${encodeURIComponent(redirectTo)}`;
+    window.location.href = url;
+  } catch {
+    showToast(toast, "error", "Unable to start sign up. Please try again.");
+    setSocialLoading(null);
+  }
+};
 
   const anim = (delay = 0) => ({
     opacity: mounted ? 1 : 0,
@@ -254,12 +306,35 @@ const SignupPage = () => {
             fontWeight={800} color={C.text} letterSpacing="-0.5px" mb="0.3rem">
             Create your DataEre account
           </Text>
-          <Text fontSize="0.88rem" color={C.muted} mb="1rem" lineHeight={1.6}>
+          <Text fontSize="0.88rem" color={C.muted} mb="1.4rem" lineHeight={1.6}>
             Join thousands of analysts building real skills
           </Text>
 
+          {/* Social signup options */}
+          <SimpleGrid columns={{ base: 1, sm: 2 }} spacing="0.7rem" mb="1.4rem" style={anim(100)}>
+            <SocialButton
+              icon={<FcGoogle size={18} />}
+              label="Google"
+              loading={socialLoading === "google"}
+              onClick={() => socialSignupHandler("google")}
+            />
+            <SocialButton
+              icon={<FaGithub size={18} color={C.text} />}
+              label="GitHub"
+              loading={socialLoading === "github"}
+              onClick={() => socialSignupHandler("github")}
+            />
+          </SimpleGrid>
+
+          {/* Divider */}
+          <Flex align="center" gap="0.8rem" mb="1.4rem" style={anim(120)}>
+            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
+            <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or sign up with email</Text>
+            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
+          </Flex>
+
           {/* Progress indicator */}
-          <Box style={anim(120)}>
+          <Box style={anim(140)}>
             <ProgressDots step={filledFields} total={5} />
           </Box>
 
@@ -390,15 +465,8 @@ const SignupPage = () => {
             {loading ? <Spinner size="sm" color="white" /> : "Create Account"}
           </Box>
 
-          {/* Divider */}
-          <Flex align="center" gap="0.8rem" my="1.4rem" style={anim(400)}>
-            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
-            <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or</Text>
-            <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
-          </Flex>
-
           {/* Login nudge */}
-          <Box textAlign="center" style={anim(430)}>
+          <Box textAlign="center" mt="1.4rem" style={anim(430)}>
             <Text fontSize="0.875rem" color={C.muted}>
               Already a member?{" "}
               <Text as="a" href="/users/login" color={C.accent} fontWeight={700}
