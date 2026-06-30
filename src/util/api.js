@@ -29,6 +29,9 @@ export const getMe = () =>
 export const updateProfile = (username, email) =>
   request("/auth/profile", "PUT", { username, email });
 
+export const updatePrivacy = (isPublic) =>
+  request("/auth/privacy", "PUT", { isPublic });
+
 export const deleteAccount = () =>
   request("/auth/account", "DELETE");
 

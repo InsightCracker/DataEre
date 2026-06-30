@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
   const streak        = user?.streak        ?? 0;
   const longestStreak = user?.longestStreak ?? 0;
   const joinDate      = user?.joinDate      || null;
+  const isPublic      = user?.isPublic      ?? true;
   const isLoggedIn    = !!token;
 
   return (
@@ -68,6 +69,7 @@ export const AuthProvider = ({ children }) => {
       streak,
       longestStreak,
       joinDate,
+      isPublic,
       isLoggedIn,
       // Actions
       login,
