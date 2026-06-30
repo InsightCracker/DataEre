@@ -22,7 +22,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const {
     firstName, username, email, userId,
-    streak, longestStreak, joinDate,
+    streak, longestStreak, joinDate, isPublic,
     logout, updateUser,
   } = useAuth();
 
@@ -135,6 +135,7 @@ const ProfilePage = () => {
         email={email}
         joinDateFormatted={joinDateFormatted}
         longestStreak={longestStreak}
+        isPublic={isPublic}
         updateUser={updateUser}
         onOpenDelete={openDelete}
       />
