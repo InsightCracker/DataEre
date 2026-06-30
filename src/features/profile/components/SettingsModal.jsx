@@ -4,8 +4,7 @@ import {
   ModalBody, ModalCloseButton, Input, Switch, useToast,
 } from "@chakra-ui/react";
 import { FaBell, FaLock, FaTrash, FaPen } from "react-icons/fa6";
-import { updateProfile } from "../../../util/api";
-
+import { updateProfile, updatePrivacy } from "../../../util/api";
 
 const SettingsModal = ({
   isOpen,
@@ -14,6 +13,7 @@ const SettingsModal = ({
   email,
   joinDateFormatted,
   longestStreak,
+  isPublic,
   updateUser,
   onOpenDelete,
 }) => {
@@ -24,12 +24,39 @@ const SettingsModal = ({
   const [editEmail, setEditEmail] = useState(email || "");
   const [notifQuiz, setNotifQuiz] = useState(true);
   const [notifLeader, setNotifLeader] = useState(true);
-  const [profilePublic, setProfilePublic] = useState(true);
+  const [profilePublic, setProfilePublic] = useState(isPublic ?? true);
+  const [savingPrivacy, setSavingPrivacy] = useState(false);
   const [saving, setSaving] = useState(false);
 
   // Keep edit fields in sync when auth data loads/changes
   useEffect(() => { setEditName(username || ""); }, [username]);
   useEffect(() => { setEditEmail(email || ""); }, [email]);
+  useEffect(() => { setProfilePublic(isPublic ?? true); }, [isPublic]);
+
+  const handleTogglePrivacy = async () => {
+    const next = !profilePublic;
+    setProfilePublic(next); // optimistic update
+    setSavingPrivacy(true);
+    try {
+      const res = await updatePrivacy(next);
+      if (res.success) {
+        updateUser(res.user);
+        toast({
+          title: next ? "Profile is now public" : "Profile hidden from leaderboard",
+          status: "success",
+          duration: 2000,
+        });
+      } else {
+        setProfilePublic(!next); // revert
+        toast({ title: res.message || "Could not update privacy setting", status: "error", duration: 3000 });
+      }
+    } catch {
+      setProfilePublic(!next); // revert
+      toast({ title: "Network error", status: "error", duration: 3000 });
+    } finally {
+      setSavingPrivacy(false);
+    }
+  };
 
   const handleSaveProfile = async () => {
     if (!editName.trim() && !editEmail.trim()) return;
@@ -158,7 +185,8 @@ const SettingsModal = ({
                   <div style={{ fontWeight: 600, fontSize: "0.88rem", color: "#111827" }}>Public profile</div>
                   <div style={{ fontSize: "0.75rem", color: "#9ca3af" }}>Show your name on the leaderboard</div>
                 </div>
-                <Switch isChecked={profilePublic} onChange={() => setProfilePublic(!profilePublic)} colorScheme="blue" size="md" />
+                <Switch isChecked={profilePublic} onChange={handleTogglePrivacy}
+                  isDisabled={savingPrivacy} colorScheme="blue" size="md" />
               </div>
               <div style={{
                 padding: "12px 16px", borderRadius: "12px",

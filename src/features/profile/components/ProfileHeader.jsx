@@ -4,10 +4,6 @@ import {
   FaListCheck, FaBoltLightning, FaFire, FaArrowTrendUp, FaArrowTrendDown, FaGear,
 } from "react-icons/fa6";
 
-/**
- * Greeting + settings button + level/XP progress + streak/XP cards.
- * Rendered as a sibling ABOVE `.low-box` (matches original markup).
- */
 export const ProfileHeader = ({
   firstName,
   level,
@@ -107,10 +103,6 @@ export const ProfileHeader = ({
   );
 };
 
-/**
- * Learning Lab CTA + Daily Challenge CTA + "Data Journey" stat grid.
- * Rendered inside `.low-box .left-side-box`.
- */
 export const LearningStatsPanel = ({ challenge, stats, bestSkill, worstSkill, navigate }) => {
   return (
     <>
