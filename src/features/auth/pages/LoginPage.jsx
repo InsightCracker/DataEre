@@ -255,7 +255,7 @@ const LoginPage = () => {
           {/* Divider */}
           <Flex align="center" gap="0.8rem" mb="1.4rem" style={anim(120)}>
             <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
-            <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>or log in with email</Text>
+            <Text fontSize="0.78rem" color={C.dim} fontWeight={500}>log in with email</Text>
             <Box flex={1} h="1px" bg="rgba(59,110,240,0.10)" />
           </Flex>
 
