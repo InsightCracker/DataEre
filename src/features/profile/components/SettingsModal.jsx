@@ -4,26 +4,29 @@ import {
   ModalBody, ModalCloseButton, Input, Switch, useToast,
 } from "@chakra-ui/react";
 import { FaBell, FaLock, FaTrash, FaPen } from "react-icons/fa6";
-import { updateProfile, updatePrivacy } from "../../../util/api";
+import { useAuth } from "../../../util/AuthContext";
+import { updateProfile, updatePrivacy, updateNotificationPrefs } from "../../../util/api";
 
 const SettingsModal = ({
   isOpen,
   onClose,
+  user,
   username,
   email,
   joinDateFormatted,
   longestStreak,
   isPublic,
-  updateUser,
   onOpenDelete,
 }) => {
   const toast = useToast();
 
+  const { notificationPrefs, updateUser } = useAuth();
   const [settingsTab, setSettingsTab] = useState("profile");
   const [editName, setEditName] = useState(username || "");
   const [editEmail, setEditEmail] = useState(email || "");
-  const [notifQuiz, setNotifQuiz] = useState(true);
-  const [notifLeader, setNotifLeader] = useState(true);
+  const [notifQuiz, setNotifQuiz] = useState(user?.notificationPrefs?.dailyReminders ?? false);
+  const [notifLeader, setNotifLeader] = useState(user?.notificationPrefs?.leaderboardUpdates ?? false);
+  const [savingNotif, setSavingNotif] = useState(false);
   const [profilePublic, setProfilePublic] = useState(isPublic ?? true);
   const [savingPrivacy, setSavingPrivacy] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -33,9 +36,45 @@ const SettingsModal = ({
   useEffect(() => { setEditEmail(email || ""); }, [email]);
   useEffect(() => { setProfilePublic(isPublic ?? true); }, [isPublic]);
 
+  useEffect(() => {
+    setNotifQuiz(notificationPrefs?.dailyReminders    ?? false);
+    setNotifLeader(notificationPrefs?.leaderboardUpdates ?? false);
+  }, [notificationPrefs?.dailyReminders, notificationPrefs?.leaderboardUpdates]);
+
+  const handleToggleNotif = async (key, currentVal) => {
+  const next = !currentVal;
+  // Optimistic update
+  if (key === "dailyReminders")    setNotifQuiz(next);
+  if (key === "leaderboardUpdates") setNotifLeader(next);
+
+  setSavingNotif(true);
+    try {
+      const res = await updateNotificationPrefs(key, next);
+      if (res.success) {
+        updateUser(res.user);
+        toast({
+          title: next ? "Notification enabled" : "Notification disabled",
+          status: "success",
+          duration: 2000,
+        });
+      } else {
+        // Roll back
+        if (key === "dailyReminders") setNotifQuiz(currentVal);
+        if (key === "leaderboardUpdates") setNotifLeader(currentVal);
+        toast({ title: res.message || "Could not update", status: "error", duration: 3000 });
+      }
+    } catch {
+      if (key === "dailyReminders") setNotifQuiz(currentVal);
+      if (key === "leaderboardUpdates") setNotifLeader(currentVal);
+      toast({ title: "Network error", status: "error", duration: 3000 });
+    } finally {
+      setSavingNotif(false);
+    }
+  };
+
   const handleTogglePrivacy = async () => {
     const next = !profilePublic;
-    setProfilePublic(next); // optimistic update
+    setProfilePublic(next);
     setSavingPrivacy(true);
     try {
       const res = await updatePrivacy(next);
@@ -47,11 +86,11 @@ const SettingsModal = ({
           duration: 2000,
         });
       } else {
-        setProfilePublic(!next); // revert
+        setProfilePublic(!next);
         toast({ title: res.message || "Could not update privacy setting", status: "error", duration: 3000 });
       }
     } catch {
-      setProfilePublic(!next); // revert
+      setProfilePublic(!next);
       toast({ title: "Network error", status: "error", duration: 3000 });
     } finally {
       setSavingPrivacy(false);
@@ -155,21 +194,48 @@ const SettingsModal = ({
           {settingsTab === "notif" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {[
-                { label: "Daily reminders", sub: "Daily nudges to keep your streak", val: notifQuiz, set: setNotifQuiz },
-                { label: "Leaderboard updates", sub: "When your rank changes", val: notifLeader, set: setNotifLeader },
+                {
+                  label: "Daily reminders",
+                  sub:   "Email nudges to keep your streak alive",
+                  val:   notifQuiz,
+                  key:   "dailyReminders",
+                },
+                {
+                  label: "Leaderboard updates",
+                  sub:   "In-app alert when your rank changes",
+                  val:   notifLeader,
+                  key:   "leaderboardUpdates",
+                },
               ].map((item) => (
-                <div key={item.label} style={{
+                <div key={item.key} style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
                   padding: "12px 16px", borderRadius: "12px",
                   border: "1px solid rgba(59,110,240,0.10)", background: "rgba(59,110,240,0.03)",
+                  opacity: savingNotif ? 0.6 : 1, transition: "opacity 0.2s",
                 }}>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: "0.88rem", color: "#111827" }}>{item.label}</div>
                     <div style={{ fontSize: "0.75rem", color: "#9ca3af" }}>{item.sub}</div>
                   </div>
-                  <Switch isChecked={item.val} onChange={() => item.set(!item.val)} colorScheme="blue" size="md" />
+                  <Switch
+                    isChecked={item.val}
+                    onChange={() => handleToggleNotif(item.key, item.val)}
+                    isDisabled={savingNotif}
+                    colorScheme="blue"
+                    size="md"
+                  />
                 </div>
               ))}
+
+              {/* Info note so users know what each channel does */}
+              <div style={{
+                padding: "10px 14px", borderRadius: "10px", fontSize: "0.76rem",
+                color: "#6b7280", lineHeight: 1.6,
+                background: "rgba(59,110,240,0.04)", border: "1px solid rgba(59,110,240,0.08)",
+              }}>
+                Daily reminders are sent by <strong>email</strong>. Leaderboard updates appear as
+                an <strong>in-app pop-up</strong> while you're active.
+              </div>
             </div>
           )}
 

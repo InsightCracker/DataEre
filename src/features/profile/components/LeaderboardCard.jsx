@@ -49,9 +49,7 @@ export const LeaderboardCard = ({ board, isYou, navigate }) => {
   );
 };
 
-/**
- * "Achievements Unlocked" list (earned badges only) for the right column.
- */
+
 export const AchievementsPanel = ({ badges }) => {
   const earned = badges.filter((b) => b.earned);
 

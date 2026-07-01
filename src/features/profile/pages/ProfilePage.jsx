@@ -2,20 +2,20 @@ import "../styles/profile.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../../../util/Sidebar";
-import BottomNav from "../../../util/BottomNav";
-
 import { Box, useDisclosure } from "@chakra-ui/react";
 
 import { useAuth } from "../../../util/AuthContext";
 import { getMyScores, getLeaderboard, getMe } from "../../../util/api";
+import Sidebar from "../../../util/Sidebar";
+import BottomNav from "../../../util/BottomNav";
 
 import { getLevel, LEVELS, computeBadges, fetchDailyChallenge } from "../Levelconfig";
-import ProfileLoadingSkeleton from "../components/ProfileLoadingSkeleton";
 import { ProfileHeader, LearningStatsPanel } from "../components/ProfileHeader";
-import BadgesPanel from "../components/BadgesPanel";
 import { LeaderboardCard, AchievementsPanel } from "../components/LeaderboardCard";
+
+import BadgesPanel from "../components/BadgesPanel";
 import SettingsModal from "../components/SettingsModal";
+import ProfileLoadingSkeleton from "../components/ProfileLoadingSkeleton";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 
 const ProfilePage = () => {
@@ -136,7 +136,6 @@ const ProfilePage = () => {
         joinDateFormatted={joinDateFormatted}
         longestStreak={longestStreak}
         isPublic={isPublic}
-        updateUser={updateUser}
         onOpenDelete={openDelete}
       />
 
