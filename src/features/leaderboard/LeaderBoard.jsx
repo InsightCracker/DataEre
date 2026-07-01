@@ -98,13 +98,13 @@ const PodiumBlock = ({ user, rank, height, index }) => {
 const LeaderBoard = () => {
   const { userId, username } = useAuth();
 
-  const [data, setData]                 = useState([]);
-  const [topics, setTopics]             = useState([]);
-  const [loading, setLoading]           = useState(true);
+  const [data, setData] = useState([]);
+  const [topics, setTopics] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [topicLoading, setTopicLoading] = useState(false);
-  const [activeTopic, setActiveTopic]   = useState("overall");
-  const [filter, setFilter]             = useState("totalCorrect");
-  const [search, setSearch]             = useState("");
+  const [activeTopic, setActiveTopic] = useState("overall");
+  const [filter, setFilter] = useState("totalCorrect");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getTopics()
@@ -136,7 +136,10 @@ const LeaderBoard = () => {
   const podiumRanks   = [2, 1, 3];
   const podiumHeights = [60, 80, 44];
 
-  const ALL_TOPICS = ["overall", ...topics];
+  // Only show "Overall" plus the top 3 topics as filter tabs, instead of
+  // every topic returned by the API (keeps the tab row from overflowing
+  // once there are many topics).
+  const ALL_TOPICS = ["overall", ...topics.slice(0, 3)];
 
   const formattedTopic = activeTopic.charAt(0).toUpperCase() + activeTopic.slice(1);
   
