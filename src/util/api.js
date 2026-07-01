@@ -26,6 +26,9 @@ export const loginUser = (identifier, password) =>
 export const getMe = () =>
   request("/auth/me", "GET");
 
+export const updateNotificationPrefs = (key, value) =>
+  request("/user/notification-prefs", "PATCH", { key, value });
+
 export const updateProfile = (username, email) =>
   request("/auth/profile", "PUT", { username, email });
 

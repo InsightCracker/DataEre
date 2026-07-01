@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+ import { getMe } from './api';
 
 const AuthContext = createContext();
 
@@ -23,6 +24,25 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser]   = useState(safeParseUser());
   const [token, setToken] = useState(localStorage.getItem('dataere_token') || null);
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem('dataere_token');
+    if (!storedToken) return;
+
+    getMe().then((res) => {
+      if (res.success) {
+        setUser(res.user);
+        localStorage.setItem('dataere_user', JSON.stringify(res.user));
+      } else {
+        // Token is invalid/expired — clear everything
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('dataere_user');
+        localStorage.removeItem('dataere_token');
+      }
+    }).catch(() => {
+    });
+  }, []);
+
   const login = (userData, authToken) => {
     setUser(userData);
     setToken(authToken);
@@ -37,23 +57,26 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('dataere_token');
   };
 
-  // Update stored user (used after profile edit)
   const updateUser = (updatedData) => {
     const merged = { ...user, ...updatedData };
     setUser(merged);
     localStorage.setItem('dataere_user', JSON.stringify(merged));
   };
 
-  // Derived values
+  // ── Derived values ──────────────────────────────────────────────────
   const { firstName, lastName } = splitUsername(user?.username);
-  const email         = user?.email         || "";
-  const userId        = user?.id            || null;
-  const username      = user?.username      || "";
-  const streak        = user?.streak        ?? 0;
-  const longestStreak = user?.longestStreak ?? 0;
-  const joinDate      = user?.joinDate      || null;
-  const isPublic      = user?.isPublic      ?? true;
-  const isLoggedIn    = !!token;
+  const email              = user?.email              || "";
+  const userId             = user?.id                 || null;
+  const username           = user?.username           || "";
+  const streak             = user?.streak             ?? 0;
+  const longestStreak      = user?.longestStreak      ?? 0;
+  const joinDate           = user?.joinDate           || null;
+  const isPublic           = user?.isPublic           ?? true;
+  const notificationPrefs  = user?.notificationPrefs  ?? {   // ← add this
+    dailyReminders:     false,
+    leaderboardUpdates: false,
+  };
+  const isLoggedIn = !!token;
 
   return (
     <AuthContext.Provider value={{
@@ -70,6 +93,7 @@ export const AuthProvider = ({ children }) => {
       longestStreak,
       joinDate,
       isPublic,
+      notificationPrefs,   // ← expose it
       isLoggedIn,
       // Actions
       login,
