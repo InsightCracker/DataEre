@@ -5,9 +5,9 @@ import {
   useState 
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { QuizContext } from "../../../util/Contexts";
-import { categoriesList } from "../../../util/categories";
 import { Box, Spinner } from "@chakra-ui/react";
+import { QuizContext } from "../../../shared/contexts/Contexts";
+import { categoriesList } from "../../../shared/utils/categories";
 
 const Cards = () => {
   const navigate = useNavigate();

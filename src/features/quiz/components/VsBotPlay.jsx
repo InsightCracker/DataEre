@@ -13,10 +13,10 @@ import { keyframes } from "@emotion/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { FaRobot, FaUser } from "react-icons/fa6";
-import { QuizContext } from "../../../util/Contexts";
-import { saveScore } from "../../../util/api";
+import { QuizContext } from "../../../shared/contexts/Contexts";
+import { saveScore } from "../../../shared/utils/api";
 
-// ── Animations ────────────────────────────────────────────────────────────────
+// ── Animations 
 const slideUp = keyframes`
   from { opacity:0; transform:translateY(30px) scale(0.97); }
   to   { opacity:1; transform:translateY(0)    scale(1);    }
@@ -55,7 +55,7 @@ const difficultyConfig = {
   advanced:     { bg: "#fef2f2", color: "#dc2626" },
 };
 
-// ── Question parser ───────────────────────────────────────────────────────────
+// ── Question parser
 function parseQuestionParts(text = "") {
   if (!text) return { prose: "", table: null, codeBlock: null };
 
@@ -89,7 +89,7 @@ function parseQuestionParts(text = "") {
   };
 }
 
-// ── Table renderer ────────────────────────────────────────────────────────────
+// ── Table renderer
 function TableDisplay({ raw }) {
   const lines = raw
     .split("\n")
@@ -165,7 +165,7 @@ function TableDisplay({ raw }) {
   );
 }
 
-// ── Code block renderer ───────────────────────────────────────────────────────
+// ── Code block renderer
 function CodeBlock({ raw }) {
   const inner = raw.replace(/^```[a-z]*\n?/, "").replace(/\n?```$/, "").trim();
   return (
@@ -188,7 +188,7 @@ function CodeBlock({ raw }) {
   );
 }
 
-// ── Question body (prose + table + code) ──────────────────────────────────────
+// ── Question body (prose + table + code)
 function QuestionBody({ question, description }) {
   const { prose, table, codeBlock } = parseQuestionParts(question);
 
@@ -242,7 +242,7 @@ function QuestionBody({ question, description }) {
   );
 }
 
-// ── Bot status bar ────────────────────────────────────────────────────────────
+// ── Bot status bar
 const BotStatusBar = ({ botAnswer, correctKey, getOptionText, revealed }) => {
   const botCorrect = botAnswer === correctKey;
   const botText    = botAnswer ? getOptionText(botAnswer) : "";
@@ -305,7 +305,7 @@ const BotStatusBar = ({ botAnswer, correctKey, getOptionText, revealed }) => {
   );
 };
 
-// ── Option button ─────────────────────────────────────────────────────────────
+// ── Option button
 const OptionButton = ({
   label, text, index,
   isUserPick, isBotPick, isCorrect, isUserWrong,
@@ -396,7 +396,7 @@ const OptionButton = ({
   );
 };
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Main component
 const VsBotPlay = () => {
   const navigate = useNavigate();
 
@@ -449,7 +449,7 @@ const VsBotPlay = () => {
     setRevealed(true);
   };
 
-  // ── Navigation helpers ─────────────────────────────────────────────────────
+  // ── Navigation helpers
   function advance() {
     if (userCorrect) setScore(score + 1);
     else setWrongAnswer(wrongAnswer + 1);

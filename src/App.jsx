@@ -22,13 +22,13 @@ import DailyChallenge from './features/challenge/DailyChallenge';
 import Leaderboard from './features/leaderboard/LeaderBoard';
 
 // PDF Converter
-import PDFConverter from './pages/PDFConverter';
+// import PDFConverter from './pages/PDFConverter';
 
 // Upcoming Feature
-import ComingSoon from './util/ComingSoon';
+import ComingSoon from './utils/ComingSoon';
 
-import { QuizContext } from "./util/Contexts";
-import { TimerProvider } from './util/TimerProvider';
+import { QuizContext } from "./shared/contexts/Contexts";
+import { TimerProvider } from './shared/contexts/TimerProvider';
 
 // Groq AI — DataEre adaptive question generator
 import { 
@@ -194,7 +194,7 @@ function App() {
             <Route path='/challenge' element={<DailyChallenge />} />
 
             {/* Converter */}
-            <Route path="/converter" element={<PDFConverter />} />
+            {/* <Route path="/converter" element={<PDFConverter />} /> */}
 
             {/* Coming Soon */}
             <Route path="/coming-soon" element={<ComingSoon />} />

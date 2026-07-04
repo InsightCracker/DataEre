@@ -6,8 +6,8 @@ import {
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import QuizTimer from "./QuizTimer";
-import { QuizContext }  from "./Contexts";
-import { TimerContext } from "./TimerProvider";
+import { QuizContext }  from "../contexts/Contexts";
+import { TimerContext } from "../contexts/TimerProvider";
 
 const TOTAL_TIME = 300;
 

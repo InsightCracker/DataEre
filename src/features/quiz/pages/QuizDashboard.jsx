@@ -1,14 +1,14 @@
 import "../styles/quiz.css";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { QuizContext } from "../../../util/Contexts";
 
 import { Box, Heading } from "@chakra-ui/react";
 
 import { FaBullseye } from "react-icons/fa6";
 
-import Sidebar from "../../../util/Sidebar";
-import BottomNav from "../../../util/BottomNav";
+import { QuizContext } from "../../../shared/contexts/Contexts";
+import Sidebar from "../../../shared/components/Sidebar";
+import BottomNav from "../../../shared/components/BottomNav";
 import Cards from "../components/Cards";
 
 

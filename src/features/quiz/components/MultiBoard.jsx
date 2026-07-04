@@ -1,9 +1,8 @@
-// MultiBoard.jsx
 import { useContext } from "react";
-import { QuizContext } from "../../../util/Contexts";
 import { Flex, Box, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { FaUserAstronaut, FaRobot } from "react-icons/fa6";
+import { QuizContext } from "../../../shared/contexts/Contexts";
 
 const pulse = keyframes`
   0%,100% { box-shadow: 0 0 0 0 rgba(66,99,235,0.4); }

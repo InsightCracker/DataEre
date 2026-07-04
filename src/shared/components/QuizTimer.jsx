@@ -2,15 +2,13 @@ import {
   useContext, 
   useEffect 
 } from "react";
-
 import { useNavigate, useLocation } from "react-router-dom";
-
 import { 
   Flex, 
   Text 
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { TimerContext } from "./TimerProvider";
+import { TimerContext } from "../contexts/TimerProvider";
 
 const timerPulse = keyframes`
   0%,100% { transform: scale(1); }

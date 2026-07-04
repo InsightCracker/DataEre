@@ -4,8 +4,8 @@ import {
   ModalBody, ModalCloseButton, Input, Switch, useToast,
 } from "@chakra-ui/react";
 import { FaBell, FaLock, FaTrash, FaPen } from "react-icons/fa6";
-import { useAuth } from "../../../util/AuthContext";
-import { updateProfile, updatePrivacy, updateNotificationPrefs } from "../../../util/api";
+import { useAuth } from "../../../shared/contexts/AuthContext";
+import { updateProfile, updatePrivacy, updateNotificationPrefs } from "../../../shared/utils/api";
 
 const SettingsModal = ({
   isOpen,

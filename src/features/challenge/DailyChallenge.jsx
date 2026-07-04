@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import { getDailyQuestions } from "../../../api/dailyChallenge";
-import { QuizContext } from "../../util/Contexts";
-import { saveScore } from "../../util/api";
-import { useAuth } from "../../util/AuthContext";
+import { useAuth } from "../../shared/contexts/AuthContext";
+import { QuizContext } from "../../shared/contexts/Contexts";
+import { saveScore } from "../../shared/utils/api";
 import {
   Box,
   Flex,

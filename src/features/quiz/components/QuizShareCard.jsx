@@ -1,6 +1,5 @@
 import { useEffect, useContext, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { QuizContext } from "../../../util/Contexts";
 import confetti from "canvas-confetti";
 import {
   FaWhatsapp,
@@ -8,10 +7,11 @@ import {
   FaFacebook,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-
 import {
   Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton
 } from "@chakra-ui/react";
+
+import { QuizContext } from "../../../shared/contexts/Contexts";
 
 // ── Badge config 
 const getBadge = (pct) => {

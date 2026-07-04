@@ -1,15 +1,12 @@
 import { useContext, useState } from "react";
-import { QuizContext } from "../../../util/Contexts";
-
+import { QuizContext } from "../../../shared/contexts/Contexts";
 import { 
   Box,
   Input, 
   InputGroup,
   InputLeftElement
 } from "@chakra-ui/react";
-
 import { LuSearchCheck } from "react-icons/lu";
-
 
 const Searchbar = () => {
   const {

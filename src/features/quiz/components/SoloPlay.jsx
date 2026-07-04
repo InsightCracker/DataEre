@@ -11,10 +11,10 @@ import {
 import { keyframes } from "@emotion/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
-import { QuizContext } from "../../../util/Contexts";
-import { saveScore } from "../../../util/api";
+import { QuizContext } from "../../../shared/contexts/Contexts";
+import { saveScore } from "../../../shared/utils/api";
 
-// ── Animations ────────────────────────────────────────────────────────────────
+// ── Animations 
 const slideUp = keyframes`
   from { opacity:0; transform:translateY(30px) scale(0.97); }
   to   { opacity:1; transform:translateY(0)    scale(1);    }
@@ -40,7 +40,7 @@ const shakeAnim = keyframes`
   80%     { transform:translateX(8px); }
 `;
 
-// ── Constants ─────────────────────────────────────────────────────────────────
+// ── Constants ─
 const OPTION_KEYS = ["A", "B", "C", "D"];
 
 const difficultyConfig = {
@@ -49,7 +49,7 @@ const difficultyConfig = {
   advanced:     { bg: "#fef2f2", color: "#dc2626" },
 };
 
-// ── Question parser ───────────────────────────────────────────────────────────
+// ── Question parser────
 function parseQuestionParts(text = "") {
   if (!text) return { prose: "", table: null, codeBlock: null };
 
@@ -83,7 +83,7 @@ function parseQuestionParts(text = "") {
   };
 }
 
-// ── Table renderer ────────────────────────────────────────────────────────────
+// ── Table renderer
 function TableDisplay({ raw }) {
   const lines = raw
     .split("\n")
@@ -159,7 +159,7 @@ function TableDisplay({ raw }) {
   );
 }
 
-// ── Code block renderer ───────────────────────────────────────────────────────
+// ── Code block renderer
 function CodeBlock({ raw }) {
   const inner = raw.replace(/^```[a-z]*\n?/, "").replace(/\n?```$/, "").trim();
   return (
@@ -236,7 +236,7 @@ function QuestionBody({ question, description }) {
   );
 }
 
-// ── Option button ─────────────────────────────────────────────────────────────
+// ── Option button─
 const OptionButton = ({
   label, text, index,
   revealed, isSelected, isCorrect, isWrong,
@@ -311,7 +311,7 @@ const OptionButton = ({
   );
 };
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Main component
 const SoloPlay = () => {
   const navigate = useNavigate();
 

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import {
   FaHouse,
   FaBookOpen,
@@ -9,13 +9,13 @@ import {
   FaRightFromBracket,
   FaGauge,
 } from "react-icons/fa6";
-import "../style/sidebar.css";
+import "./style/sidebar.css";
 
 const navLinks = [
-  { label: "Dashboard",     icon: FaGauge,      path: "/users/profile" },
-  { label: "Learning Lab",  icon: FaBookOpen,   path: "/quiz/topics"   },
-  { label: "Hall of Fame",  icon: FaTrophy,     path: "/board"         },
-  { label: "Insight Studio",icon: FaChartColumn,path: "/coming-soon"   },
+  { label: "Dashboard", icon: FaGauge, path: "/users/profile" },
+  { label: "Learning Lab", icon: FaBookOpen, path: "/quiz/topics" },
+  { label: "Hall of Fame", icon: FaTrophy, path: "/board" },
+  { label: "Insight Studio",icon: FaChartColumn,path: "/coming-soon" },
 ];
 
 const Sidebar = () => {

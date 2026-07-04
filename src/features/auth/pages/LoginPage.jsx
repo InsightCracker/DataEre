@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Box, 
   Text, Input, InputGroup, useToast,
@@ -7,11 +8,11 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { LuUser, LuLock } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-import { useState, useEffect } from "react";
-import { showToast } from "../../../util/toastUtil";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../util/AuthContext";
-import { loginUser } from "../../../util/api";
+
+import { showToast } from "../../../shared/utils/toastUtil";
+import { useAuth } from "../../../shared/contexts/AuthContext";
+import { loginUser } from "../../../shared/utils/api";
 
 const C = {
   bg:      "#f0f4ff",

@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 
-import { useAuth } from "../../../util/AuthContext";
-import { fetchCurrentUser } from "../../../util/api";
-import { showToast } from "../../../util/toastUtil";
+import { useAuth } from "../../../shared//contexts/AuthContext";
+import { fetchCurrentUser } from "../../../shared/utils/api";
+import { showToast } from "../../../shared/utils/toastUtil";
 
 const OAuthCallback = () => {
   const [searchParams] = useSearchParams();

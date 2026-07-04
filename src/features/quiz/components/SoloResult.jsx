@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { keyframes } from "@emotion/react";
-
 import {
   Box, 
   Flex, 
@@ -9,7 +8,6 @@ import {
   Button, 
   SimpleGrid
 } from "@chakra-ui/react";
-
 import {
   FaCircleCheck, 
   FaCircleXmark,
@@ -19,10 +17,10 @@ import {
   FaTrophy,
 } from "react-icons/fa6";
 
-import { QuizContext } from "../../../util/Contexts";
-import { TimerContext } from "../../../util/TimerProvider";
-import BottomNav from "../../../util/BottomNav";
-import Sidebar from "../../../util/Sidebar";
+import { QuizContext } from "../../../shared/contexts/Contexts";
+import { TimerContext } from "../../../shared/contexts/TimerProvider";
+import BottomNav from "../../../shared/components/BottomNav";
+import Sidebar from "../../../shared/components/Sidebar";
 import QuizShareCard from "./QuizShareCard";
 
 // ── Animations 

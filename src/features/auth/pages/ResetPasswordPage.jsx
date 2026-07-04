@@ -14,8 +14,8 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { LuLock } from "react-icons/lu";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { showToast } from "../../../util/toastUtil";
-import { resetPassword } from "../../../util/api";
+import { showToast } from "../../../shared/utils/toastUtil";
+import { resetPassword } from "../../../shared/utils/api";
 
 const C = {
   bg:      "#f0f4ff",

@@ -2,14 +2,13 @@ import { keyframes } from "@emotion/react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
-
 import { Box, Text, Flex } from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa";
 
-import { QuizContext } from "../../../util/Contexts";
-import Navbar from "../../../util/Navbar";
-import SoloPlay from "../components/SoloPlay"; 
-import Sidebar from "../../../util/Sidebar";
+import { QuizContext } from "../../../shared/contexts/Contexts";
+import Navbar from "../../../shared/components/Navbar"; 
+import Sidebar from "../../../shared/components/Sidebar";
+import SoloPlay from "../components/SoloPlay";
 
 
 

@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 import { Box, useDisclosure } from "@chakra-ui/react";
 
-import { useAuth } from "../../../util/AuthContext";
-import { getMyScores, getLeaderboard, getMe } from "../../../util/api";
-import Sidebar from "../../../util/Sidebar";
-import BottomNav from "../../../util/BottomNav";
+import { useAuth } from "../../../shared/contexts/AuthContext";
+import { getMyScores, getLeaderboard, getMe } from "../../../shared/utils/api";
+import Sidebar from "../../../shared/components/Sidebar";
+import BottomNav from "../../../shared/components/BottomNav";
 
 import { getLevel, LEVELS, computeBadges, fetchDailyChallenge } from "../Levelconfig";
 import { ProfileHeader, LearningStatsPanel } from "../components/ProfileHeader";

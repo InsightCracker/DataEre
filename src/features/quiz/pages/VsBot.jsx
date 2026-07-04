@@ -2,13 +2,13 @@ import { Box, Text, Flex } from "@chakra-ui/react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { keyframes } from "@emotion/react";
-import { QuizContext } from "../../../util/Contexts";
+import { QuizContext } from "../../../shared/contexts/Contexts";
 import { FaRobot, FaArrowLeft } from "react-icons/fa6";
-import Navbar from "../../../util/Navbar";
+import Navbar from "../../../shared/components/Navbar";
 import MultiBoard from "../components/MultiBoard";
 import VsBotQuiz from "../components/VsBotPlay";
 
-// ── Animations ────────────────────────────────────────────────────────────────
+// ── Animations 
 const spin = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }

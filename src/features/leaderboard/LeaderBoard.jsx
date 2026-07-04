@@ -7,10 +7,10 @@ import { FaTrophy } from "react-icons/fa";
 import { FaFire, FaBoltLightning, FaRankingStar, FaUsers } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { keyframes } from "@emotion/react";
-import { getLeaderboard, getTopics } from "../../util/api";
-import { useAuth } from "../../util/AuthContext";
-import Sidebar from "../../util/Sidebar";
-import BottomNav from "../../util/BottomNav";
+import { getLeaderboard, getTopics } from "../../shared/utils/api";
+import { useAuth } from "../../shared/contexts/AuthContext";
+import Sidebar from "../../shared/components/Sidebar";
+import BottomNav from "../../shared/components/BottomNav";
 
 const slideUp = keyframes`
   from { opacity:0; transform:translateY(12px); }

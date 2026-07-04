@@ -4,7 +4,7 @@ import {
   Modal, ModalOverlay, ModalContent, ModalHeader,
   ModalBody, ModalFooter, ModalCloseButton, useToast,
 } from "@chakra-ui/react";
-import { deleteAccount } from "../../../util/api";
+import { deleteAccount } from "../../../shared/utils/api";
 
 /* Confirmation modal for permanently deleting the user's account. */
 const DeleteAccountModal = ({ isOpen, onClose, logout }) => {

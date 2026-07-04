@@ -1,19 +1,18 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { QuizContext } from "../../../util/Contexts";
 import { keyframes } from "@emotion/react";
-
 import {
   Box, Flex, Text, Button, SimpleGrid
 } from "@chakra-ui/react";
-
 import {
   FaShareNodes, FaHouse, FaTrophy,
   FaRobot, FaUserAstronaut, FaHandshake, FaSpinner,
 } from "react-icons/fa6";
 
-import Sidebar from "../../../util/Sidebar";
-import BottomNav from "../../../util/BottomNav";
+
+import { QuizContext } from "../../../shared/contexts/Contexts";
+import Sidebar from "../../../shared/components/Sidebar";
+import BottomNav from "../../../shared/components/BottomNav";
 import QuizShareCard from "./QuizShareCard";
 
 // ── Animations 

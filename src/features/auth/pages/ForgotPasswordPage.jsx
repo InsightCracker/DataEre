@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { LuMail } from "react-icons/lu";
 import { useState, useEffect } from "react";
-import { showToast } from "../../../util/toastUtil";
 import { useNavigate } from "react-router-dom";
-import { forgotPassword } from "../../../util/api"; // ← uncommented
+import { showToast } from "../../../shared/utils/toastUtil";
+import { forgotPassword } from "../../../shared/utils/api";
 
 const C = {
   bg:      "#f0f4ff",

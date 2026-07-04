@@ -1,13 +1,13 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaHouse, FaBookOpen, FaTrophy, FaChartColumn, FaRightFromBracket } from "react-icons/fa6";
-import { useAuth } from "./AuthContext";
-import "../style/bottomnav.css";
+import { useAuth } from "../contexts/AuthContext";
+import "./style/bottomnav.css";
 
 const navLinks = [
-  { label: "Home",         icon: FaHouse,          path: "/users/profile" },
-  { label: "Learn",        icon: FaBookOpen,        path: "/quiz/topics"   },
-  { label: "Hall of Fame", icon: FaTrophy,          path: "/board"         },
-  { label: "Insight Studio",      icon: FaChartColumn,     path: "/coming-soon"   },
+  { label: "Home", icon: FaHouse, path: "/users/profile" },
+  { label: "Learn", icon: FaBookOpen, path: "/quiz/topics" },
+  { label: "Hall of Fame", icon: FaTrophy, path: "/board" },
+  { label: "Insight Studio", icon: FaChartColumn, path: "/coming-soon" },
 ];
 
 const BottomNav = () => {

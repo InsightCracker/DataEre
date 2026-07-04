@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { ChakraProvider } from "@chakra-ui/react";
 import App from './App.jsx'
-import { AuthProvider } from './util/AuthContext.jsx';
+import { AuthProvider } from './shared/contexts/AuthContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

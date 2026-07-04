@@ -19,9 +19,9 @@ import { FaGithub } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { showToast } from "../../../util/toastUtil";
-import { useAuth } from "../../../util/AuthContext";
-import { registerUser } from "../../../util/api";
+import { showToast } from "../../../shared/utils/toastUtil";
+import { useAuth } from "../../../shared/contexts/AuthContext";
+import { registerUser } from "../../../shared/utils/api";
 
 const C = {
   bg:      "#f0f4ff",
