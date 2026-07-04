@@ -115,7 +115,7 @@ const SocialButton = ({ icon, label, onClick, loading }) => (
   </Box>
 );
 
-const SignupPage = () => {
+const SignUpPage = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(null);
@@ -488,4 +488,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default SignUpPage;
