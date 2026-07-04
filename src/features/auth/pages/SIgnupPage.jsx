@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box, 
   Text, 
@@ -11,13 +13,10 @@ import {
   Flex, 
   SimpleGrid,
 } from "@chakra-ui/react";
-
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { LuMail, LuLock, LuUser } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { showToast } from "../../../shared/utils/toastUtil";
 import { useAuth } from "../../../shared/contexts/AuthContext";

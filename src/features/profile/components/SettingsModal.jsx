@@ -73,8 +73,6 @@ const SettingsModal = ({
   };
 
   const handleTogglePrivacy = async (key, currentVal) => {
-    console.log("Testing")
-    console.log("TOGGLE CLICKED", key, currentVal);
     const next = !profilePublic;
     setProfilePublic(next);
     setSavingPrivacy(true);
