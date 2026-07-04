@@ -6,7 +6,7 @@ import { ChakraProvider, Box } from '@chakra-ui/react';
 // Quiz Pages
 import LandingPage from "./features/landing/pages/LandingPage";
 import LoginPage from "./features/auth/pages/LoginPage";
-import SignUpPage from './features/auth/pages/SignupPage';
+import SignUpPage from './features/auth/pages/SignUpPage';
 import OAuthCallback from './features/auth/pages/OAuthCallback';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
@@ -20,9 +20,6 @@ import QuickPlay from "./features/quiz/pages/QuickPlay";
 import DailyChallenge from './features/challenge/DailyChallenge';
 
 import Leaderboard from './features/leaderboard/LeaderBoard';
-
-// PDF Converter
-// import PDFConverter from './pages/PDFConverter';
 
 // Upcoming Feature
 import ComingSoon from './utils/ComingSoon';
@@ -192,9 +189,6 @@ function App() {
 
             {/* Daily Challenge */}
             <Route path='/challenge' element={<DailyChallenge />} />
-
-            {/* Converter */}
-            {/* <Route path="/converter" element={<PDFConverter />} /> */}
 
             {/* Coming Soon */}
             <Route path="/coming-soon" element={<ComingSoon />} />
