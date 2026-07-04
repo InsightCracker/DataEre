@@ -6,7 +6,6 @@ import { ChakraProvider, Box } from '@chakra-ui/react';
 // Quiz Pages
 import LandingPage from "./features/landing/pages/LandingPage";
 import LoginPage from "./features/auth/pages/LoginPage";
-// import SignUpPage from './features/auth/pages/SignupPage';
 import OAuthCallback from './features/auth/pages/OAuthCallback';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
@@ -179,7 +178,6 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/users/login" element={<LoginPage />} />
-            {/* <Route path="/users/signup" element={<SignUpPage />} /> */}
             <Route path="/users/oauth/callback" element={<OAuthCallback />} />
             <Route path="/users/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/users/reset-password/:token" element={<ResetPasswordPage />} />
