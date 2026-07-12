@@ -12,7 +12,8 @@ import { keyframes } from "@emotion/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { QuizContext } from "../../../shared/contexts/Contexts";
-import { saveScore } from "../../../shared/utils/api";
+import { useAuth } from "../../../shared/contexts/AuthContext";
+import { saveScore, getMe } from "../../../shared/utils/api";
 
 // ── Animations 
 const slideUp = keyframes`
@@ -322,6 +323,8 @@ const SoloPlay = () => {
     wrongAnswer, setWrongAnswer,
   } = useContext(QuizContext);
 
+  const { updateUser } = useAuth(); // ← keeps AuthContext (and ProfileHeader) in sync after scoring
+
   const [optionChosenKey, setOptionChosenKey] = useState("");
   const [revealed, setRevealed]               = useState(false);
   const [pointsHistory, setPointsHistory]     = useState([]);
@@ -370,7 +373,7 @@ const SoloPlay = () => {
     else setWrongAnswer(finalWrong);
 
     try {
-      await saveScore({
+      const res = await saveScore({
         topic:   q.topic ?? q.category ?? "General",
         score:   finalScore,
         total:   questions.length,
@@ -378,6 +381,14 @@ const SoloPlay = () => {
         skipped: questions.length - finalScore - finalWrong,
         mode:    "solo",
       });
+
+      // saveScore now returns the updated user (with the new totalCorrect/XP)
+      // directly in its response — sync AuthContext so ProfileHeader and any
+      // other consumer of useAuth() reflect the new totals immediately,
+      // without waiting for a full page reload.
+      if (res.success && res.user) {
+        updateUser(res.user);
+      }
     } catch (err) {
       console.error("Failed to save score:", err);
     }

@@ -1,11 +1,10 @@
 import "../styles/profile.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { Box, useDisclosure } from "@chakra-ui/react";
 
 import { useAuth } from "../../../shared/contexts/AuthContext";
-import { getMyScores, getLeaderboard, getMe } from "../../../shared/utils/api";
+import { getMyScores, getLeaderboard, getMe, getMyRank } from "../../../shared/utils/api";
 import Sidebar from "../../../shared/components/Sidebar";
 import BottomNav from "../../../shared/components/BottomNav";
 
@@ -32,6 +31,7 @@ const ProfilePage = () => {
   const [bestSkill, setBestSkill] = useState(null);
   const [worstSkill, setWorstSkill] = useState(null);
   const [board, setBoard] = useState([]);
+  const [myRank, setMyRank] = useState(0);
 
   const { isOpen: isSettingsOpen, onOpen: openSettings, onClose: closeSettings } = useDisclosure();
   const { isOpen: isDeleteOpen, onOpen: openDelete, onClose: closeDelete } = useDisclosure();
@@ -48,13 +48,19 @@ const ProfilePage = () => {
     });
   }, []);
 
-  // Fetch leaderboard top 3
+  // Fetch leaderboard top 3 (public users only — used for the "Top DataErians" card)
   useEffect(() => {
     getLeaderboard().then((res) => {
       if (res.success) {
         const sorted = [...res.data].sort((a, b) => b.totalCorrect - a.totalCorrect);
         setBoard(sorted.slice(0, 3));
       }
+    });
+  }, []);
+
+  useEffect(() => {
+    getMyRank().then((res) => {
+      if (res.success) setMyRank(res.data.rank ?? 0);
     });
   }, []);
 
@@ -75,10 +81,6 @@ const ProfilePage = () => {
     Math.round(((xp - level.minXP) / (level.maxXP - level.minXP)) * 100), 100
   );
   const badges = computeBadges(stats, scores, streak);
-
-  const myRank = board.findIndex(
-    (u) => String(u._id) === String(userId) || u.username === username
-  ) + 1;
 
   const isYou = (u) => String(u._id) === String(userId) || u.username === username;
 

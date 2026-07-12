@@ -95,7 +95,7 @@ export const ProfileHeader = ({
           <Box className="icon" sx={{ color: "#304ecf" }}><FaBoltLightning /></Box>
           <div className="list-text">
             <p>Total XP</p>
-            <h3>{stats.totalCorrect} XP</h3>
+            <h3>{stats.totalCorrect} XP</h3> 
           </div>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { keyframes } from "@emotion/react";
 import {
   Box, Flex, Text, Input, InputGroup, InputLeftElement,
   SimpleGrid, Spinner, Center,
@@ -5,12 +7,12 @@ import {
 import { LuSearch, LuTrendingUp, LuTrendingDown, LuMinus } from "react-icons/lu";
 import { FaTrophy } from "react-icons/fa";
 import { FaFire, FaBoltLightning, FaRankingStar, FaUsers } from "react-icons/fa6";
-import { useState, useEffect } from "react";
-import { keyframes } from "@emotion/react";
+
 import { getLeaderboard, getTopics } from "../../shared/utils/api";
 import { useAuth } from "../../shared/contexts/AuthContext";
 import Sidebar from "../../shared/components/Sidebar";
 import BottomNav from "../../shared/components/BottomNav";
+import YourStatsCard from "./components/YourStatsCard";
 
 const slideUp = keyframes`
   from { opacity:0; transform:translateY(12px); }
@@ -105,6 +107,7 @@ const LeaderBoard = () => {
   const [activeTopic, setActiveTopic] = useState("overall");
   const [filter, setFilter] = useState("totalCorrect");
   const [search, setSearch] = useState("");
+  const [myXP, setMyXP] = useState(0); // populated via YourStatsCard's onLoaded callback
 
   useEffect(() => {
     getTopics()
@@ -127,18 +130,12 @@ const LeaderBoard = () => {
     u.username.toLowerCase().includes(search.toLowerCase())
   );
 
-  const topCorrect = sorted[0]?.totalCorrect ?? 0;
-  const myRank = sorted.findIndex((u) => isYou(u)) + 1;
-  const yourXP = data.find((u) => isYou(u))?.totalCorrect ?? 0;
-
+  const topCorrect = Math.max(sorted[0]?.totalCorrect ?? 0, myXP);
   const podium = sorted.slice(0, 3);
   const podiumOrder = podium.length >= 2 ? [podium[1], podium[0], podium[2]] : podium;
   const podiumRanks   = [2, 1, 3];
   const podiumHeights = [60, 80, 44];
 
-  // Only show "Overall" plus the top 3 topics as filter tabs, instead of
-  // every topic returned by the API (keeps the tab row from overflowing
-  // once there are many topics).
   const ALL_TOPICS = ["overall", ...topics.slice(0, 3)];
 
   const formattedTopic = activeTopic.charAt(0).toUpperCase() + activeTopic.slice(1);
@@ -198,15 +195,9 @@ const LeaderBoard = () => {
                 value={topCorrect}                
                 icon={<FaTrophy size={12} />} delay="0.10s" 
               />
-              <StatCard 
-                label="Your XP"      
-                value={yourXP}                    
-                icon={<FaBoltLightning size={12} />} delay="0.15s" 
-              />
-              <StatCard 
-                label="Your Rank"    
-                value={myRank ? `#${myRank}` : "—"} 
-                icon={<FaRankingStar size={12} />} delay="0.20s" 
+              <YourStatsCard
+                activeTopic={activeTopic}
+                onLoaded={(stats) => setMyXP(stats.totalCorrect)}
               />
             </SimpleGrid>
 
