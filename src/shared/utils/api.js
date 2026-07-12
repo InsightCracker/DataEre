@@ -66,9 +66,5 @@ export const getLeaderboard = (topic = "overall") =>
 export const getTopics = () =>
   request("/scores/topics", "GET");
 
-// ─── FILE UPLOAD 
-export const uploadFile = async (file) => {
-  const formData = new FormData();
-  formData.append("file", file);
-  return request("/upload", "POST", formData, null, true);
-};
+export const getMyRank = () =>
+  request("/scores/my-rank", "GET");

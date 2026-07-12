@@ -14,7 +14,7 @@ const safeParseUser = () => {
 };
 
 const splitUsername = (username = "") => {
-  const parts     = username.trim().split(" ");
+  const parts = username.trim().split(" ");
   const firstName = parts[0] || "";
   const lastName  = parts.slice(1).join(" ") || "";
   return { firstName, lastName };
@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) => {
         setUser(res.user);
         localStorage.setItem('dataere_user', JSON.stringify(res.user));
       } else {
-        // Token is invalid/expired — clear everything
         setUser(null);
         setToken(null);
         localStorage.removeItem('dataere_user');
@@ -63,16 +62,15 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('dataere_user', JSON.stringify(merged));
   };
 
-  // ── Derived values ──────────────────────────────────────────────────
   const { firstName, lastName } = splitUsername(user?.username);
-  const email              = user?.email              || "";
-  const userId             = user?.id                 || null;
-  const username           = user?.username           || "";
-  const streak             = user?.streak             ?? 0;
-  const longestStreak      = user?.longestStreak      ?? 0;
-  const joinDate           = user?.joinDate           || null;
-  const isPublic           = user?.isPublic           ?? true;
-  const notificationPrefs  = user?.notificationPrefs  ?? {   // ← add this
+  const email = user?.email || "";
+  const userId = user?.id || null;
+  const username = user?.username || "";
+  const streak = user?.streak ?? 0;
+  const longestStreak = user?.longestStreak ?? 0;
+  const joinDate = user?.joinDate || null;
+  const isPublic = user?.isPublic ?? true;
+  const notificationPrefs = user?.notificationPrefs  ?? { 
     dailyReminders:     false,
     leaderboardUpdates: false,
   };
@@ -80,10 +78,8 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      // Raw
       user,
       token,
-      // Derived
       userId,
       username,
       firstName,
@@ -93,9 +89,8 @@ export const AuthProvider = ({ children }) => {
       longestStreak,
       joinDate,
       isPublic,
-      notificationPrefs,   // ← expose it
+      notificationPrefs,
       isLoggedIn,
-      // Actions
       login,
       logout,
       updateUser,

@@ -21,6 +21,10 @@ import DailyChallenge from './features/challenge/DailyChallenge';
 
 import Leaderboard from './features/leaderboard/LeaderBoard';
 
+// Premium Features
+import DatasetChallengePage from './features/premium/DatasetUpload';
+import PaywallModal from './features/premium/PaywallModal';
+
 // Upcoming Feature
 import ComingSoon from './utils/ComingSoon';
 
@@ -186,6 +190,10 @@ function App() {
             <Route path="/quiz/results" element={<Results />} />
             <Route path="/quiz/vsbot" element={<VsBot />} />
             <Route path="/board" element={<Leaderboard />} />
+
+            /* Premium Features */
+            <Route path='/upload-dataset' element={<DatasetChallengePage />} />
+            <Route path='/payment' element={<PaywallModal />} />
 
             {/* Daily Challenge */}
             <Route path='/challenge' element={<DailyChallenge />} />
