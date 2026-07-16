@@ -75,7 +75,6 @@ function App() {
   const fetchQuestions = useCallback(async (categoryOverride) => {
     const activeCategory = categoryOverride ?? categoryRef.current ?? categories;
     
-    // Clear cache so a manual refresh always fetches new questions
     clearQuestionCache({
       category,
       difficulty,
@@ -191,7 +190,7 @@ function App() {
             <Route path="/quiz/vsbot" element={<VsBot />} />
             <Route path="/board" element={<Leaderboard />} />
 
-            /* Premium Features */
+            {/* Premium Features */}
             <Route path='/upload-dataset' element={<DatasetChallengePage />} />
             <Route path='/payment' element={<PaywallModal />} />
 

@@ -13,13 +13,13 @@ import SoloPlay from "../components/SoloPlay";
 
 
 const dotBounce = keyframes`
-  0%, 80%, 100% { transform: scale(1);             opacity: 0.5; }
-  40%           { transform: scale(1.7) translateY(-5px); opacity: 1; }
+  0%, 80%, 100% { transform: scale(1); opacity: 0.5; }
+  40% { transform: scale(1.7) translateY(-5px); opacity: 1; }
 `;
 
 const pulseFade = keyframes`
   0%, 100% { opacity: 0.45; }
-  50%      { opacity: 1;    }
+  50% { opacity: 1;    }
 `;
 
 const QuickPlay = () => {
@@ -99,12 +99,12 @@ const QuickPlay = () => {
       <Box>
         <Sidebar />
 
-          <Box className="main" sx={{
-            maxW: '600px',
-            m: '0 auto'
-          }}>
-            <Navbar />
-            <SoloPlay />
+        <Box className="main" sx={{
+          maxW: '600px',
+          m: '0 auto'
+        }}>
+          <Navbar />
+          <SoloPlay />
         </Box>
       </Box>
     </Box>

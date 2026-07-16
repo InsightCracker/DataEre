@@ -44,6 +44,7 @@ const Cards = () => {
         value: 1
       });
     }
+
     setLoading(`solo-${cat.id}`);
     pendingRoute.current = "/quiz/solo";
     setCategory(cat.name);
@@ -58,6 +59,7 @@ const Cards = () => {
         value: 1
       });
     }
+    
     setLoading(`bot-${cat.id}`);
     pendingRoute.current = "/quiz/vsbot"; 
     setCategory(cat.name);

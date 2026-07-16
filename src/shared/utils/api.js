@@ -16,7 +16,6 @@ const request = async (endpoint, method = "GET", body = null, token = null, isFo
   return res.json();
 };
 
-// ─── AUTH 
 export const registerUser = (username, email, password) =>
   request("/auth/register", "POST", { username, email, password });
 

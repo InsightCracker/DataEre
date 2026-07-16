@@ -80,7 +80,7 @@ const ProfilePage = () => {
   const xpProgress = Math.min(
     Math.round(((xp - level.minXP) / (level.maxXP - level.minXP)) * 100), 100
   );
-  const badges = computeBadges(stats, scores, streak);
+  const badges = computeBadges(stats, scores, longestStreak);
 
   const isYou = (u) => String(u._id) === String(userId) || u.username === username;
 

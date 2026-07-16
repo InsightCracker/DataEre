@@ -7,6 +7,7 @@ import {
   Text,
   Badge,
   Button,
+  useToast
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
@@ -14,6 +15,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { QuizContext } from "../../../shared/contexts/Contexts";
 import { useAuth } from "../../../shared/contexts/AuthContext";
 import { saveScore, getMe } from "../../../shared/utils/api";
+import { showToast } from "../../../shared/utils/toastUtil";
 
 // ── Animations 
 const slideUp = keyframes`
@@ -41,7 +43,7 @@ const shakeAnim = keyframes`
   80%     { transform:translateX(8px); }
 `;
 
-// ── Constants ─
+// ── Constants
 const OPTION_KEYS = ["A", "B", "C", "D"];
 
 const difficultyConfig = {
@@ -50,7 +52,7 @@ const difficultyConfig = {
   advanced:     { bg: "#fef2f2", color: "#dc2626" },
 };
 
-// ── Question parser────
+// ── Question parser
 function parseQuestionParts(text = "") {
   if (!text) return { prose: "", table: null, codeBlock: null };
 
@@ -89,7 +91,7 @@ function TableDisplay({ raw }) {
   const lines = raw
     .split("\n")
     .map((l) => l.trim())
-    .filter((l) => l && !/^\+[-+]+\+$/.test(l)); // drop ASCII border lines
+    .filter((l) => l && !/^\+[-+]+\+$/.test(l));
 
   const rows = lines.map((l) =>
     l.replace(/^\||\|$/g, "")
@@ -183,7 +185,7 @@ function CodeBlock({ raw }) {
   );
 }
 
-// ── Question body (prose + table + code) ──────────────────────────────────────
+// ── Question body (prose + table + code)
 function QuestionBody({ question, description }) {
   const { prose, table, codeBlock } = parseQuestionParts(question);
 
@@ -237,7 +239,7 @@ function QuestionBody({ question, description }) {
   );
 }
 
-// ── Option button─
+// ── Option button
 const OptionButton = ({
   label, text, index,
   revealed, isSelected, isCorrect, isWrong,
@@ -315,6 +317,7 @@ const OptionButton = ({
 // ── Main component
 const SoloPlay = () => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const {
     score, setScore,
@@ -323,8 +326,7 @@ const SoloPlay = () => {
     wrongAnswer, setWrongAnswer,
   } = useContext(QuizContext);
 
-  const { updateUser } = useAuth(); // ← keeps AuthContext (and ProfileHeader) in sync after scoring
-
+  const { updateUser } = useAuth();
   const [optionChosenKey, setOptionChosenKey] = useState("");
   const [revealed, setRevealed]               = useState(false);
   const [pointsHistory, setPointsHistory]     = useState([]);
@@ -342,7 +344,7 @@ const SoloPlay = () => {
 
   const chosenIsCorrect = optionChosenKey ? isOptionCorrect(optionChosenKey) : false;
 
-  // ── Navigation helpers ─────────────────────────────────────────────────────
+  // ── Navigation helpers 
   function advance(points) {
     setPointsHistory((h) => [...h, points]);
     setOptionChosenKey("");
@@ -365,7 +367,7 @@ const SoloPlay = () => {
     setCurrQuestion(currQuestion + 1);
   };
 
-  const finishQuiz = async () => {
+ const finishQuiz = async () => {
     const finalScore = chosenIsCorrect ? score + 1 : score;
     const finalWrong = chosenIsCorrect ? wrongAnswer : wrongAnswer + 1;
 
@@ -374,20 +376,21 @@ const SoloPlay = () => {
 
     try {
       const res = await saveScore({
-        topic:   q.topic ?? q.category ?? "General",
-        score:   finalScore,
-        total:   questions.length,
-        wrong:   finalWrong,
+        topic: q.topic ?? q.category ?? "General",
+        score: finalScore,
+        total: questions.length,
+        wrong: finalWrong,
         skipped: questions.length - finalScore - finalWrong,
-        mode:    "solo",
+        mode: "solo",
       });
 
-      // saveScore now returns the updated user (with the new totalCorrect/XP)
-      // directly in its response — sync AuthContext so ProfileHeader and any
-      // other consumer of useAuth() reflect the new totals immediately,
-      // without waiting for a full page reload.
       if (res.success && res.user) {
         updateUser(res.user);
+      }
+
+      if (res.success && res.rankNotification) {
+        const { direction, message } = res.rankNotification;
+        showToast(toast, direction === "up" ? "success" : "warning", message);
       }
     } catch (err) {
       console.error("Failed to save score:", err);
@@ -448,7 +451,7 @@ const SoloPlay = () => {
           {/* Question text — prose + table + code separated */}
           <QuestionBody
             question={q.question}
-            // description={q.description}
+            description={q.description}
           />
         </Box>
 

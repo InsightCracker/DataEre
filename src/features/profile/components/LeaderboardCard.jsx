@@ -64,7 +64,7 @@ export const AchievementsPanel = ({ badges }) => {
       {earned.length === 0 ? (
         <p style={{ fontSize: "0.8rem", color: "#9ca3af" }}>Start a session to unlock achievements!</p>
       ) : (
-        earned.slice(0, 7).map((b) => (
+        earned.map((b) => (
           <div key={b.id} style={{
             display: "flex", alignItems: "center", gap: "10px",
             padding: "8px 0", borderBottom: "1px solid rgba(59,110,240,0.07)",

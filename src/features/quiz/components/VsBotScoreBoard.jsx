@@ -67,7 +67,7 @@ const PlayerCard = ({ icon, label, score, color, bg, delay, isLeading }) => (
   </Flex>
 );
 
-const MultiBoard = () => {
+const VsBotScoreBoard = () => {
   const { score, botScore } = useContext(QuizContext);
 
   const userLeading = score > botScore;
@@ -123,4 +123,4 @@ const MultiBoard = () => {
   );
 };
 
-export default MultiBoard;
+export default VsBotScoreBoard;

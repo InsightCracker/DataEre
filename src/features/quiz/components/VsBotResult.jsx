@@ -9,7 +9,6 @@ import {
   FaRobot, FaUserAstronaut, FaHandshake, FaSpinner,
 } from "react-icons/fa6";
 
-
 import { QuizContext } from "../../../shared/contexts/Contexts";
 import Sidebar from "../../../shared/components/Sidebar";
 import BottomNav from "../../../shared/components/BottomNav";
@@ -78,6 +77,8 @@ const VsBotResult = () => {
     setWrongAnswer,
     questions,
     setCurrQuestion,
+    category,
+    fetchQuestions
   } = useContext(QuizContext);
 
   const total      = questions.length;
@@ -105,6 +106,7 @@ const VsBotResult = () => {
     setWrongAnswer(0); 
     setCurrQuestion(0); 
     setRefresh(!refresh);
+    fetchQuestions(category);
     navigate("/quiz/vsbot");
   };
   const tryAnotherQuiz = () => {

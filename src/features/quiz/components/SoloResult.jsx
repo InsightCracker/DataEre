@@ -86,13 +86,15 @@ const SoloResult = () => {
     setCurrQuestion,
     refresh, setRefresh,
     wrongAnswer, setWrongAnswer,
+    category,
+    fetchQuestions
   } = useContext(QuizContext);
 
-  const total      = questions.length;
-  const skipped    = total - score - wrongAnswer;
+  const total = questions.length;
+  const skipped = total - score - wrongAnswer;
   const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
-  const emoji      = percentage >= 80 ? "🏆" : percentage >= 50 ? "👍" : "💪";
-  const headline   = percentage >= 80 ? "Excellent Work!" : percentage >= 50 ? "Good Job!" : "Keep Practicing!";
+  const emoji = percentage >= 80 ? "🏆" : percentage >= 50 ? "👍" : "💪";
+  const headline = percentage >= 80 ? "Excellent Work!" : percentage >= 50 ? "Good Job!" : "Keep Practicing!";
   const { setTimeLeft } = useContext(TimerContext);
   const TOTAL_TIME = 300;
 
@@ -102,6 +104,7 @@ const SoloResult = () => {
     setCurrQuestion(0); 
     setRefresh(!refresh);
     setTimeLeft(TOTAL_TIME);
+    fetchQuestions(category);
     navigate("/quiz/solo");
   };
 

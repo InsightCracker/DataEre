@@ -5,8 +5,9 @@ import { keyframes } from "@emotion/react";
 import { QuizContext } from "../../../shared/contexts/Contexts";
 import { FaRobot, FaArrowLeft } from "react-icons/fa6";
 import Navbar from "../../../shared/components/Navbar";
-import MultiBoard from "../components/MultiBoard";
+import VsBotScoreBoard from "../components/VsBotScoreBoard";
 import VsBotQuiz from "../components/VsBotPlay";
+import Sidebar from "../../../shared/components/Sidebar";
 
 // ── Animations 
 const spin = keyframes`
@@ -16,12 +17,12 @@ const spin = keyframes`
 
 const pulseFade = keyframes`
   0%, 100% { opacity: 0.45; }
-  50%      { opacity: 1;    }
+  50% { opacity: 1; }
 `;
 
 const botBounce = keyframes`
-  0%, 100% { transform: translateY(0)    scale(1);    }
-  50%      { transform: translateY(-8px) scale(1.05); }
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.05); }
 `;
 
 const VsBot = () => {
@@ -113,13 +114,17 @@ const VsBot = () => {
         bgColor: '#fff',
         color: '#fff'
       }}>
-        <Box sx={{
+        <Box>
+          <Sidebar />
+
+          <Box sx={{
             maxW: '600px',
             m: '0 auto'
           }}>
-            <Navbar />
-            <MultiBoard />
-            <VsBotQuiz />
+              <Navbar />
+              <VsBotScoreBoard />
+              <VsBotQuiz />
+          </Box>
         </Box>
       </Box>
   )

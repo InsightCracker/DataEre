@@ -1,4 +1,3 @@
-// VsBotPlay.jsx
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -46,7 +45,7 @@ const botThink = keyframes`
   50%     { opacity:1;   transform:scale(1.1);  }
 `;
 
-// ── Constants ─────────────────────────────────────────────────────────────────
+// ── Constants
 const OPTION_KEYS = ["A", "B", "C", "D"];
 
 const difficultyConfig = {
@@ -83,8 +82,8 @@ function parseQuestionParts(text = "") {
   }
 
   return {
-    prose:     proseLines.join("\n").trim(),
-    table:     tableLines.length >= 2 ? tableLines.join("\n").trim() : null,
+    prose: proseLines.join("\n").trim(),
+    table: tableLines.length >= 2 ? tableLines.join("\n").trim() : null,
     codeBlock: codeBlockMatch ? codeBlockMatch[0] : null,
   };
 }
@@ -94,7 +93,7 @@ function TableDisplay({ raw }) {
   const lines = raw
     .split("\n")
     .map((l) => l.trim())
-    .filter((l) => l && !/^\+[-+]+\+$/.test(l)); // drop ASCII border lines
+    .filter((l) => l && !/^\+[-+]+\+$/.test(l));
 
   const rows = lines.map((l) =>
     l.replace(/^\||\|$/g, "")
@@ -200,7 +199,6 @@ function QuestionBody({ question, description }) {
 
   return (
     <>
-      {/* Main prose */}
       {prose && (
         <Text
           fontWeight={600}
@@ -282,7 +280,6 @@ const BotStatusBar = ({ botAnswer, correctKey, getOptionText, revealed }) => {
           Bot's Answer
         </Text>
         {!revealed ? (
-          /* thinking dots */
           <Flex align="center" gap="5px" h="20px">
             {[0, 1, 2].map((i) => (
               <Box key={i} w="7px" h="7px" borderRadius="full" bg="#4263eb"
@@ -410,9 +407,9 @@ const VsBotPlay = () => {
   } = useContext(QuizContext);
 
   const [userAnswerKey, setUserAnswerKey] = useState("");
-  const [botAnswerKey,  setBotAnswerKey]  = useState("");
-  const [revealed,      setRevealed]      = useState(false);
-  const [animKey,       setAnimKey]       = useState(0);
+  const [botAnswerKey, setBotAnswerKey]  = useState("");
+  const [revealed, setRevealed] = useState(false);
+  const [animKey, setAnimKey] = useState(0);
 
   useEffect(() => {
     localStorage.removeItem("vsBotQuizCompleted");
@@ -428,11 +425,12 @@ const VsBotPlay = () => {
 
   const userCorrect = userAnswerKey ? isOptionCorrect(userAnswerKey) : false;
 
-  // ── Bot logic ──────────────────────────────────────────────────────────────
+  // Bot logic 
   const getSmartBotAnswer = () => {
     const diffLower = difficulty?.toLowerCase();
     const thresh = diffLower === "beginner" ? 0.5
-                 : diffLower === "advanced" ? 0.85 : 0.7;
+                : diffLower === "intermediate" ? 0.7 
+                : diffLower === "advanced" ? 0.85 : 0.90;
 
     if (Math.random() < thresh) return correctKey;
 
@@ -474,12 +472,12 @@ const VsBotPlay = () => {
 
     try {
       await saveScore({
-        topic:   q.topic ?? q.category ?? "General",
-        score:   finalScore,
-        total:   questions.length,
-        wrong:   finalWrong,
+        topic: q.topic ?? q.category ?? "General",
+        score: finalScore,
+        total: questions.length,
+        wrong: finalWrong,
         skipped: 0,
-        mode:    "vsbot",
+        mode: "vsbot",
       });
     } catch (err) {
       console.error("Failed to save score:", err);
@@ -493,7 +491,7 @@ const VsBotPlay = () => {
   };
 
   const isLast = currQuestion === questions.length - 1;
-  const diff   = difficultyConfig[difficulty?.toLowerCase()] ?? difficultyConfig.beginner;
+  const diff = difficultyConfig[difficulty?.toLowerCase()] ?? difficultyConfig.beginner;
 
   return (
     <Box className="quiz-container">
